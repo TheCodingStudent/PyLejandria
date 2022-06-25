@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: pylejandria
+Version: 0.0.1
+Summary: Python useful functions
+Home-page: https://github.com/TheCodingStudent/pylejandria
+Author: Armando Chaparro y Javier Vazquez
+Author-email: angelshaparro@outlook.com
+Project-URL: Bug Tracker, https://github.com/TheCodingStudent/pylejandria/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+A package to make easier to code some things that we wish were built-in in Python.
