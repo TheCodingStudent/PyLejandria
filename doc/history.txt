@@ -45,3 +45,6 @@
     *   Todo funciona como debe hasta el momento de introducir el usuario y contraseña en Twine, podria hacerle algo con keyboard pero
         de momento no me molesta por que me ahorra muchos pasos. Probare algo rapido si no asi lo dejare.
     *   NOTA: los commit no deben tener espacios en blanco, no se por que no lo reconoce como debe. (10:11am)
+    *   NOTA: los commit ya pueden tener espacios vacios, al parecer me falto ponerle comillas al argumento para que cmd supiera que es un texto. (10:15am)
+    *   Aunque no lo consideraba necesario documente "upload.py" para que no solo jesucristo sepa como funciona. Ademas quite algunas cosas de los
+        modulos que importaba pero no usaba, probare el codigo para subir de manera completa. (10:26am)
