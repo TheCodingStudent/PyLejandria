@@ -6,6 +6,7 @@ to make easier to code easy programs. PyLejandria at this moment has:
 
 * math
 * tools
+* random (testing)
 
 visit the pypi page to download
 [PyLejandria](https://pypi.org/project/pylejandria/)

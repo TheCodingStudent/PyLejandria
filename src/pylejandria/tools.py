@@ -33,7 +33,7 @@ def prettify(values, separator='|', padding=0, headers=False, orientation='cente
     row_values = [[col[i] for col in padded_values] for i in range(total_rows)]                                                                                         # rotate table
     joined_rows = [separator.join(row) for row in row_values]                                                                                                           # join each column
     if headers: joined_rows.insert(1, '-'*len(joined_rows[0]))                                                                                                          # add header separator if needed
-    return '\n'.join(joined_rows)                                                                                                                                    # join each row and return string separated by newline
+    return '\n'.join(joined_rows)                                                                                                                                       # join each row and return string separated by newline
         
 if __name__ == '__main__':
     table = [

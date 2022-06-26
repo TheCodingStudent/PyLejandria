@@ -1,8 +1,32 @@
 -25/06/22:
-    * (Armando) despues de batallar durante buen rato cambie el modo de subir la libreria, siguiendo la guia de la pagina de python,
-    ya esta subida la version 0.0.2, debo actualizar y probar si no hay problemas con las cosas que agregue a "math". (4:48pm)
-    * pues parece que la regue en algun import, lo corregire y probare de nuevo. (4:53pm)
-    * el error de importacion ha sido arreglado (cuando importemos funciones del modulo dentro del modulo utilizar PYLEJANDRIA.MODULO). (5:06pm)
-    * tambien cree la carpeta historial, asi podemos dejar las cosas que hicimos y poder tener un recordatorio, tambien, Javier, si lees esto no 
-    olvides de explicar que cosas hiciste para en dado caso regresar el modulo con GIT y arreglar pedos, cuando tengas GIT vemos lo de como
-    utilizar la rama "Dev" para evitar cagaderos como me paso con MAFER.
+    *   (Armando) despues de batallar durante buen rato cambie el modo de subir la libreria, siguiendo la guia de la pagina de python,
+        ya esta subida la version 0.0.2, debo actualizar y probar si no hay problemas con las cosas que agregue a "math". (4:48pm)
+    *   pues parece que la regue en algun import, lo corregire y probare de nuevo. (4:53pm)
+    *   el error de importacion ha sido arreglado (cuando importemos funciones del modulo dentro del modulo utilizar PYLEJANDRIA.MODULO). (5:06pm)
+    *   tambien cree la carpeta historial, asi podemos dejar las cosas que hicimos y poder tener un recordatorio, tambien, Javier, si lees esto no 
+        olvides de explicar que cosas hiciste para en dado caso regresar el modulo con GIT y arreglar pedos, cuando tengas GIT vemos lo de como
+        utilizar la rama "Dev" para evitar cagaderos como me paso con MAFER.
+        * Ya que Demian y Javier por sus razones no podian instalar GIT decidi instalarlo en la laptop roja y ya entendi como contribuir al codigo,
+        los pasos son: (8:08pm)
+
+            --- primera vez ---
+            crear un "fork" del proyecto en la cuenta que va a contribuir
+            git clone "repositorio"
+
+            --- en cmd ---
+            git pull (para tener la ultima version)
+            git branch rama     (crear rama para no afectar la rama principal)
+            git checkout rama   (cambiar a la nueva rama)
+
+            --- realizar edicion ---
+            git add .               (agregar los cambios)
+            git commit -m "mensaje" (crear commit para guardar los cambios)
+            git checkout main       (cambiar a la rama principal)
+            git merge rama          (unir la rama a main para los nuevos cambios)
+            git branch -D rama      (eliminar la rama)
+
+            --- ir a github ---
+            crear un "pull request"
+            esperar que @TheCodingStudent lo agregue (estoy buscando como hacer que cualquiera lo agregue)
+    
+    *   termine de documentar la clase Matrix y unas que otras correcciones. (8:33pm)
