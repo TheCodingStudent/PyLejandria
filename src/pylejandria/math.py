@@ -5,7 +5,7 @@ related to math, physics, etc. Basically school in general.
 
 import math
 from pylejandria.tools import prettify
-from typing import Any, ClassVar, List, Optional, Tuple
+from typing import Any, List, Tuple
 
 class VectorError(Exception):
     """

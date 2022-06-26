@@ -37,3 +37,10 @@
         para realizar analisis de datos, asi que puede que nos venga de perlas en el futuro. (8:54am)
     *   MATH y TOOLS ha sido debidamente documentado con los tipos de datos. Tambien estoy probando hacer un script que me facilite actualizar
         el repositorio de GitHub. (9:19am)
+    *   El sistema para subir automaticamente a GitHub funciona de maravilla, ahora tiene algunos parametros: (9:58am)
+            --version x.x.x esto permite poner una version especifica, por default solo incrementa el ultimo numero
+            --github (f, false, False) esto hace que no se suba a GitHub, puede ser util 🤷‍♂️
+            --commit "mensaje" esto cambia el commit default "version x.x.x", para esas ocasiones donde hay que corregir pequeños errores
+            --pypi (f, false, False) lo mismo que --github, yo que se, a este punto estoy agregando cosas por si acaso 😂
+    *   Todo funciona como debe hasta el momento de introducir el usuario y contraseña en Twine, podria hacerle algo con keyboard pero
+        de momento no me molesta por que me ahorra muchos pasos. Probare algo rapido si no asi lo dejare.
