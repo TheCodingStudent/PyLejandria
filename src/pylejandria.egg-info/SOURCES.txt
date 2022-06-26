@@ -4,6 +4,7 @@ pyproject.toml
 setup.cfg
 src/pylejandria/__init__.py
 src/pylejandria/math.py
+src/pylejandria/random.py
 src/pylejandria/tools.py
 src/pylejandria.egg-info/PKG-INFO
 src/pylejandria.egg-info/SOURCES.txt
