@@ -41,12 +41,6 @@ if abort:                                                                   # if
     print('aborted')                                                        # we print a message
     exit()                                                                  # and stop everything by exiting python
 
-if not args.github.lower().startswith('f'):         # if the argument --github is not "false"
-    os.system('git add .')                          # we run "git add ." to add the files to stage
-    os.system(f'git commit -m "{args.commit}"')     # then we make a commit to save the changes and add our message
-    os.system('git push')                           # we send to GitHub
-    print(f'{10*"-"}uploaded to GitHub{10*"-"}')    # print message for the user
-
 if not args.pypi.lower().startswith('f'):               # if the argument --pypi is not "false"
     with open('setup.cfg', 'w') as f:                   
         f.write(text.replace(old_version[0], version))  # we open the file setup.cfg to overwrite the version 
@@ -54,3 +48,9 @@ if not args.pypi.lower().startswith('f'):               # if the argument --pypi
     os.system('python -m build')                        # we build the version
     os.system('twine upload dist/*')                    # upload with Twine to PyPi
     print(f'{10*"-"}uploaded to Pypi{10*"-"}')          # print message for the user
+
+if not args.github.lower().startswith('f'):         # if the argument --github is not "false"
+    os.system('git add .')                          # we run "git add ." to add the files to stage
+    os.system(f'git commit -m "{args.commit}"')     # then we make a commit to save the changes and add our message
+    os.system('git push')                           # we send to GitHub
+    print(f'{10*"-"}uploaded to GitHub{10*"-"}')    # print message for the user

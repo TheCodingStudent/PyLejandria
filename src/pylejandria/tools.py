@@ -40,7 +40,7 @@ def prettify(
     if orientation == 'right': padded_values = [[row + " "*(length - len(row)) for row in col] for col, length in lengths]                                              # add white space to the left
     elif orientation == 'left': padded_values = [[" "*(length - len(row)) + row for row in col] for col, length in lengths]                                             # add white space to the right                              
     elif orientation == 'center': padded_values = [[" "*floor((length-len(row))/2) + row + " "*ceil((length-len(row))/2) for row in col] for col, length in lengths]    # add white space to the center
-    else: raise PrettifyError("invalid orientation. Expected right, left or center")                                                                                              # if invalid orientation raise error
+    else: raise PrettifyError("invalid orientation. Expected right, left or center")                                                                                    # if invalid orientation raise error
     row_values = [[col[i] for col in padded_values] for i in range(total_rows)]                                                                                         # rotate table
     joined_rows = [separator.join(row) for row in row_values]                                                                                                           # join each column
     if headers: joined_rows.insert(1, '-'*len(joined_rows[0]))                                                                                                          # add header separator if needed
