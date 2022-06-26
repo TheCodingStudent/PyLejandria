@@ -28,7 +28,7 @@ if abort:
 
 if not args.github.lower().startswith('f'):
     os.system('git add .')
-    os.system(f'git commit -m {str(args.commit)}')
+    os.system(f'git commit -m "{args.commit}"')
     os.system('git push')
     print(f'{10*"-"}uploaded to GitHub{10*"-"}')
 

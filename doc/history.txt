@@ -44,3 +44,4 @@
             --pypi (f, false, False) lo mismo que --github, yo que se, a este punto estoy agregando cosas por si acaso 😂
     *   Todo funciona como debe hasta el momento de introducir el usuario y contraseña en Twine, podria hacerle algo con keyboard pero
         de momento no me molesta por que me ahorra muchos pasos. Probare algo rapido si no asi lo dejare.
+    *   NOTA: los commit no deben tener espacios en blanco, no se por que no lo reconoce como debe. (10:11am)
