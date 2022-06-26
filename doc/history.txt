@@ -30,3 +30,10 @@
             esperar que @TheCodingStudent lo agregue (estoy buscando como hacer que cualquiera lo agregue)
     
     *   termine de documentar la clase Matrix y unas que otras correcciones. (8:33pm)
+
+-26/06/22:
+    *   Decidi documentar de la manera mas extensa posible esta libreria, vi un tutorial de "Tec with Tim" sobre "type hinting", no afecta
+        el codigo pero si te permite declarar de mejor manera que se espera recibir, aparte de que hay una libreria llama "mypy" que sirve
+        para realizar analisis de datos, asi que puede que nos venga de perlas en el futuro. (8:54am)
+    *   MATH y TOOLS ha sido debidamente documentado con los tipos de datos. Tambien estoy probando hacer un script que me facilite actualizar
+        el repositorio de GitHub. (9:19am)

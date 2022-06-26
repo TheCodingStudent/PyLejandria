@@ -5,6 +5,7 @@ related to math, physics, etc. Basically school in general.
 
 import math
 from pylejandria.tools import prettify
+from typing import Any, ClassVar, List, Optional, Tuple
 
 class VectorError(Exception):
     """
@@ -24,14 +25,14 @@ class Vector:
     is give all the components of the vector and be able to use all its operators, vector
     addition, subtraction, scalar multiplication, cross and dot product.
     """
-    def __init__(self, *args):
+    def __init__(self, *args: List[int|float]) -> None:
         if len(args) < 2: 
             if not isinstance(args, (list, tuple)): raise VectorError("Not enough values")
             else: self.args = list(args[0])
         else: self.args = list(args)
         self.magnitude = sum(map(lambda x: x*x, self.args))
     
-    def eval(self, result, other, valid) -> bool:
+    def eval(self, result: Any, other: Any, valid: Tuple[Any]) -> bool:
         """
         eval takes a result, an object and the type of objects it
         can receive, it checks if the type of the object is in
@@ -41,14 +42,14 @@ class Vector:
         if isinstance(other, valid): return result
         raise VectorError("Invalidad operation")
     
-    def __getitem__(self, index):
+    def __getitem__(self, index: Tuple[int, int]) -> int|float:
         """
         returns index-nth component of the vector.
         """
         if index < len(self) and index >= -len(self): return self.args[index]
         raise VectorError("Component out of range")
     
-    def __setitem__(self, index, value):
+    def __setitem__(self, index: Tuple[int, int], value: int|float) -> None:
         """
         sets the index-nth component of the vector to the given value
         """
@@ -79,7 +80,7 @@ class Vector:
     __repr__ = lambda self: str(self.args)
 
 class Matrix:
-    def __init__(self, matrix:list(list), dim=()):
+    def __init__(self, matrix:List[List[int|float]], dim: Tuple[int, int]=()) -> None:
         """
         Matrix is a representation of algebra matrix, is takes a list of lists
         of numbers. It contains functions matrix addition, subtraction, multiplication,
@@ -99,7 +100,7 @@ class Matrix:
         self.dim = (self.cols, self.rows)                                                           # we save the dimension
         self.determinant = self.get_determinant(self.matrix) if self.is_square else None            # we calculate determinant if matrix is square
     
-    def get_determinant(self, matrix:list(list)) -> float:
+    def get_determinant(self, matrix:List[List]) -> float:
         """
         this function is made to get determinant of the given matrix, it can be used
         externally but it wasnt intended at first. The determinant is calculated using
@@ -108,7 +109,7 @@ class Matrix:
         if len(matrix) == 2:
             return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
     
-    def valid_value(self, index:list(int, int)) -> bool:
+    def valid_value(self, index:Tuple[int, int]) -> bool:
         """
         generic function of Matrix to check if the given pair of coordinates is
         in the range of the matrix.
@@ -121,7 +122,7 @@ class Matrix:
             y >= -self.rows
         ])
     
-    def return_value(self, index:list(int, int)) -> float:
+    def return_value(self, index:Tuple[int, int]) -> float:
         """
         checks if the given index is valid and if so returns the
         corresponding value, if not raise an error.
@@ -162,7 +163,7 @@ class Matrix:
         if index < self.cols and index >= -self.cols: return [row[index] for row in self.matrix]
         raise MatrixError("Invalid column index")
     
-    def __getitem__(self, indices:tuple(int, int)|tuple(tuple)) -> float|list:
+    def __getitem__(self, indices:Tuple[int, int]|Tuple[Tuple[int, int]]) -> float|List[int|float]:
         """
         if index is a single pair of numbers then it returns the corresponding
         value of the matrix, but if multiple indices in form of tuples are 
