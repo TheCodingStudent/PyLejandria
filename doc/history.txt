@@ -32,7 +32,7 @@
     *   termine de documentar la clase Matrix y unas que otras correcciones. (8:33pm)
 
 -26/06/22:
-    *   Decidi documentar de la manera mas extensa posible esta libreria, vi un tutorial de "Tec with Tim" sobre "type hinting", no afecta
+    *   (Armando) Decidi documentar de la manera mas extensa posible esta libreria, vi un tutorial de "Tec with Tim" sobre "type hinting", no afecta
         el codigo pero si te permite declarar de mejor manera que se espera recibir, aparte de que hay una libreria llama "mypy" que sirve
         para realizar analisis de datos, asi que puede que nos venga de perlas en el futuro. (8:54am)
     *   MATH y TOOLS ha sido debidamente documentado con los tipos de datos. Tambien estoy probando hacer un script que me facilite actualizar
@@ -45,9 +45,23 @@
     *   Todo funciona como debe hasta el momento de introducir el usuario y contraseña en Twine, podria hacerle algo con keyboard pero
         de momento no me molesta por que me ahorra muchos pasos. Probare algo rapido si no asi lo dejare.
     *   NOTA: los commit no deben tener espacios en blanco, no se por que no lo reconoce como debe. (10:11am)
-    *   NOTA: los commit ya pueden tener espacios vacios, al parecer me falto ponerle comillas al argumento para que cmd supiera que es un texto. (10:15am)
+    *   NOTA: los commit ya pueden tener espacios vacios, al parecer me falto ponerle comillas al argumento para que cmd supiera que es un texto.
+        (10:15am)
     *   Aunque no lo consideraba necesario documente "upload.py" para que no solo jesucristo sepa como funciona. Ademas quite algunas cosas de los
         modulos que importaba pero no usaba, probare el codigo para subir de manera completa. (10:26am)
     *   Trabajando en un tipo codigo que envio Demian me di cuenta de que cuando imprimes diccionarios es muy molesto tenerlo en una sola linea, asi
         que intentare hacer una funcion que lo imprima indentado. (10:40pm) [mi padre me regaño por estar tan tarde]
     *   La funcion "pretty_dict" funciona perfectamente, ya tiene parametros opcionales y todo. Procedo a subir. (11:01pm)
+
+-27/06/22:
+    *   (Armando) Al parecer ya no es necesario utilizar List, Dict... de la libreria typing, esto ya esta por default en python 3.9 en adelante, asi
+        que ahora sera necesario >=3.9 para PyLejandria, en este punto no me molesta, si fuera necesario podemos corregirlo facilmente y ya. (7:38am)
+    *   He terminado de documentar en base a PEP8, utilice una pagina que te dice los errores que tiene "https://pep8online.com". 
+        A continuacion los errores que tenia: (9:22am):
+            - todos los archivos deben llevar una linea en blanco al final
+            - hay que cuidar los espacios en blanco al final de las lineas
+            - debe haber una separacion de 2 lineas entre clases, funciones y variables
+            - el operador de union "|" debe ir separado por espacios a ambos lados ( a | b )
+            - las lineas no deben pasar las 79 columnas
+    *   Otro cambio fue que ahora se necesita python >=3.9, ya que ya no se necesita "typing" para list, dict, etc...
+        Vere si Demian quiere corregir mi gramatica, crucemos los dedos. (9:25am)
