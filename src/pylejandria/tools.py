@@ -4,11 +4,17 @@ functions for printing or simplify repetitive things.
 """
 
 from math import floor, ceil
-from typing import List, Any, Optional
+from typing import Dict, List, Any, Optional
 
 class PrettifyError(Exception): 
     """
     Custom Exception for Prettify function.
+    """
+    pass
+
+class PrettyDictError(Exception): 
+    """
+    Custom Exception for Pretty_dict function.
     """
     pass
 
@@ -25,10 +31,11 @@ def prettify(
     school projects, if is something more complicated it would be easier
     to use tkinter.
 
-    separator: string that separated columns
-    padding: integer of white space to fill each item
-    headers: boolean to indicate if horizontal bar of headings is needed
-    centered: boolean to indiceate if text must be centered
+    params:
+        separator: string that separated columns
+        padding: integer of white space to fill each item
+        headers: boolean to indicate if horizontal bar of headings is needed
+        centered: boolean to indiceate if text must be centered
     """
     separator = " "*padding + separator + " "*padding                                                                                                                   # add white space to the separator
     total_rows = len(values)                                                                                                                                            # get number of total rows
@@ -46,12 +53,41 @@ def prettify(
     if headers: joined_rows.insert(1, '-'*len(joined_rows[0]))                                                                                                          # add header separator if needed
     return '\n'.join(joined_rows)                                                                                                                                       # join each row and return string separated by newline
         
-if __name__ == '__main__':
-    table = [
-        ["Javier", "Demian", "Armando", "Susana", "Loretto"],
-        [1, 2, 3],
-        [4, 5, 6, 7 ,8],
-        [9, 10]
-    ]
+def pretty_dict(
+        dictionary: Dict, 
+        indent: Optional[int]=0, 
+        tab: Optional[str]=' '*4
+    ) -> str:
+    """
+    pretty_dict is a function to print dictionaries with indentation, it may be
+    helpful for print debugging or console programs.
 
-    print(prettify(table, padding=1))
+    params:
+        dictionary: a dict with the info we want to display
+        indent: is a parameter used for the function to print nested dicts
+        tab: is a string to separate levels of indentation, it can be any string
+    """
+    if not isinstance(dictionary, dict): raise PrettyDictError("Argument must be dict type.")   # raise an error if dictionary argument is invalid
+    if not dictionary.items(): return '{}\n'                                                    # if the dict is empty simply return curly brackets and new line
+    result = tab*indent + '{\n'                                                                 # start with the corresponding indentation and adding { with new line
+    for key, value in dictionary.items():                                                       # go through every key and value from the dictionary
+        result += tab*indent                                                                    # add a level of indentation
+        if not isinstance(value, dict): result += f'{tab}{key}: {value}\n'                      # if the value is not a dict then add to the result with indentation and new line
+        else: result += f'{tab}{key}: ' + pretty_dict(value, indent=indent+1)                   # else use recursion to get the new dict, add indentation
+    return result + tab*indent + '}\n'                                                          # return the string to display
+    
+if __name__ == '__main__':
+    dictionary = {
+        1: {
+            2: {
+                3: {
+                    4: {
+                        5: {
+                            6: "recursion"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    print(pretty_dict(dictionary))

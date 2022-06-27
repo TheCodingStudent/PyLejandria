@@ -48,3 +48,6 @@
     *   NOTA: los commit ya pueden tener espacios vacios, al parecer me falto ponerle comillas al argumento para que cmd supiera que es un texto. (10:15am)
     *   Aunque no lo consideraba necesario documente "upload.py" para que no solo jesucristo sepa como funciona. Ademas quite algunas cosas de los
         modulos que importaba pero no usaba, probare el codigo para subir de manera completa. (10:26am)
+    *   Trabajando en un tipo codigo que envio Demian me di cuenta de que cuando imprimes diccionarios es muy molesto tenerlo en una sola linea, asi
+        que intentare hacer una funcion que lo imprima indentado. (10:40pm) [mi padre me regaño por estar tan tarde]
+    *   La funcion "pretty_dict" funciona perfectamente, ya tiene parametros opcionales y todo. Procedo a subir. (11:01pm)
