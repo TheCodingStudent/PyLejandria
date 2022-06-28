@@ -38,7 +38,8 @@ def prettify(
         separator: Optional[str]='|',
         padding: Optional[int]=0,
         headers: Optional[bool]=False,
-        orientation: Optional[str]='center'
+        orientation: Optional[str]='center',
+        _print: Optional[bool]=True
 ) -> str:
     """
     prettify receives as main argument a 2D matrix and returns a string
@@ -82,13 +83,17 @@ def prettify(
     joined_rows = [separator.join(row) for row in row_values]
     if headers:
         joined_rows.insert(1, '-'*len(joined_rows[0]))
+
+    if _print:
+        print('\n'.join(joined_rows))
     return '\n'.join(joined_rows)
 
 
 def pretty_dict(
         dictionary: dict,
         indent: Optional[int]=0,
-        tab: Optional[str]=' '*4
+        tab: Optional[str]=' '*4,
+        _print: Optional[bool]=True
 ) -> str:
     """
     pretty_dict is a function to print dictionaries with indentation, it may be
@@ -111,6 +116,8 @@ def pretty_dict(
             result += f'{value}\n'
         else:
             result += pretty_dict(value, indent=indent+1)
+    if _print:
+        result + tab*indent + '}\n'
     return result + tab*indent + '}\n'
 
 if __name__ == '__main__':

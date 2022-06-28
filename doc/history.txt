@@ -63,5 +63,9 @@
             - debe haber una separacion de 2 lineas entre clases, funciones y variables
             - el operador de union "|" debe ir separado por espacios a ambos lados ( a | b )
             - las lineas no deben pasar las 79 columnas
+            - var != None es incorrecto, debe usarse is None en su lugar
     *   Otro cambio fue que ahora se necesita python >=3.9, ya que ya no se necesita "typing" para list, dict, etc...
         Vere si Demian quiere corregir mi gramatica, crucemos los dedos. (9:25am)
+    *   Documente en base PEP8 el "upload.py". (9:03pm)
+    *   Las funciones prettify y pretty_dict ahora por default imprimen el resultado, pero tambien devuelven el string. (9:06pm)
+    *   Gracias a una ocurrencia de Demian ha surgido el archivo "ideas.txt". (9:12pm)
