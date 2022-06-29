@@ -7,3 +7,9 @@
         - Procedimiento
         - Resolver ecuaciones
         - Fracciones
+    
+    - Graph
+        - Graficas sencillas
+        - Graficas con sliders
+        - Graficas polares
+        - Transformaciones lineales

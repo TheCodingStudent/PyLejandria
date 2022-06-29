@@ -86,3 +86,8 @@
             - agregar excepciones para que incluso tu sepas que te fue mal
             - falta division de polinomios
             - queda pendiente si la clase Fraction vale la pena
+
+-29/06/22:
+    *   (Armando) El dia de hoy aproveche para mejorar la terminal, ahora por default sera PowerShell. (8:47am).
+    *   El archivo upload.py tenia un error al darle una version, ya esta corregido. Ahora solo se subiran los archivos de la nueva version, falta
+        ver si esto hace que los modulos se suban mas rapido, no le veo caso subir los archivos una y otra vez. (9:19am)
