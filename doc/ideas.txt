@@ -5,3 +5,5 @@
             - Diferencial
             - Integral
         - Procedimiento
+        - Resolver ecuaciones
+        - Fracciones

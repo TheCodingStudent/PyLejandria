@@ -69,3 +69,20 @@
     *   Documente en base PEP8 el "upload.py". (9:03pm)
     *   Las funciones prettify y pretty_dict ahora por default imprimen el resultado, pero tambien devuelven el string. (9:06pm)
     *   Gracias a una ocurrencia de Demian ha surgido el archivo "ideas.txt". (9:12pm)
+
+-28/06/22:
+    *   (Armando) Empiezo a creer que este proyecto solo existe gracias a mi, pero no me importa, la idea de tener un nuevo proyecto y aprender es
+        suficiente como para seguir progrmando, aparte de ser terapeutico. El dia de hoy hare una nueva clase para Math llamada Symbol, la idea
+        principal es emular lo que hace sympy y tener variables, esto surge de la platica con Demian de anoche. Sera la primera vez que pruebe crear
+        otra rama, esto con la intencion de no llegar a cagarla. (11:28am)
+    *   Symbol de momento tiene las funciones mas basicas, hay que ver como arreglar lo de dividir y toca crear una clase Polynomial. (1:14pm)
+    *   Parece ser que el gym ayuda a resolver problemas en general, hasta este momento la clase Symbol y Polynomial estan bastante avanzadas, hay aun
+        muchos detalles que pulir, agregar precaciones y errores custom, documentar, etc. Pero va bastante bien, aunque hace un momento surgio la
+        idea de una clase Fraction, le dare algunas vueltas y si sale algo interesenta lo documentare aqui. (7:20pm)
+    *   Habia un error en las funciones de tools, la idea era que automaticamente imprimieran pero no puse print. (7:26pm)
+    *   Me encuentro muy cansado asi que hasta aqui llegare el dia de hoy. Armando del futuro, tienes esto pendiente: (7:32pm)
+
+            - modificar la clase Symbol o hacer otra clase para almacenar variables del tipo x^2y^3, ya que no es monomio ni polinomio
+            - agregar excepciones para que incluso tu sepas que te fue mal
+            - falta division de polinomios
+            - queda pendiente si la clase Fraction vale la pena
