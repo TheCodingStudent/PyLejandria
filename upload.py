@@ -44,17 +44,21 @@ version_pattern = '^[0-9]+\.[0-9]+\.[0-9]+$'
 if not re.match(version_pattern, args.version):
     raise Exception(f"Invalid version {args.version}")
 
-abort = input(f'upload v{args.version}?\n{args.commit} (Enter to upload) ')
+if not args.github.lower().startswith('f'):
+    print(f'commit: {args.commit}')
+abort = input(f'upload v{args.version}? (Enter to upload) ')
 if abort:
     print('aborted')
     exit()
 
 if not args.pypi.lower().startswith('f'):
     with open('setup.cfg', 'w') as f:
-        f.write(text.replace(old_version[0], version))
+        f.write(text.replace(old_version[0], args.version))
 
+    file1 = f'pylejandria-{args.version}-py3-none-any.whl'
+    file2 = f'pylejandria-{args.version}.tar.gz'
     os.system('python -m build')
-    os.system('twine upload dist/*')
+    os.system(f'twine upload {file1} {file2}')
     print(f'{10*"-"}uploaded to Pypi{10*"-"}')
 
 if not args.github.lower().startswith('f'):
