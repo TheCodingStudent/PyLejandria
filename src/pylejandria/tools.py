@@ -117,7 +117,7 @@ def pretty_dict(
         else:
             result += pretty_dict(value, indent=indent+1)
     if _print:
-        result + tab*indent + '}\n'
+        print(result + tab*indent + '}\n')
     return result + tab*indent + '}\n'
 
 if __name__ == '__main__':
