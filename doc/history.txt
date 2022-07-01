@@ -98,3 +98,5 @@
         programa que saca los pdf del rpp. (8:35am)
     *   El uploadr tenia un error de direccion, tambien tuve que agregar la libreria "img2pdf" a las dependencias para que todo funcione como debe.
         Ya esta todo terminado, procedo a subir la version 0.0.13. (8:52am)
+    *   Se mejoro la funcion image_to_pdf, ahora recibe muchos mas argumentos. Tambien agregue una funcion y variable global para generar los tipos
+        de archivo, esto es para las ventanas de tkinter. (9:21am)

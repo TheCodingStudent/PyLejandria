@@ -4,10 +4,21 @@ contains functions for printing or simplify repetitive things.
 """
 
 from math import floor, ceil
+import os
 from typing import Any, Optional
 import img2pdf
+from tkinter import Tk
+from tkinter.filedialog import askopenfilenames, asksaveasfilename
 
 Number = float | int
+FILETYPES = {
+    'PDF': '*.pdf',
+    'JPEG': '*jpg;*.jpeg;*.jpe;*.jfif',
+    'PNG': '*png',
+    'TIFF': '*.tiff;*.tif'
+}
+
+
 
 def center(text: str, space: int) -> str:
     """
@@ -21,6 +32,23 @@ def center(text: str, space: int) -> str:
     return f'{" "*floor(padding)}{text}{" "*ceil(padding)}'
 
 
+def filetypes(
+    *types: list[str],
+    all_files:Optional[bool]=True
+) -> list[tuple[str, str]]:
+    """
+    returns a list with the corresponding file types, is useful for tkinter
+    filedialog.
+    Params:
+        types: all the types to be returned.
+        all_files: appends the all files extension *.*.
+    """
+    result = [(type_, FILETYPES.get(type_)) for type_ in types]
+    if all_files is True:
+        result.append(('All Files', '*.*'))
+    return result
+
+
 class PrettifyError(Exception):
     """
     Custom Exception for Prettify function.
@@ -31,6 +59,12 @@ class PrettifyError(Exception):
 class PrettyDictError(Exception):
     """
     Custom Exception for Pretty_dict function.
+    """
+    pass
+
+class PdfError(Exception):
+    """
+    Custom Exception for image_to_pdf function.
     """
     pass
 
@@ -122,15 +156,39 @@ def pretty_dict(
         print(result + tab*indent + '}\n')
     return result + tab*indent + '}\n'
 
-def image_to_pdf(images: list[str], path: str) -> None:
+def image_to_pdf(
+    images: list[str], path: str,
+    get_path: Optional[bool]=False,
+    get_images: Optional[bool]=False,
+    remove: Optional[bool]=False
+) -> None:
     """
     saves a pdf file with the given images at the given location.
     Params:
         images: list of paths of the images.
         path: path where pdf will be saved.
+        get_path: bool to open a window to ask path.
+        get_images: bool to open a window to select images.
+        remove: remove or not the given files.
     """
-    with open(path + '.pdf', 'wb') as f:
+    if get_path is True:
+        Tk().withdraw()
+        path = asksaveasfilename(
+            filetypes=filetypes('PDF'),
+            defaultextension='*.pdf'
+        )
+        if not path: return
+    if get_images is True:
+        Tk().withdraw()
+        images = askopenfilenames(
+            filetypes=filetypes('PNG', 'JPEG')
+        )
+        if not images: return
+    with open(path, 'wb') as f:
         f.write(img2pdf.convert(images))
+    if remove is True:
+        for image in images:
+            os.remove(image)
 
 def parse_seconds(seconds: Number, decimals: Optional[int]=0) -> str:
     """
@@ -146,4 +204,4 @@ def parse_seconds(seconds: Number, decimals: Optional[int]=0) -> str:
     return f'{0 if h < 10 else ""}{h}:{0 if m < 10 else ""}{m}:{s}'
 
 if __name__ == '__main__':
-    print(parse_seconds(982.98))
+    image_to_pdf(None, None, True, True)
