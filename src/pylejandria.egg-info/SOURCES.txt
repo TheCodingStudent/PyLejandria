@@ -8,4 +8,5 @@ src/pylejandria/tools.py
 src/pylejandria.egg-info/PKG-INFO
 src/pylejandria.egg-info/SOURCES.txt
 src/pylejandria.egg-info/dependency_links.txt
+src/pylejandria.egg-info/requires.txt
 src/pylejandria.egg-info/top_level.txt

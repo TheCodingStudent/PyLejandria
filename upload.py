@@ -16,6 +16,7 @@ params:
 import re
 import os
 import argparse
+import time
 
 with open('setup.cfg', 'r') as f:
     text = f.read()
@@ -55,9 +56,9 @@ if not args.pypi.lower().startswith('f'):
     with open('setup.cfg', 'w') as f:
         f.write(text.replace(old_version[0], args.version))
 
-    file1 = f'pylejandria-{args.version}-py3-none-any.whl'
-    file2 = f'pylejandria-{args.version}.tar.gz'
     os.system('python -m build')
+    file1 = f'dist/pylejandria-{args.version}-py3-none-any.whl'
+    file2 = f'dist/pylejandria-{args.version}.tar.gz'
     os.system(f'twine upload {file1} {file2}')
     print(f'{10*"-"}uploaded to Pypi{10*"-"}')
 
