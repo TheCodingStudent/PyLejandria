@@ -91,3 +91,8 @@
     *   (Armando) El dia de hoy aproveche para mejorar la terminal, ahora por default sera PowerShell. (8:47am).
     *   El archivo upload.py tenia un error al darle una version, ya esta corregido. Ahora solo se subiran los archivos de la nueva version, falta
         ver si esto hace que los modulos se suban mas rapido, no le veo caso subir los archivos una y otra vez. (9:19am)
+    *   La herramienta para juntar imagenes en pdf me seria muy util, asi que lo agregare a tools y mañana o mas tarde lo documento. (5:20pm)
+
+-01/06/22:
+    *   (Armando) Ayer no aparece actividad ya que he estado trabajando en la rama DEV, el dia de hoy agregue 2 funciones que surgieron al hacer el
+        programa que saca los pdf del rpp. (8:35am)

@@ -5,13 +5,15 @@ contains functions for printing or simplify repetitive things.
 
 from math import floor, ceil
 from typing import Any, Optional
+import img2pdf
 
+Number = float | int
 
-def CENTER(text: str, space: int) -> str:
+def center(text: str, space: int) -> str:
     """
     secondary function for prettify, it centers the given text and splits the
     space evenly.
-    params:
+    Params:
         text: string to be centered.
         space: quantity of white space to split.
     """
@@ -47,7 +49,7 @@ def prettify(
     school projects, if is something more complicated it would be easier
     to use tkinter.
 
-    params:
+    Params:
         separator: string that separated columns.
         padding: integer of white space to fill each item.
         headers: boolean to indicate if horizontal bar of headings is needed.
@@ -72,7 +74,7 @@ def prettify(
         ]
     elif orientation == 'center':
         padded_values = [
-            [CENTER(row, length) for row in col]
+            [center(row, length) for row in col]
             for col, length in lengths
         ]
     else:
@@ -99,7 +101,7 @@ def pretty_dict(
     pretty_dict is a function to print dictionaries with indentation, it may be
     helpful for print debugging or console programs.
 
-    params:
+    Params:
         dictionary: a dict with the info we want to display.
         indent: is a parameter used for the function to print nested dicts.
         tab: is a string to separate levels of indentation, it can be any
@@ -120,11 +122,28 @@ def pretty_dict(
         print(result + tab*indent + '}\n')
     return result + tab*indent + '}\n'
 
+def image_to_pdf(images: list[str], path: str) -> None:
+    """
+    saves a pdf file with the given images at the given location.
+    Params:
+        images: list of paths of the images.
+        path: path where pdf will be saved.
+    """
+    with open(path + '.pdf', 'wb') as f:
+        f.write(img2pdf.convert(images))
+
+def parse_seconds(seconds: Number, decimals: Optional[int]=0) -> str:
+    """
+    Simple function to parse seconds to standard form hh:mm:ss.
+    Params:
+        seconds: number of seconds to represent.
+        decimals: number of decimals of seconds.
+    """
+    h = int(seconds // 3600)
+    m = int(seconds // 60)
+    s = round(seconds % 60, decimals)
+    if decimals < 1: s = int(s)
+    return f'{0 if h < 10 else ""}{h}:{0 if m < 10 else ""}{m}:{s}'
+
 if __name__ == '__main__':
-    a = [
-        ['Armando', 'Javier', 'Demian', 'Loretto', 'Susana', 'Laili'],
-        [1, 2, 3],
-        [4, 5, 6, 7],
-        [8, 9]
-    ]
-    print(prettify(a))
+    print(parse_seconds(982.98))
