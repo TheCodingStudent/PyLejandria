@@ -19,7 +19,6 @@ FILETYPES = {
 }
 
 
-
 def center(text: str, space: int) -> str:
     """
     secondary function for prettify, it centers the given text and splits the
@@ -34,7 +33,7 @@ def center(text: str, space: int) -> str:
 
 def filetypes(
     *types: list[str],
-    all_files:Optional[bool]=True
+    all_files: Optional[bool]=True
 ) -> list[tuple[str, str]]:
     """
     returns a list with the corresponding file types, is useful for tkinter
@@ -61,6 +60,7 @@ class PrettyDictError(Exception):
     Custom Exception for Pretty_dict function.
     """
     pass
+
 
 class PdfError(Exception):
     """
@@ -139,7 +139,7 @@ def pretty_dict(
         dictionary: a dict with the info we want to display.
         indent: is a parameter used for the function to print nested dicts.
         tab: is a string to separate levels of indentation, it can be any
-        string.
+             string.
     """
     if not isinstance(dictionary, dict):
         raise PrettyDictError("Argument must be dict type.")
@@ -155,6 +155,7 @@ def pretty_dict(
     if _print:
         print(result + tab*indent + '}\n')
     return result + tab*indent + '}\n'
+
 
 def image_to_pdf(
     images: list[str], path: str,
@@ -177,18 +178,21 @@ def image_to_pdf(
             filetypes=filetypes('PDF'),
             defaultextension='*.pdf'
         )
-        if not path: return
+        if not path:
+            return
     if get_images is True:
         Tk().withdraw()
         images = askopenfilenames(
             filetypes=filetypes('PNG', 'JPEG')
         )
-        if not images: return
+        if not images:
+            return
     with open(path, 'wb') as f:
         f.write(img2pdf.convert(images))
     if remove is True:
         for image in images:
             os.remove(image)
+
 
 def parse_seconds(seconds: Number, decimals: Optional[int]=0) -> str:
     """
@@ -200,8 +204,10 @@ def parse_seconds(seconds: Number, decimals: Optional[int]=0) -> str:
     h = int(seconds // 3600)
     m = int(seconds // 60)
     s = round(seconds % 60, decimals)
-    if decimals < 1: s = int(s)
+    if decimals < 1:
+        s = int(s)
     return f'{0 if h < 10 else ""}{h}:{0 if m < 10 else ""}{m}:{s}'
+
 
 if __name__ == '__main__':
     image_to_pdf(None, None, True, True)
