@@ -103,3 +103,4 @@
     *   Resulto mas facil mover el archivo graph de la rama DEV a la rama MAIN, pero debo aprender a como fusionar ramas que han sido modificadas.
         El archivo graph.py de momento es muy basica y necesita mas trabajo, reiniciare la rama DEV y trabajare ahi, intentare no trabajar en 2 ramas
         al mismo tiempo. (9:39am)
+    *   Ahora la funcion image_to_pdf regresa el path, puede ser util para cuando no lo especificas pero deseas usar despues. (10:24am)

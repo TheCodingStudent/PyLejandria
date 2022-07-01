@@ -162,9 +162,10 @@ def image_to_pdf(
     get_path: Optional[bool]=False,
     get_images: Optional[bool]=False,
     remove: Optional[bool]=False
-) -> None:
+) -> str:
     """
-    saves a pdf file with the given images at the given location.
+    saves a pdf file with the given images at the given location and returns
+    the path, specificated or not. 
     Params:
         images: list of paths of the images.
         path: path where pdf will be saved.
@@ -192,6 +193,7 @@ def image_to_pdf(
     if remove is True:
         for image in images:
             os.remove(image)
+    return path
 
 
 def parse_seconds(seconds: Number, decimals: Optional[int]=0) -> str:
