@@ -3,6 +3,7 @@ README.md
 pyproject.toml
 setup.cfg
 src/pylejandria/__init__.py
+src/pylejandria/graph.py
 src/pylejandria/math.py
 src/pylejandria/tools.py
 src/pylejandria.egg-info/PKG-INFO
