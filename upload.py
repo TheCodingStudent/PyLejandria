@@ -43,18 +43,28 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
+pypi = not args.pypi.lower().startswith('f')
+github = not args.github.lower().startswith('f')
+
 version_pattern = '^[0-9]+\.[0-9]+\.[0-9]+$'
 if not re.match(version_pattern, args.version):
     raise Exception(f"Invalid version {args.version}")
 
-if not args.github.lower().startswith('f'):
-    print(f'commit: {args.commit}')
-abort = input(f'upload v{args.version}? (Enter to upload) ')
+match(github, pypi):
+    case(True, True):
+        print(f'commit: {args.commit}')
+        abort = input(f'upload v{args.version}? (Enter to upload) ')
+    case(True, False):
+        print(f'commit: {args.commit}')
+        abort = input(f'upload to github? (Enter to upload) ')
+    case(False, True):
+        abort = input(f'upload v{args.version}? (Enter to upload) ')
+
 if abort:
     print('aborted')
     exit()
 
-if not args.pypi.lower().startswith('f'):
+if pypi is True:
     with open(f'{args.folder}\\setup.cfg', 'w') as f:
         f.write(text.replace(old_version[0], args.version))
 
@@ -64,7 +74,7 @@ if not args.pypi.lower().startswith('f'):
     os.system(f'twine upload {file1} {file2}')
     print(f'{10*"-"}uploaded to Pypi{10*"-"}')
 
-if not args.github.lower().startswith('f'):
+if github is True:
     os.system('git add .')
     os.system(f'git commit -m "{args.commit}"')
     os.system('git push')
