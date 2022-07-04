@@ -104,3 +104,11 @@
         El archivo graph.py de momento es muy basica y necesita mas trabajo, reiniciare la rama DEV y trabajare ahi, intentare no trabajar en 2 ramas
         al mismo tiempo. (9:39am)
     *   Ahora la funcion image_to_pdf regresa el path, puede ser util para cuando no lo especificas pero deseas usar despues. (10:24am)
+
+-04/06/22:
+    *   (Armando) Parece que puedo pasar cada vez mas tiempo sin programar, supongo que la emocion del proyecto esta empezando a morir, sumado a que
+        todo parece indicar que Javier y Demian no ayudaran tan activamente, de igual manera seguire trabajando esporadicamente en el proyecto. La
+        idea de hoy es agregar una funcion que facilite crear modulos para pypi, creando la estructura necesaria, algo asi como el GIT init. (9:15am)
+    *   Parece que funciona perfectamente, procedo a actualizar PyLejandria. (10:04am)
+    *   upload.py tenia cosas que ya no se usan, asi que las quite. (10:05am)
+    *   Faltaba obtener el directorio actual para poder subir los archivos por default. (10:22am)

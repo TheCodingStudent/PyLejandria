@@ -11,12 +11,13 @@ params:
 --pypi      same as --github but with PyPi.
 --commit    the default commit message is "version x.x.x" but can happen that
             you want a different name so use --commit "your message".
+--folder    if given then the source folder is changed and can upload any
+            module, is useful because it allows to no duplicate this file.
 """
 
 import re
 import os
 import argparse
-import time
 
 with open('setup.cfg', 'r') as f:
     text = f.read()
@@ -33,6 +34,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--version', type=str, required=False, default=version)
 parser.add_argument('--github', type=str, required=False, default='')
 parser.add_argument('--pypi', type=str, required=False, default='')
+parser.add_argument('--folder', type=str, required=False, default=os.getcwd())
 parser.add_argument(
     '--commit',
     type=str,
@@ -53,12 +55,12 @@ if abort:
     exit()
 
 if not args.pypi.lower().startswith('f'):
-    with open('setup.cfg', 'w') as f:
+    with open(f'{args.folder}\\setup.cfg', 'w') as f:
         f.write(text.replace(old_version[0], args.version))
 
     os.system('python -m build')
-    file1 = f'dist/pylejandria-{args.version}-py3-none-any.whl'
-    file2 = f'dist/pylejandria-{args.version}.tar.gz'
+    file1 = f'{args.folder}\\dist\\pylejandria-{args.version}-py3-none-any.whl'
+    file2 = f'{args.folder}\\dist\\pylejandria-{args.version}.tar.gz'
     os.system(f'twine upload {file1} {file2}')
     print(f'{10*"-"}uploaded to Pypi{10*"-"}')
 

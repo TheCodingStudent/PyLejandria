@@ -5,6 +5,7 @@ setup.cfg
 src/pylejandria/__init__.py
 src/pylejandria/graph.py
 src/pylejandria/math.py
+src/pylejandria/module.py
 src/pylejandria/tools.py
 src/pylejandria.egg-info/PKG-INFO
 src/pylejandria.egg-info/SOURCES.txt
