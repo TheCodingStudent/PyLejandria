@@ -1,4 +1,3 @@
 img2pdf
 wheel
-argparse
 pygame

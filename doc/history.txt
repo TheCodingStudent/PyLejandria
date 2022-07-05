@@ -125,3 +125,6 @@
     *   Multiples cosas simplificadas en todos los modulos.
     *   Tambien estoy pensando en una interfaz grafica para la herramienta uploader.
     *   Procedo a guardar y todas esas cosas. (6:41pm)
+
+    *   Realice una interfaz grafica para el uploader, parece que funciona de momento, tambien implemente un sistema con el nuevo ArgumentParser de
+        tools, procedere a probar. Tambien vi 1:30h de Harry Potter, asi que no he estado todo el tiempo programando. (10:03pm)
