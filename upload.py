@@ -1,3 +1,8 @@
+"""
+This is a simple tool to upload the Pylejandria package to Pypi and GitHub with
+a UI
+"""
+
 import os
 import re
 import threading
@@ -12,9 +17,12 @@ with open(os.path.join(PATH, 'setup.cfg'), 'r') as f:
     text = f.read()
     old_version = re.search(REGEX, text).group()
     match old_version.split('.'):
-        case(x, y, z): VERSION = f'{x}.{y}.{int(z) + 1}'
+        case(x, y, z):
+            VERSION = f'{x}.{y}.{int(z) + 1}'
+
 
 COMMIT = f'version {VERSION}'
+
 
 def validate_version():
     text = version_entry.get()
@@ -26,13 +34,16 @@ def validate_version():
         version_status['text'] = 'Invalid version'
         version_entry.delete(0, tk.END)
 
+
 def upload():
     if PYPI is True:
         with open(os.path.join(PATH, 'setup.cfg'), 'w') as f:
             f.write(text.replace(old_version, VERSION))
 
         os.system('python -m build')
-        file1 = os.path.join(PATH, f'dist/pylejandria-{VERSION}-py3-none-any.whl')
+        file1 = os.path.join(
+            PATH, f'dist/pylejandria-{VERSION}-py3-none-any.whl'
+        )
         file2 = os.path.join(PATH, f'dist/pylejandria-{VERSION}.tar.gz')
         os.system(f'twine upload {file1} {file2}')
         print(f'{10*"-"}uploaded to Pypi{10*"-"}')
@@ -43,6 +54,7 @@ def upload():
         os.system('git push')
         print(f'{10*"-"}uploaded to GitHub{10*"-"}')
 
+
 def get_values():
     global COMMIT, VERSION, GITHUB, PYPI
     COMMIT = commit_entry.get()
@@ -52,12 +64,30 @@ def get_values():
     thread = threading.Thread(target=upload)
     thread.start()
 
+
 def change_path():
     global PATH
     tk.Tk().withdraw()
     PATH = askdirectory()
     path_entry.delete(0, tk.END)
     path_entry.insert(0, PATH)
+
+
+def update_git(event):
+    if git_combobox.current():
+        commit_entry['state'] = 'disabled'
+    else:
+        commit_entry['state'] = 'normal'
+
+def update_pypi(event):
+    if pypi_combobox.current():
+        version_entry['state'] = 'disabled'
+        commit_entry.delete(0, tk.END)
+        commit_entry.insert(0, '')
+    else:
+        version_entry['state'] = 'normal'
+        commit_entry.delete(0, tk.END)
+        commit_entry.insert(0, COMMIT)
 
 root = tk.Tk()
 root.title('Uploader By Armando Chaparro')
@@ -85,6 +115,7 @@ git_label.grid(row=2, column=0, padx=5, sticky='w')
 git_combobox = ttk.Combobox(root, width=15)
 git_combobox['values'] = ['True', 'False']
 git_combobox['state'] = 'readonly'
+git_combobox.bind("<<ComboboxSelected>>", update_git)
 git_combobox.current(0)
 git_combobox.grid(row=2, column=1, padx=5, sticky='w')
 
@@ -97,6 +128,7 @@ commit_entry.grid(row=3, column=1, padx=5, sticky='w')
 pypi_label = tk.Label(root, text='Upload to Pypi')
 pypi_label.grid(row=4, column=0, padx=5, sticky='w')
 pypi_combobox = ttk.Combobox(root, width=15)
+pypi_combobox.bind("<<ComboboxSelected>>", update_pypi)
 pypi_combobox['values'] = ['True', 'False']
 pypi_combobox['state'] = 'readonly'
 pypi_combobox.current(0)
