@@ -7,6 +7,7 @@ src/pylejandria/graph.py
 src/pylejandria/math.py
 src/pylejandria/module.py
 src/pylejandria/tools.py
+src/pylejandria/upload.py
 src/pylejandria.egg-info/PKG-INFO
 src/pylejandria.egg-info/SOURCES.txt
 src/pylejandria.egg-info/dependency_links.txt

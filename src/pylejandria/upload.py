@@ -13,12 +13,21 @@ from tkinter import ttk
 
 class Uploader:
     def __init__(self) -> None:
+        """
+        Uploader creates the app to manage all the configuration to upload
+        the package to Pypi and GitHub, is easier than parse all the terminal
+        arguments.
+        """
         self.regex = '[0-9]+\.[0-9]+\.[0-9]+'
         self.path = os.getcwd()
         self.get_version()
         self.commit = f'version {self.version}'
 
     def get_version(self) -> None:
+        """
+        Opens the setup.cfg file and finds the current version with regular
+        expressions, then increment the last digit by 1.
+        """
         with open(os.path.join(self.path, 'setup.cfg'), 'r') as f:
             self.text = f.read()
             self.old_version = re.search(self.regex, self.text).group()
@@ -42,8 +51,8 @@ class Uploader:
 
     def upload(self) -> None:
         """
-        Based on the PYPI and GITHUB variables, uploads to their respective sites
-        using the same commands that are used in terminal.
+        Based on the PYPI and GITHUB variables, uploads to their respective
+        sites using the same commands that are used in terminal.
         """
         if self.pypi is True:
             with open(os.path.join(self.path, 'setup.cfg'), 'w') as f:
@@ -53,7 +62,9 @@ class Uploader:
             file1 = os.path.join(
                 self.path, f'dist/pylejandria-{self.version}-py3-none-any.whl'
             )
-            file2 = os.path.join(self.path, f'dist/pylejandria-{self.version}.tar.gz')
+            file2 = os.path.join(
+                self.path, f'dist/pylejandria-{self.version}.tar.gz'
+            )
             os.system(f'twine upload {file1} {file2}')
             print(f'{10*"-"}uploaded to Pypi{10*"-"}')
 
@@ -65,8 +76,8 @@ class Uploader:
 
     def get_values(self) -> None:
         """
-        Updates all global variables and starts a new thread to run the uploading,
-        the thread is necessary to run in parallel with the UI.
+        Updates all global variables and starts a new thread to run the
+        uploading, the thread is necessary to run in parallel with the UI.
         """
         self.commit = self.commit_entry.get()
         self.version = self.version_entry.get()
@@ -107,6 +118,9 @@ class Uploader:
             self.commit_entry.insert(0, self.commit)
 
     def run(self) -> None:
+        """
+        Main function of Uploader, it creates all the UI and bindings.
+        """
         root = tk.Tk()
         root.title('Uploader By Armando Chaparro')
 
@@ -123,7 +137,9 @@ class Uploader:
         self.version_entry = tk.Entry(root, width=15)
         self.version_entry.insert(0, self.version)
         self.version_entry.grid(row=1, column=1, padx=5, sticky='w')
-        version_button = tk.Button(root, text='Validate', command=self.validate_version)
+        version_button = tk.Button(
+            root, text='Validate', command=self.validate_version
+        )
         version_button.grid(row=1, column=2, padx=5)
         self.version_status = tk.Label(root, text='')
         self.version_status.grid(row=1, column=3, padx=5)

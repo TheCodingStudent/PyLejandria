@@ -128,3 +128,5 @@
 
     *   Realice una interfaz grafica para el uploader, parece que funciona de momento, tambien implemente un sistema con el nuevo ArgumentParser de
         tools, procedere a probar. Tambien vi 1:30h de Harry Potter, asi que no he estado todo el tiempo programando. (10:03pm)
+    *   Parece que no estaba todo perfecto, al final tambien converti el uploader en una clase para que en dado caso pueda ser importado, tal vez
+        funcione mejor como modulo, como sea esta listo para poder utilizarce como modulo. (11:20pm)

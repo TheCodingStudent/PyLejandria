@@ -8,6 +8,7 @@ to make easier to code easy programs. PyLejandria at this moment has:
 * Tools
 * Graph (developing)
 * Module
+* Upload
 
 from version 0.0.9 PyLejandria needs python >= 3.9
 
