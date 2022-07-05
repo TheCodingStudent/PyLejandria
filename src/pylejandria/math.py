@@ -5,7 +5,7 @@ projects related to math, physics, etc. Basically school in general.
 
 import math
 from numbers import Complex
-from pylejandria.tools import prettify, pretty_dict
+from pylejandria.tools import prettify
 from typing import Any, Optional, Union
 
 Number = int | float

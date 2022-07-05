@@ -7,9 +7,9 @@ It will write all the necesary files and folder for an easy pypi project. You
 must check each file to fill all the info.
 """
 
+import os
 from tkinter import Tk
 from tkinter.filedialog import askdirectory
-import os
 
 SETUP = f"""[metadata]
     name = module_name

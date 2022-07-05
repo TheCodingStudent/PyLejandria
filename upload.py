@@ -15,9 +15,9 @@ params:
             module, is useful because it allows to no duplicate this file.
 """
 
-import re
-import os
 import argparse
+import os
+import re
 
 with open('setup.cfg', 'r') as f:
     text = f.read()

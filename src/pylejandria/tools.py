@@ -3,10 +3,11 @@ the module tools is a collection of functions for variety of things, it
 contains functions for printing or simplify repetitive things.
 """
 
-from math import floor, ceil
-import os
-from typing import Any, Optional
 import img2pdf
+import math
+import os
+import sys
+from typing import Any, Optional
 from tkinter import Tk
 from tkinter.filedialog import askopenfilenames, asksaveasfilename
 
@@ -28,7 +29,7 @@ def center(text: str, space: int) -> str:
         space: quantity of white space to split.
     """
     padding = (space-len(text))/2
-    return f'{" "*floor(padding)}{text}{" "*ceil(padding)}'
+    return f'{" "*math.floor(padding)}{text}{" "*math.ceil(padding)}'
 
 
 def filetypes(
@@ -65,6 +66,13 @@ class PrettyDictError(Exception):
 class PdfError(Exception):
     """
     Custom Exception for image_to_pdf function.
+    """
+    pass
+
+
+class ArgumentParserError(Exception):
+    """
+    Custom Exception for Argument class.
     """
     pass
 
@@ -165,7 +173,7 @@ def image_to_pdf(
 ) -> str:
     """
     saves a pdf file with the given images at the given location and returns
-    the path, specificated or not. 
+    the path, specificated or not.
     Params:
         images: list of paths of the images.
         path: path where pdf will be saved.
@@ -211,5 +219,79 @@ def parse_seconds(seconds: Number, decimals: Optional[int]=0) -> str:
     return f'{0 if h < 10 else ""}{h}:{0 if m < 10 else ""}{m}:{s}'
 
 
+class ArgumentParser:
+    def __init__(self):
+        """
+        ArgumentParser parses the console arguments, is simplification of
+        sys.argv, instead of a list it returns a dictionary for easy access.
+        """
+        self.path = ''
+        self.expected_args = {}
+        self.args = {}
+
+    def add_argument(
+        self, name: str, type: Optional[object]=str,
+        required: Optional[bool]=False, default: Optional[str]=''
+    ) -> None:
+        """
+        Adds an argument to the parser.
+        Params:
+            name:   name of the expected argument.
+            type:   type of the argument to be parsed.
+            required:   if argument is required or not, if not then should be
+                        a default argument.
+            default:    default value for the argument, if required is true
+                        then default can be skipped.
+
+        """
+        self.expected_args[name] = [type, required, default]
+
+    def parse(self) -> None:
+        """
+        Parses the arguments given from the console, it loads a dictionary
+        with all arguments and values.
+        """
+        self.path = sys.argv[0]
+        keys, values = sys.argv[1::2], sys.argv[2::2]
+        for argument, (type_, required, default) in self.expected_args.items():
+            if required is True:
+                if argument not in keys:
+                    raise ArgumentParserError(f'{argument} not provided')
+                value_index = keys.index(argument)
+                argument_value = values[value_index]
+                self.args[argument] = self.eval(argument_value, type_)
+            elif argument in keys:
+                try:
+                    value_index = keys.index(argument)
+                    argument_value = values[value_index]
+                    self.args[argument] = self.eval(argument_value, type_)
+                except ValueError:
+                    self.args[argument] = default
+            else:
+                self.args[argument] = default
+
+    def eval(self, value: str, type_: object) -> None:
+        """
+        Simple function to eval the given arguments and convert them into their
+        respective type.
+        Params:
+            value: value of the argument to be evaluated.
+            type_: type of the given value.
+        """
+        if type_ is bool:
+            return value.lower().startswith('t')
+        return type_(value)
+    
+    def __getitem__(self, key) -> Any:
+        return self.args.get(key, None)
+
+    def __repr__(self) -> str:
+        return pretty_dict(self.args, _print=False)
+
+
 if __name__ == '__main__':
-    image_to_pdf(None, None, True, True)
+    parser = ArgumentParser()
+    parser.add_argument('--github', bool, False, True)
+    parser.add_argument('--version', float, False, '1.0.0')
+    parser.parse()
+    print(parser['--github'], parser['--version'])

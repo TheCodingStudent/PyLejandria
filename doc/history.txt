@@ -117,3 +117,11 @@
             match(...): ✅      match (...): ❌
                 case(...):          case (...): ...
                     ...
+    
+    *   Agregue un ArgumentParser a tools, esto con la idea de simplicar la forma de obtener argumentos, argparse tenia algunas cosas que no me
+        gustaban, ArgumentParser se accede como un diccionario y se configura igual que argparse, pero este si convierte a los tipos dados y tiene
+        multiples precauciones, tambien estoy pensando en utilizar regex para validar strings, podria ser util.
+    *   PEP8 indica que los modulos se deben importar en orden alfabetico, ya corregi eso.
+    *   Multiples cosas simplificadas en todos los modulos.
+    *   Tambien estoy pensando en una interfaz grafica para la herramienta uploader.
+    *   Procedo a guardar y todas esas cosas. (6:41pm)
