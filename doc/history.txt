@@ -150,3 +150,4 @@
     *   Corregido module.py.
     *   Corregido math.py. (12:44pm)
     *   Procedo a subir. (12:45pm)
+    *   Automagicamente queriendo evitar un error usando un try parece haber solucionado el problema de copy paste de TextArea. (5:19pm)

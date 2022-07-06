@@ -54,7 +54,10 @@ class CustomText(tk.Text):
         the given result.
         """
         cmd = (self._orig,) + args
-        result = self.tk.call(cmd)
+        try:
+            result = self.tk.call(cmd)
+        except Exception:
+            return None
         if any([
             args[0] in ("insert", "replace", "delete"),
             args[0:3] == ("mark", "set", "insert"),
