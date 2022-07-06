@@ -281,7 +281,7 @@ class ArgumentParser:
         if type_ is bool:
             return value.lower().startswith('t')
         return type_(value)
-    
+
     def __getitem__(self, key) -> Any:
         return self.args.get(key, None)
 

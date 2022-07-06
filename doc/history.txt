@@ -134,3 +134,19 @@
         dia de hoy. Tuve que arreglar algunos problemas con seleccionar alguna carpeta que no tenga un paquete, ya esta arreglado y varias mas
         optimizaciones. (11:41pm)
     *   Es todo por hoy. (11:48pm)
+
+-06/07/22:
+    *   (Armando) Hoy es el aniversario numero 20 de mis padres, asi que celebraremos creando una herramienta que corrija mi codigo, la idea es aparte
+        de tener un corrector PEP8 automatico, analizar que componentes serian utiles para gui.py, si surge algo interesante entonces creare el
+        modulo. (8:18am)
+    *   Añadida la clase Window. (8:35am)
+    *   Ahora hay un TextArea que permite mostrar el numero de linea. (9:18am)
+    *   Primera version de gui documentada y corregida. (9:24am)
+    *   TextArea esta siendo mejorada con mas funciones. (9:57am)
+    *   Al final el corrector PEP8 tiene funciones simples de momento, despues puedo agregarle mas reglas gramaticales, gui termino de ser documentado
+        y de momento no se me ocurre mas que agregarle, supongo que cuando tenga otro proyecto podre ver si necesito mas cosas. (12:27pm)
+    *   Corregido upload.py. (12:35pm)
+    *   Corregido tools.py. (12:36pm)
+    *   Corregido module.py.
+    *   Corregido math.py. (12:44pm)
+    *   Procedo a subir. (12:45pm)

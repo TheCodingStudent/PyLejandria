@@ -68,7 +68,8 @@ LICENSE = f"""MIT License
 def init(name: str) -> None:
     Tk().withdraw()
     src = askdirectory()
-    if not src: return
+    if not src:
+        return
     folders = [f'{src}/src', f'{src}/src/{name}', f'{src}/tests']
     files = [
         ('setup.cfg', SETUP.replace('module_name', name)),

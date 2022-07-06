@@ -52,7 +52,7 @@ class Uploader:
     def validate_version(self) -> None:
         """
         Checks if the current version is valid, it must follow the pattern:
-        x.x.x, if it doesnt then is deleted to prevent any error. 
+        x.x.x, if it doesnt then is deleted to prevent any error.
         """
         text = self.version_entry.get()
         if re.match(f'^{self.regex}$', text):
@@ -121,7 +121,6 @@ class Uploader:
             self.commit_entry.delete(0, tk.END)
         return True
 
-
     def update_git(self, event: tk.Event) -> None:
         """
         Updates all the widgets related to git configuration.
@@ -151,7 +150,9 @@ class Uploader:
         path_label = tk.Label(self.root, text='Folder')
         path_label.grid(row=0, column=0, padx=5, sticky='w')
         self.path_entry.grid(row=0, column=1, padx=5, sticky='w')
-        path_button = tk.Button(self.root, text='Change', command=self.change_path)
+        path_button = tk.Button(
+            self.root, text='Change', command=self.change_path
+        )
         path_button.grid(row=0, column=2, padx=5, sticky='w')
 
         version_label = tk.Label(self.root, text='Version')
@@ -184,11 +185,13 @@ class Uploader:
         self.pypi_combobox.current(0)
         self.pypi_combobox.grid(row=4, column=1, padx=5, sticky='w')
 
-        upload_button = tk.Button(self.root, text='Upload', command=self.get_values)
+        upload_button = tk.Button(
+            self.root, text='Upload', command=self.get_values
+        )
         upload_button.grid(row=5, column=1, padx=5, pady=10, sticky='ew')
 
         self.root.mainloop()
-    
+
     def quit(self) -> None:
         self.root.destroy()
         exit()

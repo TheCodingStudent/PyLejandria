@@ -331,7 +331,6 @@ class Matrix:
     def __sub__(self, other):
         return self + (-other)
 
-
 DEGREES = False
 
 
@@ -423,13 +422,17 @@ def atan2(y: Number, x: Number) -> Number:
 
 
 class Symbol:
-    def __init__(self, name: str, value: Optional[Number]=1, exponent: Optional[Number]=1) -> None:
+    def __init__(
+        self, name: str, value: Optional[Number]=1,
+        exponent: Optional[Number]=1
+    ) -> None:
         self.name = name
         self.value = value
         self.exponent = exponent
-    
+
     def __repr__(self):
-        if self.exponent == 0: return '1'
+        if self.exponent == 0:
+            return '1'
         result = ''
         if abs(self.value) != 1:
             result += str(self.value)
@@ -439,18 +442,22 @@ class Symbol:
         if self.exponent != 1:
             result += f'^{self.exponent}'
         return result
-    
+
     def __eq__(self, other):
         if isinstance(other, int | float):
-            if other == 0: return self.value == 0
+            if other == 0:
+                return self.value == 0
             raise SymbolError(f'invalid comparison {type(other)} and Symbol')
-    
+
     def __mul__(self, other):
         if isinstance(other, Number):
             return Symbol(self.name, self.value * other, self.exponent)
         elif isinstance(other, Symbol):
             if self.name == other.name:
-                return Symbol(self.name, self.value * other.value, self.exponent + other.exponent)
+                return Symbol(
+                    self.name, self.value * other.value,
+                    self.exponent + other.exponent
+                )
             elif self.name != other.name:
                 return Symbol(self.name + other.name, self.value * other.value)
         elif isinstance(other, Polynomial):
@@ -458,12 +465,14 @@ class Symbol:
                 monomial * self
                 for monomial in other.monomials
             ])
-        raise SymbolError(f'invalid operation or not implemented yet. {type(self)}, {type(other)}')
-    
+        raise SymbolError(
+            f'invalid operation. {type(self)}, {type(other)}'
+        )
+
     def __add__(self, other):
         if isinstance(other, Symbol):
             if self.name == other.name and self.exponent == other.exponent:
-                return Symbol(self.name, self.value + other.value, self.exponent)
+                return Symbol(self.name, self.value+other.value, self.exponent)
             elif self.name == other.name and self.exponent != other.exponent:
                 return Polynomial(self, other)
             elif self.name != other.name:
@@ -474,39 +483,43 @@ class Symbol:
             return Polynomial(self, other)
 
         raise SymbolError('invalid operation or implemented yet.')
-    
+
     def __neg__(self):
         return self * -1
-    
+
     def __sub__(self, other):
         return self + (-other)
-    
+
     def __rsub__(self, other):
         if isinstance(other, int | float):
             return Polynomial(other, -self)
-    
+
     def __pow__(self, other):
         if isinstance(other, (Number, Complex)):
             return Symbol(self.name, self.value**other, self.exponent*other)
-    
+
     def __rmul__(self, other):
         return self * other
-    
+
     def __radd__(self, other):
         return self + other
-    
+
     def __truediv__(self, other):
         if isinstance(other, Number):
             return self * (1/other)
         elif isinstance(other, Symbol):
             if self.name == other.name:
-                return Symbol(self.name, self.value/other.value, self.exponent-other.exponent)
+                return Symbol(
+                    self.name, self.value/other.value,
+                    self.exponent-other.exponent
+                )
+
 
 class Polynomial:
     def __init__(self, *monomials, exponent=1):
         self.monomials = self.reduce(monomials)
         self.exponent = exponent
-    
+
     def reduce(self, monomials):
         counts = {}
         for monomial in monomials:
@@ -523,14 +536,15 @@ class Polynomial:
     def __repr__(self):
         result = ' + '.join([str(monomial) for monomial in self.monomials])
         result = result.replace('+ -', '- ')
-        if self.exponent != 1: return f'({result})^{self.exponent}'
+        if self.exponent != 1:
+            return f'({result})^{self.exponent}'
         return result
-    
+
     def __neg__(self):
         return Polynomial(
             *[-monomial for monomial in self.monomials]
         )
-    
+
     def __mul__(self, other):
         if isinstance(other, int | float | Symbol):
             return Polynomial(*[
@@ -538,15 +552,15 @@ class Polynomial:
                 for monomial in self.monomials
             ])
         if isinstance(other, Polynomial):
-            monomials = [a * b for a in self.monomials for b in other.monomials]
+            monomials = [a*b for a in self.monomials for b in other.monomials]
             return Polynomial(*monomials)
-    
+
     def __rmul__(self, other):
         return self * other
-    
+
     def __sub__(self, other):
         return self + (-other)
-    
+
     def __pow__(self, other):
         if isinstance(other, int):
             result = 1
@@ -558,4 +572,4 @@ class Polynomial:
 
 if __name__ == '__main__':
     x, y = Symbol('x'), Symbol('y')
-    print( x * (x + y) )
+    print(x * (x + y))
