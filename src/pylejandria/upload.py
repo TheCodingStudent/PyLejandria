@@ -142,10 +142,12 @@ class Uploader:
         """
         if self.pypi_combobox.current():
             self.version_entry['state'] = 'disabled'
+            self.delete_combobox['state'] = 'disabled'
             self.commit_entry.delete(0, tk.END)
             self.commit_entry.insert(0, '')
         else:
             self.version_entry['state'] = 'normal'
+            self.delete_combobox['state'] = 'normal'
             self.commit_entry.delete(0, tk.END)
             self.commit_entry.insert(0, self.commit)
 
