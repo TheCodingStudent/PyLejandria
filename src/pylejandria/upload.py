@@ -69,6 +69,11 @@ class Uploader:
         Based on the PYPI and GITHUB variables, uploads to their respective
         sites using the same commands that are used in terminal.
         """
+        if self.delete is True:
+            path = os.path.join(self.path, 'dist')
+            for file in os.listdir(path):
+                os.remove(os.path.join(path, file))
+                
         if self.pypi is True:
             with open(os.path.join(self.path, 'setup.cfg'), 'w') as f:
                 f.write(self.text.replace(self.old_version, self.version))
@@ -98,6 +103,7 @@ class Uploader:
         self.version = self.version_entry.get()
         self.github = self.git_combobox.current() == 0
         self.pypi = self.pypi_combobox.current() == 0
+        self.delete = self.delete_combobox.current() == 0
         thread = threading.Thread(target=self.upload)
         thread.start()
 
@@ -185,10 +191,18 @@ class Uploader:
         self.pypi_combobox.current(0)
         self.pypi_combobox.grid(row=4, column=1, padx=5, sticky='w')
 
+        delete_label = tk.Label(self.root, text='Delete Previews Dist')
+        delete_label.grid(row=5, column=0, padx=5, sticky='w')
+        self.delete_combobox = ttk.Combobox(self.root, width=15)
+        self.delete_combobox['values'] = ['True', 'False']
+        self.delete_combobox['state'] = 'readonly'
+        self.delete_combobox.current(0)
+        self.delete_combobox.grid(row=5, column=1, padx=5, sticky='w')
+
         upload_button = tk.Button(
             self.root, text='Upload', command=self.get_values
         )
-        upload_button.grid(row=5, column=1, padx=5, pady=10, sticky='ew')
+        upload_button.grid(row=6, column=1, padx=5, pady=10, sticky='ew')
 
         self.root.mainloop()
 
