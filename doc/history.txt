@@ -274,3 +274,6 @@
         como debe. (7:37pm)
     *   Todo esta perfecto, el README ya quedo como yo queria. (7:58pm)
     *   Veamos si ahora funciona el __init__. (8:21pm)
+    *   Resulta que olvide que solo la carpeta src se sube. Asi que no puedo
+        acceder al historial, tal vez mañana pruebe algo de web scrapping para
+        bajarlo de GitHub, aun que necesitarias internet. (8:27pm)
