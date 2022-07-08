@@ -272,3 +272,4 @@
     *   En teoria el README se mostrara en PyPi. (7:30pm)
     *   El pyproject.toml estaba mal escrito, todo deberia volver a funcionar
         como debe. (7:37pm)
+    *   Todo esta perfecto, el README ya quedo como yo queria. (7:58pm)
