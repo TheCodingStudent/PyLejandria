@@ -1,3 +1,2 @@
 img2pdf
 wheel
-pygame
