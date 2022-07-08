@@ -266,3 +266,7 @@
         correcciones. (7:14pm)
     *   Parece ser que el uploader tiene un error cuando cancelas la subida a
         PyPi, lo corregire y subire. (7:17pm)
+    *   El README se ve mucho mejor que el primero, pero aun le faltan cosas,
+        ademas tengo que descubrir como hacer que tambien aparezca en PyPi.
+        (7:21pm)
+    *   En teoria el README se mostrara en PyPi. (7:30pm)
