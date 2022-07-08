@@ -9,7 +9,7 @@ must check each file to fill all the info.
 
 import os
 from tkinter import Tk
-from tkinter.filedialog import askdirectory
+from pylejandria.gui import ask
 
 SETUP = f"""[metadata]
     name = module_name
@@ -66,8 +66,7 @@ LICENSE = f"""MIT License
 
 
 def init(name: str) -> None:
-    Tk().withdraw()
-    src = askdirectory()
+    src = ask('directory')
     if not src:
         return
     folders = [f'{src}/src', f'{src}/src/{name}', f'{src}/tests']

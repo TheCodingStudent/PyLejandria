@@ -32,7 +32,7 @@
             git merge rama          (unir la rama a main para los cambios)
             git branch -D rama      (eliminar la rama)
 
-            --- ir a github ---
+            --- ir a GitHub ---
             *   crear un "pull request"
             *   esperar que @TheCodingStudent lo agregue (estoy buscando como
                 hacer que cualquiera lo agregue)
@@ -54,11 +54,11 @@
         ahora tiene algunos parametros: (9:58am)
             --  version x.x.x esto permite poner una version especifica, por
                 default solo incrementa el ultimo numero
-            --  github (f, false, False) esto hace que no se suba a GitHub,
+            --  GitHub (f, false, False) esto hace que no se suba a GitHub,
                 puede ser util 🤷‍♂️
             --  commit "mensaje" esto cambia el commit default "version x.x.x",
                 para esas ocasiones donde hay que corregir pequeños errores
-            --  pypi (f, false, False) lo mismo que --github, yo que se, a este
+            --  PyPi (f, false, False) lo mismo que --GitHub, yo que se, a este
                 punto estoy agregando cosas por si acaso 😂
     *   Todo funciona como debe hasta el momento de introducir el usuario y
         contraseña en Twine, podria hacerle algo con keyboard pero de momento
@@ -166,7 +166,7 @@
         que todo parece indicar que Javier y Demian no ayudaran tan
         activamente, de igual manera seguire trabajando esporadicamente en el
         proyecto. La idea de hoy es agregar una funcion que facilite crear
-        modulos para pypi, creando la estructura necesaria, algo asi como el
+        modulos para PyPi, creando la estructura necesaria, algo asi como el
         GIT init. (9:15am)
     *   Parece que funciona perfectamente, procedo a actualizar PyLejandria.
         (10:04am)
@@ -175,7 +175,7 @@
         default. (10:22am)
     *   Tuve que agregar varias medidas de seguridad al uploader, tambien
         actualice el README, ahora el uploader esta listo para recibir un
-        folder y subirlo a pypi. Probando el PEP8 me di cuenta de que la
+        folder y subirlo a PyPi. Probando el PEP8 me di cuenta de que la
         estructura correcta para el match es:
             match(...): ✅      match (...): ❌
                 case(...):          case (...): ...
@@ -248,5 +248,21 @@
         programa mas complejo en python.
     *   Me voy al gimnasio. (2:44pm) [me duele la espalda y me siento cansado]
     *   Mi padre se quedo hablando con interceramic, asi que le agregue al
-        uploader el hecho de que al no subir a pypi, el combobox de borrar
+        uploader el hecho de que al no subir a PyPi, el combobox de borrar
         versiones anteriores se desactiva. (2:50pm)
+    *   Hora de embellecer el proyecto. (5:45pm)
+    *   Graph.py de momento no lo tengo claro, hasta que me de una inspiracion
+        lo devolvere a la vida, en el transcurso tal vez haga herramientas que
+        me ayuden en su desarrollo. (5:48pm)
+    *   Actualizadas las dependencias. (5:52pm)
+    *   Me estoy quedando dormido, ya quite pygame de los requerimentos.
+        (6:16pm)
+    *   Module.py actualizado con funciones de PyLejandria. (6:32pm)
+    *   Ahora los modulos tendran una funcion example, con la finalidad de que
+        sea sencillo empezar a usarlo, puede ser tambien una interfaz grafica
+        con todos los atributos y ayudas, aun no lo se. (6:47pm)
+    *   Voy a probar que pasa si pongo cosas en el __init__. (6:53pm)
+    *   Termine el README, lo subire para ver que tal y hare posteriores
+        correcciones. (7:14pm)
+    *   Parece ser que el uploader tiene un error cuando cancelas la subida a
+        PyPi, lo corregire y subire. (7:17pm)
