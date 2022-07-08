@@ -1,5 +1,5 @@
 """
-set of everyday functions, mostly for debugging, consists of variables,
+Set of everyday functions, mostly for debugging, consists of variables,
 functions and classes that make the interaction of the program with the
 terminal simpler, but without needing a user interface.
 """
@@ -8,17 +8,10 @@ import img2pdf
 import math
 import os
 import sys
-from typing import Any, Optional
-from tkinter import Tk
-from tkinter.filedialog import askopenfilenames, asksaveasfilename
+from typing import Any
+from pylejandria.gui import ask
 
 Number = float | int
-FILETYPES = {
-    'PDF': '*.pdf',
-    'JPEG': '*jpg;*.jpeg;*.jpe;*.jfif',
-    'PNG': '*png',
-    'TIFF': '*.tiff;*.tif'
-}
 
 
 def center(text: str, space: int) -> str:
@@ -33,58 +26,13 @@ def center(text: str, space: int) -> str:
     return f'{" "*math.floor(padding)}{text}{" "*math.ceil(padding)}'
 
 
-def filetypes(
-    *types: list[str],
-    all_files: Optional[bool]=True
-) -> list[tuple[str, str]]:
-    """
-    returns a list with the corresponding file types, is useful for tkinter
-    filedialog.
-    Params:
-        types: all the types to be returned.
-        all_files: appends the all files extension *.*.
-    """
-    result = [(type_, FILETYPES.get(type_)) for type_ in types]
-    if all_files is True:
-        result.append(('All Files', '*.*'))
-    return result
-
-
-class PrettifyError(Exception):
-    """
-    Custom Exception for Prettify function.
-    """
-    pass
-
-
-class PrettyDictError(Exception):
-    """
-    Custom Exception for Pretty_dict function.
-    """
-    pass
-
-
-class PdfError(Exception):
-    """
-    Custom Exception for image_to_pdf function.
-    """
-    pass
-
-
-class ArgumentParserError(Exception):
-    """
-    Custom Exception for Argument class.
-    """
-    pass
-
-
 def prettify(
         values: list[list[Any]],
-        separator: Optional[str]='|',
-        padding: Optional[int]=0,
-        headers: Optional[bool]=False,
-        orientation: Optional[str]='center',
-        _print: Optional[bool]=True
+        separator: str | None='|',
+        padding: int | None=0,
+        headers: bool | None=False,
+        orientation: str | None='center',
+        _print: bool | None=True
 ) -> str:
     """
     prettify receives as main argument a 2D matrix and returns a string
@@ -121,7 +69,7 @@ def prettify(
             for col, length in lengths
         ]
     else:
-        raise PrettifyError(
+        raise NotImplementedError(
             "invalid orientation. Expected right, left or center."
         )
     row_values = [[col[i] for col in padded_values] for i in range(total_rows)]
@@ -134,11 +82,56 @@ def prettify(
     return '\n'.join(joined_rows)
 
 
+def pretty_list(
+    values: list | tuple,
+    indent: int | None=0,
+    tab: str | None=' '*4,
+    start_tab: bool | None=True,
+    _print: bool | None=False
+
+) -> str:
+    """
+    pretty_list is a function to print list or tuples with indentation, it may
+    be helpful for print debugging or console programs.
+
+    Params:
+        values:     values in list or tuple with the info we want to display.
+        indent:     is a parameter used for the function to print nested
+                    values.
+        tab:        is a string to separate levels of indentation, it can be
+                    any string.
+        start_tab   the start tab can be omitted if necessary, for example is
+                    not needed in pretty_dict.
+        _print:     prints the result, but also returns it. Helpful to avoid
+                    print function.
+    """
+    if not isinstance(values, list | tuple):
+        raise NotImplementedError('Argument must be iterable.')
+    if not values:
+        return '[]'
+    result = tab*indent*start_tab + '[\n'
+    for value in values:
+        result += tab*indent
+        if isinstance(value, dict):
+            result += tab
+            result += pretty_dict(
+                value, indent=indent+1, _print=False, start_tab=False
+            )
+        elif isinstance(value, list | tuple):
+            result += pretty_list(value, indent=indent+1, _print=False)
+        else:
+            result += f'{tab}{value}\n'
+    if _print is True:
+        print(result + tab*indent + ']\n')
+    return result + tab*indent + ']\n'
+
+
 def pretty_dict(
         dictionary: dict,
-        indent: Optional[int]=0,
-        tab: Optional[str]=' '*4,
-        _print: Optional[bool]=True
+        indent: int | None=0,
+        tab: str | None=' '*4,
+        start_tab: bool | None=True,
+        _print: bool | None=True
 ) -> str:
     """
     pretty_dict is a function to print dictionaries with indentation, it may be
@@ -146,31 +139,38 @@ def pretty_dict(
 
     Params:
         dictionary: a dict with the info we want to display.
-        indent: is a parameter used for the function to print nested dicts.
-        tab: is a string to separate levels of indentation, it can be any
-             string.
+        indent:     is a parameter used for the function to print nested
+                    values.
+        tab:        is a string to separate levels of indentation, it can be
+                    any string.
+        _print:     prints the result, but also returns it. Helpful to avoid
+                    print function.
     """
     if not isinstance(dictionary, dict):
-        raise PrettyDictError("Argument must be dict type.")
+        raise NotImplementedError("Argument must be dict type.")
     if not dictionary.items():
         return '{}\n'
-    result = tab*indent + '{\n'
+    result = tab*indent*start_tab + '{\n'
     for key, value in dictionary.items():
         result += tab*indent + f'{tab}{key}: '
-        if not isinstance(value, dict):
-            result += f'{value}\n'
+        if isinstance(value, dict):
+            result += pretty_dict(value, indent=indent+1, _print=False)
+        elif isinstance(value, list | tuple):
+            result += pretty_list(
+                value, indent=indent+1, _print=False, start_tab=False
+            )
         else:
-            result += pretty_dict(value, indent=indent+1)
-    if _print:
+            result += f'{value}\n'
+    if _print is True:
         print(result + tab*indent + '}\n')
     return result + tab*indent + '}\n'
 
 
 def image_to_pdf(
     images: list[str], path: str,
-    get_path: Optional[bool]=False,
-    get_images: Optional[bool]=False,
-    remove: Optional[bool]=False
+    get_path: bool | None=False,
+    get_images: bool | None=False,
+    remove: bool | None=False
 ) -> str:
     """
     saves a pdf file with the given images at the given location and returns
@@ -183,20 +183,10 @@ def image_to_pdf(
         remove: remove or not the given files.
     """
     if get_path is True:
-        Tk().withdraw()
-        path = asksaveasfilename(
-            filetypes=filetypes('PDF'),
-            defaultextension='*.pdf'
-        )
-        if not path:
-            return
+        path = ask('saveasfilename', 'PDF', defaultextension='*.pdf')
     if get_images is True:
-        Tk().withdraw()
-        images = askopenfilenames(
-            filetypes=filetypes('PNG', 'JPEG')
-        )
-        if not images:
-            return
+        images = ask('openfilenames', 'PNG', 'JPEG')
+    if not (path and images): return
     with open(path, 'wb') as f:
         f.write(img2pdf.convert(images))
     if remove is True:
@@ -205,7 +195,7 @@ def image_to_pdf(
     return path
 
 
-def parse_seconds(seconds: Number, decimals: Optional[int]=0) -> str:
+def parse_seconds(seconds: Number, decimals: int | None=0) -> str:
     """
     Simple function to parse seconds to standard form hh:mm:ss.
     Params:
@@ -231,8 +221,8 @@ class ArgumentParser:
         self.args = {}
 
     def add_argument(
-        self, name: str, type: Optional[object]=str,
-        required: Optional[bool]=False, default: Optional[str]=''
+        self, name: str, type: object | None=str,
+        required: bool | None=False, default: str | None=''
     ) -> None:
         """
         Adds an argument to the parser.
@@ -257,7 +247,7 @@ class ArgumentParser:
         for argument, (type_, required, default) in self.expected_args.items():
             if required is True:
                 if argument not in keys:
-                    raise ArgumentParserError(f'{argument} not provided')
+                    raise NotImplementedError(f'{argument} not provided')
                 value_index = keys.index(argument)
                 argument_value = values[value_index]
                 self.args[argument] = self.eval(argument_value, type_)

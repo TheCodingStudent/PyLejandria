@@ -5,12 +5,11 @@ that it is easy and fast access.
 """
 
 import math
-from numbers import Complex
-from pylejandria.tools import prettify
-from typing import Any, Optional, Union
+from pylejandria import tools
+from typing import Any
 
 Number = int | float
-Coordinate = Union[int, int]
+Coordinate = tuple[int, int]
 Array = list[int | float]
 
 
@@ -142,7 +141,7 @@ class Matrix:
     def __init__(
         self,
         matrix: list[Array],
-        dim: Optional[Coordinate]=()
+        dim: Coordinate | None=()
     ) -> None:
         """
         Matrix is a representation of algebra matrix, is takes a list of lists
@@ -321,7 +320,7 @@ class Matrix:
         raise MatrixError("Invalid Matrix multiplication.")
 
     def __repr__(self):
-        return prettify(self.matrix, separator=' ')
+        return tools.prettify(self.matrix, separator=' ')
 
     def __rmul__(self, other):
         return self * other
@@ -424,8 +423,8 @@ def atan2(y: Number, x: Number) -> Number:
 
 class Symbol:
     def __init__(
-        self, name: str, value: Optional[Number]=1,
-        exponent: Optional[Number]=1
+        self, name: str, value: Number | None=1,
+        exponent: Number | None=1
     ) -> None:
         self.name = name
         self.value = value
@@ -496,7 +495,7 @@ class Symbol:
             return Polynomial(other, -self)
 
     def __pow__(self, other):
-        if isinstance(other, (Number, Complex)):
+        if isinstance(other, (Number, complex)):
             return Symbol(self.name, self.value**other, self.exponent*other)
 
     def __rmul__(self, other):

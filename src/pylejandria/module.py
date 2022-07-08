@@ -10,7 +10,6 @@ must check each file to fill all the info.
 """
 
 import os
-from tkinter import Tk
 from pylejandria.gui import ask
 
 SETUP = f"""[metadata]

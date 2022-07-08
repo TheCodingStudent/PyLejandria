@@ -6,14 +6,22 @@ flexibility or having new widgets.
 
 import io
 import tkinter as tk
+from tkinter import ttk
 from tkinter import filedialog
-from typing import Any, Optional
+from typing import Any
+
+FILETYPES = {
+    'PDF': '*.pdf',
+    'JPEG': '*jpg;*.jpeg;*.jpe;*.jfif',
+    'PNG': '*png',
+    'TIFF': '*.tiff;*.tif'
+}
 
 
 class Window(tk.Tk):
     def __init__(
-        self, name: Optional[str]=None, size: Optional[str]=None,
-        resizable: Optional[tuple[bool, bool]]=None
+        self, name: str | None=None, size: str | None=None,
+        resizable: tuple[bool, bool] | None=None
     ):
         """
         Tkinter Tk wrapper, simplifies give name and size to the window, also
@@ -126,7 +134,7 @@ class TextArea(tk.Frame):
         self.linenumbers.redraw()
 
     def clear(
-        self, start: Optional[str]='1.0', end: Optional[str]='end'
+        self, start: str | None='1.0', end: str | None='end'
     ) -> None:
         """
         Clears the text.
@@ -137,8 +145,8 @@ class TextArea(tk.Frame):
         self.text.delete(start, end)
 
     def write(
-        self, text: str, file: Optional[io.TextIOWrapper]=None,
-        clear: Optional[bool]=False
+        self, text: str, file: io.TextIOWrapper | None=None,
+        clear: bool | None=False
     ) -> None:
         """
         Writes the given text.
@@ -154,12 +162,59 @@ class TextArea(tk.Frame):
         self.text.insert('end', text)
 
     def read(
-        self, start: Optional[str]='1.0', end: Optional[str]='end'
+        self, start: str | None='1.0', end: str | None='end'
     ) -> str:
         return self.text.get(start, end)
 
 
-def ask(property: str, **kwargs) -> str:
+class Hierarchy(tk.Frame):
+    def __init__(self, master, tree, title='Tree', **kwargs):
+        """
+        Tkinter treeview wrapper for easier creation of hierarchies.
+        """
+        super().__init__(master, **kwargs)
+
+        self.treeview = ttk.Treeview(self)
+        self.treeview.pack(expand=True, fill='both')
+        self.treeview.insert('', '-1', 'main', text=title)
+        self.index = 0
+        self.build(tree)
+
+    def build(self, tree, branch='main'):
+        for title, items in tree.items():
+            row_name = f'item{self.index}'
+            self.treeview.insert('', str(self.index), row_name, text=title)
+            if isinstance(items, list | tuple):
+                for item in items:
+                    if isinstance(item, dict):
+                        self.index += 1
+                        self.build(item, row_name)
+                    else:
+                        self.treeview.insert(row_name, 'end', item, text=item)
+            else:
+                self.treeview.insert(row_name, 'end', items, text=items)
+            self.treeview.move(row_name, branch, 'end')
+            self.index += 1
+
+
+def filetypes(
+    *types: list[str],
+    all_files: bool | None=True
+) -> list[tuple[str, str]]:
+    """
+    returns a list with the corresponding file types, is useful for tkinter
+    filedialog.
+    Params:
+        types: all the types to be returned.
+        all_files: appends the all files extension *.*.
+    """
+    result = [(type_, FILETYPES.get(type_)) for type_ in types]
+    if all_files is True:
+        result.append(('All Files', '*.*'))
+    return result
+
+
+def ask(property: str, *types, **kwargs) -> str:
     """
     Function to wrap all tkinter.filedialog functions, also creates its
     respective window.
@@ -168,4 +223,5 @@ def ask(property: str, **kwargs) -> str:
     """
     func = getattr(filedialog, f'ask{property}')
     tk.Tk().withdraw()
+    kwargs['filetypes'] = filetypes(*types)
     return func(**kwargs)

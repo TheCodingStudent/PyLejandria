@@ -288,3 +288,18 @@
         mostrar la informacion que este tenga. (8:17am)
     *   El funcionamiento basico del ayudante esta listo, ahora tengo que
         mejorar la descripcion de los modulos. (9:46am)
+    *   Cambios de Type Hint. (2:47pm)
+    *   gui ahora tiene un widget Hierarchy, permite crear arboles de jerarquia
+        para visualizar cosas anidadas, sera de utilidad para el help. (4:37pm)
+    *   Javier sugirio imprimir el arbol de jerarquia utilizando pretty_dict,
+        resulto que solo funcionaba con diccionarios anidados, asi que ahora
+        tambien existe el pretty_list, hace lo mismo pero con iterables, y en
+        conjunto ya pueden representar cualquier diccionario. Tambien algunas
+        correcciones al Hierarchy fueron hechas.(5:40pm)
+    *   No me gustaba tener una excepcion especifica para cada cosa, asi que
+        ahora simplemente usare NotImplementedError, sera igualmente
+        identificable. (5:44pm)
+    *   FILETYPES y su respectiva funcion estaban en tools, ya fueron cambiadas
+        a gui y tambien se mejoro el codigo de la funcion image_to_pdf.
+        (5:52pm)
+    *   Por alguna razon habia una clase Complex en math. (5:53pm)

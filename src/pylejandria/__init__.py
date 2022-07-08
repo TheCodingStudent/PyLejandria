@@ -3,7 +3,6 @@
 #################################
 
 from pylejandria import gui
-from pylejandria import help
 from pylejandria import math
 from pylejandria import module
 from pylejandria import tools

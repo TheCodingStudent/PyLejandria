@@ -71,13 +71,13 @@ class Uploader:
         """
         Based on the PYPI and GITHUB variables, uploads to their respective
         sites using the same commands that are used in terminal.
-        """     
+        """
         if self.pypi is True:
             if self.delete is True:
                 path = os.path.join(self.path, 'dist')
                 for file in os.listdir(path):
                     os.remove(os.path.join(path, file))
-                    
+
             with open(os.path.join(self.path, 'setup.cfg'), 'w') as f:
                 f.write(self.text.replace(self.old_version, self.version))
 
@@ -214,7 +214,6 @@ class Uploader:
     def quit(self) -> None:
         self.root.destroy()
         exit()
-
 
 if __name__ == '__main__':
     app = Uploader()
