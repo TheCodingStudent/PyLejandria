@@ -273,3 +273,4 @@
     *   El pyproject.toml estaba mal escrito, todo deberia volver a funcionar
         como debe. (7:37pm)
     *   Todo esta perfecto, el README ya quedo como yo queria. (7:58pm)
+    *   Veamos si ahora funciona el __init__. (8:21pm)

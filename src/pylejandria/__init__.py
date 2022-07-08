@@ -3,8 +3,16 @@
 #################################
 
 import os
+import pathlib
 
-def history() -> None:
-    path, file = os.getcwd(), 'doc/history.txt'
-    with open(os.path.join(path, file), 'r', encoding='UTF-8') as f:
-        print(f.read())
+PATH = str(pathlib.Path(__file__).parent.resolve())
+ROOT = '\\'.join(PATH.split('\\')[:-2])
+with open(os.path.join(ROOT, 'doc/history.txt'), 'r', encoding='UTF-8') as f:
+    HISTORY = f.read()
+
+MAFER = """
+It´s hard to forget
+someone who gave you
+so much to remember.
+I´ll always love you, Mafer.
+"""
