@@ -277,3 +277,14 @@
     *   Resulta que olvide que solo la carpeta src se sube. Asi que no puedo
         acceder al historial, tal vez mañana pruebe algo de web scrapping para
         bajarlo de GitHub, aun que necesitarias internet. (8:27pm)
+    *   Ya esta arreglado el __init__, ya pensare que cosas divertidas le
+        agrego, por hoy es todo por que me estoy quedando dormido. (8:37pm)
+
+-08/07/22:
+    *   (Armando) Hoy tambien hay que trabajar en el baño, mañana saldre con
+        Javier y el domingo no se que hagamos, asi que tengo hoy entre ratitos
+        y despues del gym para programar. Hoy la idea es hacer el modulo de
+        ayuda, debe de tomar el nombre de alguno de los modulos instalados y
+        mostrar la informacion que este tenga. (8:17am)
+    *   El funcionamiento basico del ayudante esta listo, ahora tengo que
+        mejorar la descripcion de los modulos. (9:46am)

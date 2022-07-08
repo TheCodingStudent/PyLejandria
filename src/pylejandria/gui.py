@@ -1,6 +1,7 @@
 """
-Module with multiple tkinter widgets wrapper for easier implementation, it
-contains templates and new widgets based in tkinter.
+Compilation of widgets that take as a basis the widgets of tkinter, can add
+functions to make simple interfaces in a very simple way without losing
+flexibility or having new widgets.
 """
 
 import io

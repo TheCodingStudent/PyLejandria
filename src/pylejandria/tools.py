@@ -1,6 +1,7 @@
 """
-the module tools is a collection of functions for variety of things, it
-contains functions for printing or simplify repetitive things.
+set of everyday functions, mostly for debugging, consists of variables,
+functions and classes that make the interaction of the program with the
+terminal simpler, but without needing a user interface.
 """
 
 import img2pdf

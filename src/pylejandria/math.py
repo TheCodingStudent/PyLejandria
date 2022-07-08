@@ -1,6 +1,7 @@
 """
-This module is used for functions and classes that may be useful in another
-projects related to math, physics, etc. Basically school in general.
+Set of functions and classes that facilitate mathematics in python, we are
+aware that there are specialized libraries, but the idea of this module is
+that it is easy and fast access.
 """
 
 import math

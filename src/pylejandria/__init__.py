@@ -2,7 +2,7 @@
 #   MADE BY: ARMANDO CHAPARRO   #
 #################################
 
-import os
+import gui, math, module, tools, upload
 
 MAFER = """
 It´s hard to forget

@@ -1,5 +1,7 @@
 """
-Simple functions to init a new pypi project more easily, just open python
+A simple module consisting of an init function to easily generate a new
+python package. It could in the future be part of a complete tool to maintain
+packages.
 terminal and use:
     >>> from pylejandria.module import init
     >>> init()

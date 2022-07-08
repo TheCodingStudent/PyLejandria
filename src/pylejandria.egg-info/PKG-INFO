@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pylejandria
-Version: 0.1.0
+Version: 0.1.1
 Summary: Python useful functions
 Home-page: https://github.com/TheCodingStudent/pylejandria
 Author: Armando Chaparro y Javier Vazquez
@@ -34,10 +34,10 @@ Javier and I were bored of sending us scripts and functions by whatsapp, so we d
     * A simple module consisting of an init function to easily generate a new python package. It could in the future be part of a complete tool to maintain packages.
 
 * **TOOLS**
-    * set of everyday functions, mostly for debugging, consists of variables, functions and classes that make the interaction of the program with the terminal simpler, but without needing a user interface.
+    * Set of everyday functions, mostly for debugging, consists of variables, functions and classes that make the interaction of the program with the terminal simpler, but without needing a user interface.
 
 * **UPLOAD**
-    * Module with graphical interface for the management of python packages, has tools forEncilla upload the package to GitHub and PyPi, allows you to decide whether to upload to a GitHub repository automatically detecting if the package has one, in addition to not uploading to PyPi in case we only want to update the repository.
+    * Module with graphical interface for the management of python packages, has tools for easierly upload the package to GitHub and PyPi, allows you to decide whether to upload to a GitHub repository automatically detecting if the package has one, in addition to not uploading to PyPi in case we only want to update the repository.
 
 # Download
 `pip install pylejandria` or copy from [PyPi](https://pypi.org/project/pylejandria/).

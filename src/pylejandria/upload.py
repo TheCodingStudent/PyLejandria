@@ -1,6 +1,9 @@
 """
-This is a simple tool to upload the Pylejandria package to Pypi and GitHub with
-a UI. Version 1.0.5 By Armando Chaparro.
+Module with graphical interface for the management of python packages, has
+tools forEncilla upload the package to GitHub and PyPi, allows you to decide
+whether to upload to a GitHub repository automatically detecting if the package
+has one, in addition to not uploading to PyPi in case we only want to update
+the repository. Version 1.0.6 By Armando Chaparro.
 """
 
 import os
