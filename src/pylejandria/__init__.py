@@ -2,7 +2,12 @@
 #   MADE BY: ARMANDO CHAPARRO   #
 #################################
 
-import gui, math, module, tools, upload
+from pylejandria import gui
+from pylejandria import help
+from pylejandria import math
+from pylejandria import module
+from pylejandria import tools
+from pylejandria import upload
 
 MAFER = """
 It´s hard to forget
