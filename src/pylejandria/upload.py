@@ -112,9 +112,10 @@ class Uploader(gui.Window):
         """
         Updates the path to upload from.
         """
-        self.path = askdirectory()
+        self.path = gui.ask('directory')
         if not self.path:
             return False
+        
         self.path_entry.delete(0, tk.END)
         self.path_entry.insert(0, self.path)
         git_repo = os.path.exists(os.path.join(self.path, '.git'))
@@ -208,9 +209,6 @@ class Uploader(gui.Window):
 
         self.mainloop()
 
-    def quit(self) -> None:
-        self.destroy()
-        exit()
 
 if __name__ == '__main__':
     app = Uploader()
