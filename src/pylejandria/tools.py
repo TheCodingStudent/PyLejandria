@@ -8,7 +8,7 @@ import img2pdf
 import math
 import os
 import sys
-from typing import Any
+from typing import Any, Iterable
 from pylejandria.gui import ask
 
 Number = float | int
@@ -186,7 +186,8 @@ def image_to_pdf(
         path = ask('saveasfilename', 'PDF', defaultextension='*.pdf')
     if get_images is True:
         images = ask('openfilenames', 'PNG', 'JPEG')
-    if not (path and images): return
+    if not (path and images):
+        return
     with open(path, 'wb') as f:
         f.write(img2pdf.convert(images))
     if remove is True:
@@ -280,9 +281,34 @@ class ArgumentParser:
         return pretty_dict(self.args, _print=False)
 
 
+def all_are(values: Iterable, comparison: Any) -> bool:
+    """
+    Returns if all items are equal to the comparison.
+    Params:
+        values: iterable to check.
+        comparison: value to compare.
+    """
+    return all(map(lambda x: x == comparison, values))
+
+
+def dict_get(dictionary: dict, key: Any, default: Any=None) -> Any:
+    """
+    Searches the key in the dict, but in case some key is a list or tuple it
+    returns the value if key is in that list or tuple.
+    Params:
+        dictionary: dictonary to search from.
+        key: key of the value to search.
+        default: value to return if key not founded.
+    """
+    if value := dictionary.get(key, False):
+        return value
+    for keys, value in dictionary.items():
+        if isinstance(keys, list | tuple):
+            if key in keys:
+                return value
+    return default
+
+
 if __name__ == '__main__':
-    parser = ArgumentParser()
-    parser.add_argument('--github', bool, False, True)
-    parser.add_argument('--version', float, False, '1.0.0')
-    parser.parse()
-    print(parser['--github'], parser['--version'])
+    a = [1, 1, 1, 1, 1]
+    print(all_are(a, 1))

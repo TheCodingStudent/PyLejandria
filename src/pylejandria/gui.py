@@ -190,7 +190,10 @@ class Hierarchy(tk.Frame):
                         self.index += 1
                         self.build(item, row_name)
                     else:
-                        self.treeview.insert(row_name, 'end', item, text=item)
+                        try:
+                            self.treeview.insert(row_name, 'end', item, text=item)
+                        except tk.TclError:
+                            print(row_name, item, type(item))
             else:
                 self.treeview.insert(row_name, 'end', items, text=items)
             self.treeview.move(row_name, branch, 'end')

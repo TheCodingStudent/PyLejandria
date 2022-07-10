@@ -303,3 +303,8 @@
         a gui y tambien se mejoro el codigo de la funcion image_to_pdf.
         (5:52pm)
     *   Por alguna razon habia una clase Complex en math. (5:53pm)
+
+-09/07/22:
+    *   (Armando) Hoy fui a desayunar con Loretto, Susana, Aron y Javier, debo
+        checar el organizador de Javier a ver que rollo, antes de eso agregare
+        unas funciones que surgieron mientras platicabamos. (8:17pm)
