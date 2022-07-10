@@ -308,3 +308,12 @@
     *   (Armando) Hoy fui a desayunar con Loretto, Susana, Aron y Javier, debo
         checar el organizador de Javier a ver que rollo, antes de eso agregare
         unas funciones que surgieron mientras platicabamos. (8:17pm)
+    *   Sigo trabajando en lo de Javier, y resulta que gui tiene un error en la
+        funcion ask, no toma en consideracion si hay tipos o no. (9:58pm)
+    *   Lo de Javier fue castroso de hacer debugging, era probar y rezar por
+        que algo no fallara, pero ya esta al parecer, sorteo la carpeta de la
+        universidad perfectamente y renombro varios archivos con mismo nombre.
+        Resulta que pretty_list tenia el argumento _print en False por alguna
+        razon, ya esta en True. (11:15pm)
+    *   Mañana queda pendiente hacerle UI al organizar, ahora que lo hice yo es
+        mas sencillo.

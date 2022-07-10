@@ -226,5 +226,6 @@ def ask(property: str, *types, **kwargs) -> str:
     """
     func = getattr(filedialog, f'ask{property}')
     tk.Tk().withdraw()
-    kwargs['filetypes'] = filetypes(*types)
+    if types:
+        kwargs['filetypes'] = filetypes(*types)
     return func(**kwargs)

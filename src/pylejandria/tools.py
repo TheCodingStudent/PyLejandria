@@ -87,7 +87,7 @@ def pretty_list(
     indent: int | None=0,
     tab: str | None=' '*4,
     start_tab: bool | None=True,
-    _print: bool | None=False
+    _print: bool | None=True
 
 ) -> str:
     """
