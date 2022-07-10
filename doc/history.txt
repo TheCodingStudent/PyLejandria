@@ -317,3 +317,14 @@
         razon, ya esta en True. (11:15pm)
     *   Mañana queda pendiente hacerle UI al organizar, ahora que lo hice yo es
         mas sencillo.
+
+-10/07/22:
+    *   (Armando) Termine la UI de el organizador de Javier, funciona mejor de
+        lo que esperaba y quedo estetico, si me dan ganas de programar podria
+        crear una clase Style para gui y asi customizar de manera sencilla toda
+        la interfaz, tambien agregue todas las extensiones que Javier tenia en
+        el organizador, de esa manera ahora ask tiene muchas mas extensiones.
+        Vere si sigo progrmando o no, al cabo es domingo. (2:16pm)
+    *   El helper aun sigue pendiente flojo. (2:38pm)
+    *   Vere Stranger Things como se debe, y aparte documente bien la clase
+        Hierarchy. (3:26pm)

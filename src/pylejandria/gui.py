@@ -11,10 +11,30 @@ from tkinter import filedialog
 from typing import Any
 
 FILETYPES = {
-    'PDF': '*.pdf',
-    'JPEG': '*jpg;*.jpeg;*.jpe;*.jfif',
-    'PNG': '*png',
-    'TIFF': '*.tiff;*.tif'
+    'PDF': ('.pdf',),
+    'JPEG': ('.jpg', '.jpeg', '.jpe', '.jfif'),
+    'PNG': ('.png',),
+    'TIFF': ('.tiff', '.tif'),
+    'ICO': ('.ico',),
+    'WORD': ('.docx', '.docm', '.dotx', '.dotm'),
+    'EXCEL': ('.csv', '.xlsx', '.xlsm', '.xltx', '.xltm', '.xlsb', '.xlam'),
+    'POWERPOINT': (
+        '.pptx', '.pptm', '.potx', '.potm', '.ppam', '.ppsx', '.ppsm',
+        '.sldx', '.sldm', '.thmx'
+    ),
+    'VIDEO': (
+        '.asf', '.lsf', '.asx', '.bik', '.smk', '.div', '.divx', '.dvd',
+        '.wob', '.ivf', '.m1v', '.mp2v', '.mp4', '.mpa', '.mpe', '.mpeg',
+        '.mpg', '.mpv2', '.mov', '.qt', '.qtl', '.rpm', '.wm', '.wmv', '.avi'
+    ),
+    'AUDIO': (
+        '.mp3', '.mid', '.midi', '.wav', '.wma', '.cda', '.ogg', '.ogm',
+        '.aac', '.adt', '.adts', '.ac3', '.flac', '.mp4', '.aym'
+    ),
+    'IMAGE': (
+        '.bmp', '.gif', '.jpeg', '.jpg', '.png', '.psd', '.ai', '.cdr',
+        '.svg', '.raw', '.nef'
+    )
 }
 
 
@@ -146,7 +166,7 @@ class TextArea(tk.Frame):
 
     def write(
         self, text: str, file: io.TextIOWrapper | None=None,
-        clear: bool | None=False
+        clear: bool | None=False, insert: str | None='end'
     ) -> None:
         """
         Writes the given text.
@@ -159,7 +179,7 @@ class TextArea(tk.Frame):
             self.clear()
         if file is not None:
             text = file.read()
-        self.text.insert('end', text)
+        self.text.insert(insert, text)
 
     def read(
         self, start: str | None='1.0', end: str | None='end'
@@ -180,7 +200,10 @@ class Hierarchy(tk.Frame):
         self.index = 0
         self.build(tree)
 
-    def build(self, tree, branch='main'):
+    def build(self, tree: list[Any], branch: str | None='main') -> None:
+        """
+        Creates the necessary structure of ttk.Treeview to make it a hierarchy.
+        """
         for title, items in tree.items():
             row_name = f'item{self.index}'
             self.treeview.insert('', str(self.index), row_name, text=title)
@@ -211,7 +234,11 @@ def filetypes(
         types: all the types to be returned.
         all_files: appends the all files extension *.*.
     """
-    result = [(type_, FILETYPES.get(type_)) for type_ in types]
+    result = []
+    for _type in types:
+        type_format = ';'.join([f'*{ext}' for ext in FILETYPES.get(_type)])
+        result.append((_type, type_format))
+
     if all_files is True:
         result.append(('All Files', '*.*'))
     return result

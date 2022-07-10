@@ -7,27 +7,25 @@ the repository. Version 1.0.6 By Armando Chaparro.
 """
 
 import os
+from pylejandria import gui
 import re
 import threading
 import tkinter as tk
-from tkinter.filedialog import askdirectory
 from tkinter import ttk
 
 
-class Uploader:
+class Uploader(gui.Window):
     def __init__(self) -> None:
         """
         Uploader creates the app to manage all the configuration to upload
         the package to Pypi and GitHub, is easier than parse all the terminal
         arguments.
         """
-        self.root = tk.Tk()
-        self.root.title('Uploader By Armando Chaparro')
-        self.root.wm_protocol("WM_DELETE_WINDOW", self.quit)
-        self.path_entry = tk.Entry(self.root, width=50)
-        self.version_entry = tk.Entry(self.root, width=15)
-        self.commit_entry = tk.Entry(self.root, width=30)
-        self.git_combobox = ttk.Combobox(self.root, width=15)
+        super().__init__('Uploader By Armando Chaparro')
+        self.path_entry = tk.Entry(self, width=50)
+        self.version_entry = tk.Entry(self, width=15)
+        self.commit_entry = tk.Entry(self, width=30)
+        self.git_combobox = ttk.Combobox(self, width=15)
         self.regex = '[0-9]+\.[0-9]+\.[0-9]+'
         if not self.change_path():
             self.quit()
@@ -114,7 +112,6 @@ class Uploader:
         """
         Updates the path to upload from.
         """
-        tk.Tk().withdraw()
         self.path = askdirectory()
         if not self.path:
             return False
@@ -158,61 +155,61 @@ class Uploader:
         """
         Main function of Uploader, it creates all the UI and bindings.
         """
-        path_label = tk.Label(self.root, text='Folder')
+        path_label = tk.Label(self, text='Folder')
         path_label.grid(row=0, column=0, padx=5, sticky='w')
         self.path_entry.grid(row=0, column=1, padx=5, sticky='w')
         path_button = tk.Button(
-            self.root, text='Change', command=self.change_path
+            self, text='Change', command=self.change_path
         )
         path_button.grid(row=0, column=2, padx=5, sticky='w')
 
-        version_label = tk.Label(self.root, text='Version')
+        version_label = tk.Label(self, text='Version')
         version_label.grid(row=1, column=0, padx=5, sticky='w')
         self.version_entry.grid(row=1, column=1, padx=5, sticky='w')
         version_button = tk.Button(
-            self.root, text='Validate', command=self.validate_version
+            self, text='Validate', command=self.validate_version
         )
         version_button.grid(row=1, column=2, padx=5)
-        self.version_status = tk.Label(self.root, text='')
+        self.version_status = tk.Label(self, text='')
         self.version_status.grid(row=1, column=3, padx=5)
 
-        git_label = tk.Label(self.root, text='Upload to GIT')
+        git_label = tk.Label(self, text='Upload to GIT')
         git_label.grid(row=2, column=0, padx=5, sticky='w')
         self.git_combobox['values'] = ['True', 'False']
         self.git_combobox.bind("<<ComboboxSelected>>", self.update_git)
         self.git_combobox.current(0)
         self.git_combobox.grid(row=2, column=1, padx=5, sticky='w')
 
-        commit_label = tk.Label(self.root, text='Commit')
+        commit_label = tk.Label(self, text='Commit')
         commit_label.grid(row=3, column=0, padx=5, sticky='w')
         self.commit_entry.grid(row=3, column=1, padx=5, sticky='w')
 
-        pypi_label = tk.Label(self.root, text='Upload to Pypi')
+        pypi_label = tk.Label(self, text='Upload to Pypi')
         pypi_label.grid(row=4, column=0, padx=5, sticky='w')
-        self.pypi_combobox = ttk.Combobox(self.root, width=15)
+        self.pypi_combobox = ttk.Combobox(self, width=15)
         self.pypi_combobox.bind("<<ComboboxSelected>>", self.update_pypi)
         self.pypi_combobox['values'] = ['True', 'False']
         self.pypi_combobox['state'] = 'readonly'
         self.pypi_combobox.current(0)
         self.pypi_combobox.grid(row=4, column=1, padx=5, sticky='w')
 
-        delete_label = tk.Label(self.root, text='Delete Previews Dist')
+        delete_label = tk.Label(self, text='Delete Previews Dist')
         delete_label.grid(row=5, column=0, padx=5, sticky='w')
-        self.delete_combobox = ttk.Combobox(self.root, width=15)
+        self.delete_combobox = ttk.Combobox(self, width=15)
         self.delete_combobox['values'] = ['True', 'False']
         self.delete_combobox['state'] = 'readonly'
         self.delete_combobox.current(0)
         self.delete_combobox.grid(row=5, column=1, padx=5, sticky='w')
 
         upload_button = tk.Button(
-            self.root, text='Upload', command=self.get_values
+            self, text='Upload', command=self.get_values
         )
         upload_button.grid(row=6, column=1, padx=5, pady=10, sticky='ew')
 
-        self.root.mainloop()
+        self.mainloop()
 
     def quit(self) -> None:
-        self.root.destroy()
+        self.destroy()
         exit()
 
 if __name__ == '__main__':
