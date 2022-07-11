@@ -346,3 +346,13 @@
         importaciones ciclicas. (9:46am)
     *   Ya todas las constantes fueron movidas, tambien la clase PhoneEntry
         esta medio decente, la subire para que Javier pueda usarla. (10:31am)
+    *   Gui ya fue actualizado y al parecer si le sirvio a Javier, yo no creo
+        llegar a utilizarlo en un proyecto, pero uno nunca sabe y fue una buena
+        practica. Version 0.1.7 ya esta subida. (11:24am)
+    *   PhoneEntry ha recibido mas argumentos, como la posibilidad de crear un
+        boton con nombre personalizado y asignarle comandos, esto es util para
+        interactuar con la clase; constants ya fue agregado al __init__, he
+        actualizado las ideas y corregido uno que otro error, y documente
+        PhoneEntry. (12:41pm)
+    *   Gui ahora sigue PEP8. (12:45pm)
+            - Falta documentar el FlatButton y acabarlo

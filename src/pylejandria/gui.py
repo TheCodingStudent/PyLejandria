@@ -5,12 +5,13 @@ flexibility or having new widgets.
 """
 
 import io
+from turtle import width
 from pylejandria.constants import FILETYPES, PHONE_EXTENSIONS
 import re
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
-from typing import Any
+from typing import Any, Callable
 
 
 class Window(tk.Tk):
@@ -189,7 +190,9 @@ class Hierarchy(tk.Frame):
                         self.build(item, row_name)
                     else:
                         try:
-                            self.treeview.insert(row_name, 'end', item, text=item)
+                            self.treeview.insert(
+                                row_name, 'end', item, text=item
+                            )
                         except tk.TclError:
                             print(row_name, item, type(item))
             else:
@@ -209,25 +212,25 @@ class FlatButton:
 
         self.frame.bind('<Enter>', self.hover)
         self.frame.bind('<Leave>', self.normal)
-    
+
     def pack(self, **kwargs):
-        self.frame.pack(**kwargs)     
-    
+        self.frame.pack(**kwargs)
+
     def style(self, kwargs):
         for key, value in kwargs.items():
             self[key] = value
-    
+
     def hover(self, event):
         if bg := self.alt_config.get('hover_bg', None):
             self.frame['bg'] = self.text['bg'] = bg
         if fg := self.alt_config.get('hover_fg', None):
-            self.text['fg'] = fg        
-    
+            self.text['fg'] = fg
+
     def normal(self, event):
         if bg := self.config.get('bg', None):
             self.frame['bg'] = self.text['bg'] = bg
         if fg := self.config.get('fg', None):
-            self.text['fg'] = fg   
+            self.text['fg'] = fg
 
     def __setitem__(self, name: str, value: Any) -> None:
         if name in ('fg', 'font', 'text'):
@@ -244,39 +247,62 @@ class FlatButton:
 
 
 class PhoneEntry(tk.Frame):
-    def __init__(self, master, **kwargs):
+    def __init__(
+        self, master: tk.Widget,
+        text: str | None=None, extensions: bool=True,
+        button: str | None=None, command: Callable=lambda: None,
+        **kwargs
+    ):
+        """
+        Compound widget to make a phone entry, with extension if wanted.
+        Params:
+            master: parent widget.
+            text: optional label at the beginning.
+            extensions: optional if code extensions.
+            button: optional button name.
+            command: optional command for button.
+        """
         super().__init__(master)
 
+        self.extension = extensions
         self.pattern = kwargs.get('regex', '.*')
         self.is_valid = False
 
-        if text := kwargs.get('text'):
-            tk.Label(self, text=text).pack(side='left', anchor='w', padx=(10, 0))
-        self.extension_combobox = ttk.Combobox(self)
-        self.extension_combobox['width'] = 5
-        self.extension_combobox['values'] = PHONE_EXTENSIONS
-        self.extension_combobox.current(0)
-        self.extension_combobox['state'] = 'readonly'
-        self.extension_combobox.pack(side='left', anchor='w', padx=(10, 0), pady=10)
-
+        if text is not None:
+            tk.Label(
+                self, text=text
+            ).pack(side='left', anchor='w', padx=(10, 0))
+        if extensions is True:
+            self.extension_combobox = ttk.Combobox(
+                self, values=PHONE_EXTENSIONS, width=5, state='readonly'
+            )
+            self.extension_combobox.current(0)
+            self.extension_combobox.pack(
+                side='left', anchor='w', padx=(10, 0), pady=10
+            )
         self.number_entry = tk.Entry(self)
         self.number_entry.pack(side='left', anchor='w', padx=(10, 0), pady=10)
         self.number_entry.bind('<Key>', self.update_config)
-        tk.Button(self, text='Validate', command=self.validate).pack(side='left', anchor='w', padx=(10, 0), pady=10)
-    
-    def get(self):
+        if button is not None:
+            tk.Button(
+                self, text=button, command=command
+            ).pack(side='left', anchor='w', padx=(10, 0), pady=10)
+
+    def get(self) -> None:
+        if not self.extension:
+            return self.number_entry.get()
         return self.extension_combobox.get() + self.number_entry.get()
-    
-    def update_config(self, *args):
+
+    def update_config(self, event) -> None:
+        full_number = self.pattern, self.get() + event.char
         self.number_entry['fg'] = 'black'
-    
-    def validate(self, *args):
-        if re.match(self.pattern, self.get()):
+        self.is_valid = re.match(full_number) is not None
+
+    def validate(self, *args) -> None:
+        if self.is_valid is True:
             self.number_entry['fg'] = '#00ff00'
-            self.is_valid = True
         else:
             self.number_entry['fg'] = '#ff0000'
-            self.is_valid = False
 
 
 def filetypes(

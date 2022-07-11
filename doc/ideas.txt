@@ -15,7 +15,6 @@
         - Transformaciones lineales
     
     - Gui
-        - PhoneEntry
         - Entry mejorado
         - Estilos
         - Interfaz moderna

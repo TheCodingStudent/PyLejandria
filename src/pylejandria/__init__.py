@@ -7,6 +7,7 @@ from pylejandria import math
 from pylejandria import module
 from pylejandria import tools
 from pylejandria import upload
+from pylejandria import constants
 
 MAFER = """
 It´s hard to forget
