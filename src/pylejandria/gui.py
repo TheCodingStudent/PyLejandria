@@ -5,37 +5,12 @@ flexibility or having new widgets.
 """
 
 import io
+from pylejandria.constants import FILETYPES, PHONE_EXTENSIONS
+import re
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 from typing import Any
-
-FILETYPES = {
-    'PDF': ('.pdf',),
-    'JPEG': ('.jpg', '.jpeg', '.jpe', '.jfif'),
-    'PNG': ('.png',),
-    'TIFF': ('.tiff', '.tif'),
-    'ICO': ('.ico',),
-    'WORD': ('.docx', '.docm', '.dotx', '.dotm'),
-    'EXCEL': ('.csv', '.xlsx', '.xlsm', '.xltx', '.xltm', '.xlsb', '.xlam'),
-    'POWERPOINT': (
-        '.pptx', '.pptm', '.potx', '.potm', '.ppam', '.ppsx', '.ppsm',
-        '.sldx', '.sldm', '.thmx'
-    ),
-    'VIDEO': (
-        '.asf', '.lsf', '.asx', '.bik', '.smk', '.div', '.divx', '.dvd',
-        '.wob', '.ivf', '.m1v', '.mp2v', '.mp4', '.mpa', '.mpe', '.mpeg',
-        '.mpg', '.mpv2', '.mov', '.qt', '.qtl', '.rpm', '.wm', '.wmv', '.avi'
-    ),
-    'AUDIO': (
-        '.mp3', '.mid', '.midi', '.wav', '.wma', '.cda', '.ogg', '.ogm',
-        '.aac', '.adt', '.adts', '.ac3', '.flac', '.mp4', '.aym'
-    ),
-    'IMAGE': (
-        '.bmp', '.gif', '.jpeg', '.jpg', '.png', '.psd', '.ai', '.cdr',
-        '.svg', '.raw', '.nef'
-    )
-}
 
 
 class Window(tk.Tk):
@@ -221,6 +196,87 @@ class Hierarchy(tk.Frame):
                 self.treeview.insert(row_name, 'end', items, text=items)
             self.treeview.move(row_name, branch, 'end')
             self.index += 1
+
+
+class FlatButton:
+    def __init__(self, master, **kwargs):
+        self.frame = tk.Frame(master)
+        self.text = tk.Label(self.frame)
+        self.text.place(relx=0.5, rely=0.5, anchor='center')
+        self.alt_config = {}
+        self.config = {}
+        self.style(kwargs)
+
+        self.frame.bind('<Enter>', self.hover)
+        self.frame.bind('<Leave>', self.normal)
+    
+    def pack(self, **kwargs):
+        self.frame.pack(**kwargs)     
+    
+    def style(self, kwargs):
+        for key, value in kwargs.items():
+            self[key] = value
+    
+    def hover(self, event):
+        if bg := self.alt_config.get('hover_bg', None):
+            self.frame['bg'] = self.text['bg'] = bg
+        if fg := self.alt_config.get('hover_fg', None):
+            self.text['fg'] = fg        
+    
+    def normal(self, event):
+        if bg := self.config.get('bg', None):
+            self.frame['bg'] = self.text['bg'] = bg
+        if fg := self.config.get('fg', None):
+            self.text['fg'] = fg   
+
+    def __setitem__(self, name: str, value: Any) -> None:
+        if name in ('fg', 'font', 'text'):
+            self.text[name] = value
+            self.config[name] = value
+        elif name in ('width', 'height', 'command'):
+            self.frame[name] = value
+            self.config[name] = value
+        elif name in ('bg', ):
+            self.frame[name] = self.text[name] = value
+            self.config[name] = value
+        elif name in ('selected_bg', 'selected_fg', 'hover_bg', 'hover_fg'):
+            self.alt_config[name] = value
+
+
+class PhoneEntry(tk.Frame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master)
+
+        self.pattern = kwargs.get('regex', '.*')
+        self.is_valid = False
+
+        if text := kwargs.get('text'):
+            tk.Label(self, text=text).pack(side='left', anchor='w', padx=(10, 0))
+        self.extension_combobox = ttk.Combobox(self)
+        self.extension_combobox['width'] = 5
+        self.extension_combobox['values'] = PHONE_EXTENSIONS
+        self.extension_combobox.current(0)
+        self.extension_combobox['state'] = 'readonly'
+        self.extension_combobox.pack(side='left', anchor='w', padx=(10, 0), pady=10)
+
+        self.number_entry = tk.Entry(self)
+        self.number_entry.pack(side='left', anchor='w', padx=(10, 0), pady=10)
+        self.number_entry.bind('<Key>', self.update_config)
+        tk.Button(self, text='Validate', command=self.validate).pack(side='left', anchor='w', padx=(10, 0), pady=10)
+    
+    def get(self):
+        return self.extension_combobox.get() + self.number_entry.get()
+    
+    def update_config(self, *args):
+        self.number_entry['fg'] = 'black'
+    
+    def validate(self, *args):
+        if re.match(self.pattern, self.get()):
+            self.number_entry['fg'] = '#00ff00'
+            self.is_valid = True
+        else:
+            self.number_entry['fg'] = '#ff0000'
+            self.is_valid = False
 
 
 def filetypes(

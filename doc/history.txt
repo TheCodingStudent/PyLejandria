@@ -328,3 +328,21 @@
     *   El helper aun sigue pendiente flojo. (2:38pm)
     *   Vere Stranger Things como se debe, y aparte documente bien la clase
         Hierarchy. (3:26pm)
+    *   Aun mas extensiones y algunas correcciones. (4:08pm)
+    *   Hice una funcion especial para crear multiples directorios y maneja la
+        posibilidad de que existan. (4:24pm)
+    *   Son las 5:58pm y siento que no puedo hacer lo del diseño, estoy
+        bloqueado, supongo que terminare el FlatButton y sera todo por hoy.
+    *   El boton ya se actualiza y es configurable, va un poco lento pero otro
+        dia descubrire por que. No subire nada. (6:32pm)
+
+-11/07/22:
+    *   (Armando) Hoy toca quitar el azulejo del baño, papa esta en eso en este
+        momento, mientras no puedo ayudarle veo una cosa de numero telefonico
+        con Javier y me dio varias ideas para gui. (8:59am)
+    *   Agregando las extensiones de telefono me di cuenta de que podrian haber
+        conflictos entre librerias, asi que habra un nuevo archivo llamado
+        constants, de ahi todos los modulos tomaran referencia y nos ahorramos
+        importaciones ciclicas. (9:46am)
+    *   Ya todas las constantes fueron movidas, tambien la clase PhoneEntry
+        esta medio decente, la subire para que Javier pueda usarla. (10:31am)

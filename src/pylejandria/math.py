@@ -6,32 +6,8 @@ that it is easy and fast access.
 
 import math
 from pylejandria import tools
+from pylejandria.constants import Number, Array, Coordinate
 from typing import Any
-
-Number = int | float
-Coordinate = tuple[int, int]
-Array = list[int | float]
-
-
-class VectorError(Exception):
-    """
-    Custom Exception for Vector class.
-    """
-    pass
-
-
-class MatrixError(Exception):
-    """
-    Custom Exception for Vector class.
-    """
-    pass
-
-
-class SymbolError(Exception):
-    """
-    Custom Exception for Symbol class.
-    """
-    pass
 
 
 class Vector:
@@ -44,7 +20,7 @@ class Vector:
     def __init__(self, *args: Array) -> None:
         if len(args) < 2:
             if not isinstance(args, (list, tuple)):
-                raise VectorError("Not enough values")
+                raise NotImplementedError("Not enough values")
             else:
                 self.args = list(args[0])
         else:
@@ -60,7 +36,7 @@ class Vector:
         """
         if isinstance(other, valid):
             return result
-        raise VectorError("Invalidad operation")
+        raise NotImplementedError("Invalidad operation")
 
     def __getitem__(self, index: Coordinate) -> int | float:
         """
@@ -68,7 +44,7 @@ class Vector:
         """
         if index < len(self) and index >= -len(self):
             return self.args[index]
-        raise VectorError("Component out of range.")
+        raise NotImplementedError("Component out of range.")
 
     def __setitem__(self, index: Coordinate, value: int | float) -> None:
         """
@@ -77,7 +53,7 @@ class Vector:
         if index < len(self) and index >= -len(self):
             self.args[index] = value
         else:
-            raise VectorError("Component out of range.")
+            raise NotImplementedError("Component out of range.")
 
     def __add__(self, other):
         """
@@ -156,15 +132,15 @@ class Matrix:
         """
         if matrix is not None:
             if any([len(row) != len(matrix[0]) for row in matrix]):
-                raise MatrixError('Invalid Matrix dimension.')
+                raise NotImplementedError('Invalid Matrix dimension.')
             self.matrix = matrix
         else:
             if len(dim) != 2:
-                raise MatrixError("Invalid Matrix dimension.")
+                raise NotImplementedError("Invalid Matrix dimension.")
             if dim[0] < 1 or dim[1] < 1:
-                raise MatrixError("Dimension must be greater than 0.")
+                raise NotImplementedError("Dimension must be greater than 0.")
             if dim[0] == 1 and dim[1] == 1:
-                raise MatrixError("Matrix cannot be 1x1.")
+                raise NotImplementedError("Matrix cannot be 1x1.")
             self.matrix = [
                 [1 for _ in range(dim[0])]
                 for _ in range(dim[1])
@@ -214,7 +190,7 @@ class Matrix:
         """
         x, y = index
         if not self.valid_value(index):
-            raise MatrixError("Invalid Matrix index.")
+            raise NotImplementedError("Invalid Matrix index.")
         return self.matrix[y][x]
 
     def row(self, index: int) -> list:
@@ -234,7 +210,7 @@ class Matrix:
         """
         if index < self.rows and index >= -self.rows:
             return self.matrix[index]
-        raise MatrixError("Invalid row index.")
+        raise NotImplementedError("Invalid row index.")
 
     def col(self, index: int) -> list:
         """
@@ -253,7 +229,7 @@ class Matrix:
         """
         if index < self.cols and index >= -self.cols:
             return [row[index] for row in self.matrix]
-        raise MatrixError("Invalid column index.")
+        raise NotImplementedError("Invalid column index.")
 
     def __getitem__(
         self, indices: Coordinate | tuple[Coordinate]
@@ -281,7 +257,7 @@ class Matrix:
     def __add__(self, other):
         if isinstance(other, Matrix):
             if self.dim != other.dim:
-                raise MatrixError("Matrices must be same order.")
+                raise NotImplementedError("Matrices must be same order.")
             return Matrix(
                 [
                     [
@@ -291,7 +267,7 @@ class Matrix:
                     for y in range(self.rows)
                 ]
             )
-        raise MatrixError("Invalid Matrix addition.")
+        raise NotImplementedError("Invalid Matrix addition.")
 
     def __mul__(self, other):
         if isinstance(other, (int, float)):
@@ -306,7 +282,7 @@ class Matrix:
             )
         elif isinstance(other, Matrix):
             if self.cols != other.rows:
-                raise MatrixError("Invalid Matrices dimensions.")
+                raise NotImplementedError("Invalid Matrices dimensions.")
             c = Matrix(None, (other.cols, self.rows))
             for i in range(self.rows):
                 for j in range(other.cols):
@@ -317,7 +293,7 @@ class Matrix:
                         )
                     )
             return c
-        raise MatrixError("Invalid Matrix multiplication.")
+        raise NotImplementedError("Invalid Matrix multiplication.")
 
     def __repr__(self):
         return tools.prettify(self.matrix, separator=' ')
@@ -447,7 +423,7 @@ class Symbol:
         if isinstance(other, int | float):
             if other == 0:
                 return self.value == 0
-            raise SymbolError(f'invalid comparison {type(other)} and Symbol')
+            raise NotImplementedError(f'invalid comparison {type(other)} and Symbol')
 
     def __mul__(self, other):
         if isinstance(other, Number):
@@ -465,7 +441,7 @@ class Symbol:
                 monomial * self
                 for monomial in other.monomials
             ])
-        raise SymbolError(
+        raise NotImplementedError(
             f'invalid operation. {type(self)}, {type(other)}'
         )
 
@@ -482,7 +458,7 @@ class Symbol:
         elif isinstance(other, int | float):
             return Polynomial(self, other)
 
-        raise SymbolError('invalid operation or implemented yet.')
+        raise NotImplementedError('invalid operation or implemented yet.')
 
     def __neg__(self):
         return self * -1

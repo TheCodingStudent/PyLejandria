@@ -13,3 +13,10 @@
         - Graficas con sliders
         - Graficas polares
         - Transformaciones lineales
+    
+    - Gui
+        - PhoneEntry
+        - Entry mejorado
+        - Estilos
+        - Interfaz moderna
+        - Eficiencia

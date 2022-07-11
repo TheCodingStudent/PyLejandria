@@ -9,9 +9,8 @@ import math
 import os
 import sys
 from typing import Any, Iterable
+from pylejandria.constants import Number
 from pylejandria.gui import ask
-
-Number = float | int
 
 
 def center(text: str, space: int) -> str:
@@ -307,6 +306,18 @@ def dict_get(dictionary: dict, key: Any, default: Any=None) -> Any:
             if key in keys:
                 return value
     return default
+
+
+def make_dirs(folders: Iterable[str], root: str | None='') -> None:
+    """
+    Creates the corresponding directories and manages the existing conflict.
+    Params:
+        folders: list of folders to create if possible.
+        root: optional root of folder.
+    """
+    for folder in folders:
+        if not os.path.isdir(f'{root}\{folder}'):
+            os.mkdir(f'{root}\{folder}')
 
 
 if __name__ == '__main__':
