@@ -356,3 +356,30 @@
         PhoneEntry. (12:41pm)
     *   Gui ahora sigue PEP8. (12:45pm)
             - Falta documentar el FlatButton y acabarlo
+    *   De manera milagrosa por fin descubri como cargar las librerias desde la
+        carpeta tests, asi que no mas archivos fuera. Ire a bañarme. (2:15pm)
+    *   Descartare la idea de utilizar el metodo de importacion, genera una
+        carpeta __pycache__ no es mala, pero me es molesta y no es necesaria,
+        seguiran los experimentos fuera de la carpeta y cuando ya funcionen los
+        pasare a la carpeta. (3:40pm)
+    *   FlatButton murio, no se adapta a lo que quiero, lo mejor sera crear el
+        sistema de estilo y customizar lo mejor que pueda lo que ya viene en
+        tkinter por defecto. (3:59pm)
+    *   Llevo mucho rato queriendo hacer mi propia guia de widgets de tkinter,
+        asi que hare un archivo que al ejecutarse muestre todos los widgets,
+        de esa manera puedo ir probando el sistema de estilos. (4:02pm)
+    *   Acabo de tener una inspiracion para el estilo, una funcion que tome
+        como argumentos el widget a crear y despues una variable con un diseño
+        predeterminado que habra en gui, pero tambien se podria crear su propio
+        diseño, aun que perderia el chiste de que 'sea rapido'. (4:32pm)
+    *   Sin querer termine con un formato mas o menos parecido a CSS, un
+        diccionario con nombres y propiedades y estas se aplican a los widgets,
+        la funcion style puede tomar un widget y decorarlo o se le puede
+        indicar el nombre de un widget e incluso de que libreria es, voy a
+        documentarla y "call it a day". (5:47pm)
+    *   Ya esta documentado y corregi un error, me di cuenta de que name era
+        mejor si lo dejaba como argumento opcional, asi que tuve que actualizar
+        el codigo de prueba, tambien renombre la carpeta "tests" a "UI", ya que
+        ya no eran pruebas, y las pruebas las tengo que hacer fuera entonces se
+        explica mejor. Dejare el archivo de "new_gui" para que en dado caso
+        Javier lo vea y pruebe con su aplicacion. (6:05pm)

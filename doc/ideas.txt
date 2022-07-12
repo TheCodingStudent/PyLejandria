@@ -1,6 +1,5 @@
 -27/06/22:
     - Math
-        - Simbolos
         - Calculo
             - Diferencial
             - Integral
@@ -8,14 +7,7 @@
         - Resolver ecuaciones
         - Fracciones
     
-    - Graph
-        - Graficas sencillas
-        - Graficas con sliders
-        - Graficas polares
-        - Transformaciones lineales
-    
     - Gui
-        - Entry mejorado
         - Estilos
         - Interfaz moderna
         - Eficiencia

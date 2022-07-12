@@ -5,7 +5,6 @@ flexibility or having new widgets.
 """
 
 import io
-from turtle import width
 from pylejandria.constants import FILETYPES, PHONE_EXTENSIONS
 import re
 import tkinter as tk
@@ -201,51 +200,6 @@ class Hierarchy(tk.Frame):
             self.index += 1
 
 
-class FlatButton:
-    def __init__(self, master, **kwargs):
-        self.frame = tk.Frame(master)
-        self.text = tk.Label(self.frame)
-        self.text.place(relx=0.5, rely=0.5, anchor='center')
-        self.alt_config = {}
-        self.config = {}
-        self.style(kwargs)
-
-        self.frame.bind('<Enter>', self.hover)
-        self.frame.bind('<Leave>', self.normal)
-
-    def pack(self, **kwargs):
-        self.frame.pack(**kwargs)
-
-    def style(self, kwargs):
-        for key, value in kwargs.items():
-            self[key] = value
-
-    def hover(self, event):
-        if bg := self.alt_config.get('hover_bg', None):
-            self.frame['bg'] = self.text['bg'] = bg
-        if fg := self.alt_config.get('hover_fg', None):
-            self.text['fg'] = fg
-
-    def normal(self, event):
-        if bg := self.config.get('bg', None):
-            self.frame['bg'] = self.text['bg'] = bg
-        if fg := self.config.get('fg', None):
-            self.text['fg'] = fg
-
-    def __setitem__(self, name: str, value: Any) -> None:
-        if name in ('fg', 'font', 'text'):
-            self.text[name] = value
-            self.config[name] = value
-        elif name in ('width', 'height', 'command'):
-            self.frame[name] = value
-            self.config[name] = value
-        elif name in ('bg', ):
-            self.frame[name] = self.text[name] = value
-            self.config[name] = value
-        elif name in ('selected_bg', 'selected_fg', 'hover_bg', 'hover_fg'):
-            self.alt_config[name] = value
-
-
 class PhoneEntry(tk.Frame):
     def __init__(
         self, master: tk.Widget,
@@ -271,22 +225,18 @@ class PhoneEntry(tk.Frame):
         if text is not None:
             tk.Label(
                 self, text=text
-            ).pack(side='left', anchor='w', padx=(10, 0))
+            ).grid(row=0, column=0)
         if extensions is True:
             self.extension_combobox = ttk.Combobox(
                 self, values=PHONE_EXTENSIONS, width=5, state='readonly'
             )
             self.extension_combobox.current(0)
-            self.extension_combobox.pack(
-                side='left', anchor='w', padx=(10, 0), pady=10
-            )
+            self.extension_combobox.grid(row=0, column=1)
         self.number_entry = tk.Entry(self)
-        self.number_entry.pack(side='left', anchor='w', padx=(10, 0), pady=10)
+        self.number_entry.grid(row=0, column=2)
         self.number_entry.bind('<Key>', self.update_config)
         if button is not None:
-            tk.Button(
-                self, text=button, command=command
-            ).pack(side='left', anchor='w', padx=(10, 0), pady=10)
+            tk.Button(self, text=button, command=command).grid(row=0, column=3)
 
     def get(self) -> None:
         if not self.extension:
@@ -294,9 +244,9 @@ class PhoneEntry(tk.Frame):
         return self.extension_combobox.get() + self.number_entry.get()
 
     def update_config(self, event) -> None:
-        full_number = self.pattern, self.get() + event.char
+        full_number = self.get() + event.char
         self.number_entry['fg'] = 'black'
-        self.is_valid = re.match(full_number) is not None
+        self.is_valid = re.match(self.pattern, full_number) is not None
 
     def validate(self, *args) -> None:
         if self.is_valid is True:
@@ -338,3 +288,37 @@ def ask(property: str, *types, **kwargs) -> str:
     if types:
         kwargs['filetypes'] = filetypes(*types)
     return func(**kwargs)
+
+
+def style(
+    master: tk.Widget, config: dict, name: str | None=None,
+    alias: str | None=None, from_: Any | None=tk,
+    widget: Any | None=None, **kwargs
+) -> tk.Widget | Any:
+    """
+    Function to apply style to widgets, it can be already existing widgets or
+    it can be indicated which want to be created.
+    Params:
+        master: parent widget.
+        config: dictionary with all the properties of the widgets, each element
+                of the dictionary must be another dictionary with name equal
+                to the name of the widget or an alias and then its properties.
+        name:   name of the widget to create, if not given then widget argument
+                must be provided.
+        alias:  name is used to know which widget is wanted, but alias
+                references the name of the attribute from the config argument.
+        from_:  module where to import the widget.
+        widget: if there is a widget already created it can be also styled, if
+                provided then name, master and from_ are not needed.
+
+    """
+    if alias is None:
+        alias = name
+    all_config = config.get(alias) | kwargs
+    if init_config := all_config.get('init', {}):
+        all_config.pop('init')
+    if widget is None:
+        widget = getattr(from_, name)(master, **init_config)
+    for key, value in all_config.items():
+        widget[key] = value
+    return widget
