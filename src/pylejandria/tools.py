@@ -320,6 +320,35 @@ def make_dirs(folders: Iterable[str], root: str | None='') -> None:
             os.mkdir(f'{root}\{folder}')
 
 
+def dict_zip(*dicts, strict: bool | None=False) -> None:
+    """
+    Creates a generator to iterate each key, value of each dictionary, just as
+    regular zip to lists.
+    Params:
+        dicts:  all the dictionaries to zip.
+        strict: raise an error if any dictionary is exhausted. 
+    """
+    for items in zip(*[dict_.items() for dict_ in dicts], strict=strict):
+        yield [[element for element in item] for item in items]
+
+
 if __name__ == '__main__':
-    a = [1, 1, 1, 1, 1]
-    print(all_are(a, 1))
+    d1 = {
+        'a1': 1,
+        'a2': 2,
+        'a3': 3
+    }
+    d2 = {
+        'b4': 4,
+        'b5': 5,
+        'b6': 6,
+        'b7': 7
+    }
+    d3 = {
+        'c8': 8,
+        'c9': 9,
+        'c10': 10
+    }
+
+    for args in dict_zip(d1, d2, d3):
+        print(args)

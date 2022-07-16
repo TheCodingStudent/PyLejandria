@@ -1,4 +1,4 @@
--27/06/22:
+Modulos:
     - Math
         - Calculo
             - Diferencial
@@ -6,8 +6,18 @@
         - Procedimiento
         - Resolver ecuaciones
         - Fracciones
-    
+
     - Gui
         - Estilos
         - Interfaz moderna
         - Eficiencia
+
+    - Auto
+        - Webscrapping
+        - Whatsapp
+
+Ideas locas:
+    -   mi propio servidor con el telefono
+    -   por fin un asistente de voz
+    -   un creador de interfaces automatico. (basicamente analizar inputs y
+        outputs de un programa y usando el mismo programa crear la interfaz)

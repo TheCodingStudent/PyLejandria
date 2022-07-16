@@ -383,3 +383,28 @@
         ya no eran pruebas, y las pruebas las tengo que hacer fuera entonces se
         explica mejor. Dejare el archivo de "new_gui" para que en dado caso
         Javier lo vea y pruebe con su aplicacion. (6:05pm)
+
+-12/07/22:
+    *   (Armando) No se a que hora hice el modulo "auto", pero el caso es que
+        ahi iran las funciones de automatizacion, por ejemplo ahora hacer una
+        interfaz que mande correos sera muy sencillo. Creo que me acostare, lo
+        necesito de verdad. (4:35pm)
+
+-15/07/22:
+    *   (Armando) Hoy estoy muy cansado como para ponerme con algo serio, en
+        cuanto tenga tiempo me ire a dormir, ahorita a las 10am hay que ir con
+        Vector para cortarnos el cabello y despues supongo que vamos a
+        trabajar. Con Javier se nos ocurrio el "dict_zip". (7:36am)
+    *   Supongo que trabaje todo el dia y solo pude programar a ratitos, hice
+        la funcion dict_zip, y mayormente me dedique a editar VSCODE, editando
+        el archivo JSON de configuracion logre tener un tema como el de Jarvis
+        que hice hace mucho tiempo pero sin tener que descargar nada, es
+        editable en cualquier momento y quedo mucho mejor que la vez anterior
+        creo yo. Tambien encontre una extension que genera documentacion de
+        manera automatica, supongo que con el tiempo ire cambiando a ese
+        formato, o no ¿quien sabe? 😂. Vere que cositas mas hago antes de ir a
+        dormir, aun que se acaban de bajar 2 episodios de Moon Knight y quiero
+        verlos. Sigo pensando en lo de los archivos tkinter, no se si manejar
+        el estilo y el esqueleto en un mismo archivo (como si fuera CSS y HTML)
+        o tener 2 extensiones ¿yo que se? anda a ver Moon Knight, estas muy
+        cansado. (6:58pm)
