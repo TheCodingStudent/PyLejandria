@@ -7,14 +7,14 @@ the repository. Version 1.0.6 By Armando Chaparro.
 """
 
 import os
-from pylejandria import gui
 import re
 import threading
 import tkinter as tk
+from tkinter.filedialog import askdirectory
 from tkinter import ttk
 
 
-class Uploader(gui.Window):
+class Uploader(tk.Tk):
     def __init__(self) -> None:
         """
         Uploader creates the app to manage all the configuration to upload
@@ -29,6 +29,10 @@ class Uploader(gui.Window):
         self.regex = '[0-9]+\.[0-9]+\.[0-9]+'
         if not self.change_path():
             self.quit()
+    
+    def quit(self):
+        self.destroy()
+        exit()
 
     def get_version(self) -> None:
         """
@@ -112,7 +116,7 @@ class Uploader(gui.Window):
         """
         Updates the path to upload from.
         """
-        self.path = gui.ask('directory')
+        self.path = askdirectory()
         if not self.path:
             return False
         

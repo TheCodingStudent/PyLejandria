@@ -2,7 +2,7 @@ from email.message import EmailMessage
 import ssl
 import smtplib
 import imghdr
-from pylejandria.gui import ask
+import pylejandria
 
 
 def send_email(
@@ -45,5 +45,5 @@ if __name__ == '__main__':
     send_email(
         'pylejandria@gmail.com', 'feywinwpqwhjnwzz',
         'angelshaparro@outlook.com', 'PyLejandria mail', 'jajaja contexto',
-        files=ask('openfilenames')
+        files=pylejandria.gui.ask('openfilenames')
     )

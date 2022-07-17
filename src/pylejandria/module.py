@@ -11,11 +11,11 @@ must check each file to fill all the info.
 
 import os
 from pylejandria.constants import SETUP, PYPROJECT, LICENSE
-from pylejandria.gui import ask
+import pylejandria
 
 
 def init(name: str) -> None:
-    src = ask('directory')
+    src = pylejandria.gui.ask('directory')
     if not src:
         return
     folders = [f'{src}/src', f'{src}/src/{name}', f'{src}/tests']

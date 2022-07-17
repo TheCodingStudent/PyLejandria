@@ -10,7 +10,7 @@ import os
 import sys
 from typing import Any, Iterable, Generator
 from pylejandria.constants import Number
-from pylejandria.gui import ask
+import pylejandria
 
 
 def center(text: str, space: int) -> str:
@@ -182,9 +182,9 @@ def image_to_pdf(
         remove: remove or not the given files.
     """
     if get_path is True:
-        path = ask('saveasfilename', 'PDF', defaultextension='*.pdf')
+        path = pylejandria.gui.ask('saveasfilename', 'PDF', defaultextension='*.pdf')
     if get_images is True:
-        images = ask('openfilenames', 'PNG', 'JPEG')
+        images = pylejandria.gui.ask('openfilenames', 'PNG', 'JPEG')
     if not (path and images):
         return
     with open(path, 'wb') as f:

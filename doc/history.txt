@@ -456,3 +456,7 @@
 
         Asi es mas o menos como se ve cuando resuelvo un problema. (4:54pm)
     *   Hay que actualizar la funcion pair. (5:17pm)
+    *   Pues la regue y hay problemas de importacion circular, vuevlo a subir
+        entonces. (5:24pm)
+    *   Ahora el uploader no depende de pylejandria, para situaciones como esta
+        ya que no me permite usarlo :(. (5:27pm)

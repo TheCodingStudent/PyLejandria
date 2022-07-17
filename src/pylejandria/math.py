@@ -5,7 +5,7 @@ that it is easy and fast access.
 """
 
 import math
-from pylejandria import tools
+import pylejandria
 from pylejandria.constants import Number, Array, Coordinate
 from typing import Any
 
@@ -296,7 +296,7 @@ class Matrix:
         raise NotImplementedError("Invalid Matrix multiplication.")
 
     def __repr__(self):
-        return tools.prettify(self.matrix, separator=' ')
+        return pylejandria.tools.prettify(self.matrix, separator=' ')
 
     def __rmul__(self, other):
         return self * other

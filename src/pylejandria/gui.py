@@ -5,7 +5,7 @@ flexibility or having new widgets.
 """
 
 import io
-from pylejandria.tools import pretty_dict, pretty_list, pair
+import pylejandria
 from pylejandria.constants import FILETYPES, PHONE_EXTENSIONS
 import re
 import tkinter as tk
@@ -358,7 +358,7 @@ def load(filename: str, tab: str | None='    ') -> tk.Widget:
             widget()
         widgets.append(widget)
 
-    for a, b in pair(widget_names + [None], 2):
+    for a, b in pylejandria.tools.pair(widget_names + [None], 2):
         lines, chunk = get_chunk(a, b, lines)
         widget = {'widget': chunk.pop(0)}
 
@@ -367,7 +367,7 @@ def load(filename: str, tab: str | None='    ') -> tk.Widget:
             widget[key] = value
         chunks.append(widget)
     
-    pretty_list(chunks)
+    pylejandria.tools.pretty_list(chunks)
 
     # for i in range(len(widgets)-1):
     #     widget1, info1 = widgets[i],
