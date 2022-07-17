@@ -5,7 +5,7 @@ flexibility or having new widgets.
 """
 
 import io
-import pylejandria
+from pylejandria.tools import pretty_dict, pretty_list, pair
 from pylejandria.constants import FILETYPES, PHONE_EXTENSIONS
 import re
 import tkinter as tk
@@ -325,31 +325,49 @@ def style(
     return widget
 
 def get_chunk(a: str, b: str, lines: list[str]) -> tuple[list[str], list[str]]:
+    if b is None:
+        return [], lines
     start = lines.index(a)
     end = lines.index(b, start+1)
     return lines[end:], [line.strip() for line in lines[start:end]]
 
-def load(filename: str) -> tk.Widget:
+def load(filename: str, tab: str | None='    ') -> tk.Widget:
     """
     Loads a file with extension *.tk and builds all the widgets, the idea is
     to have a setup more or less like QML, a cascade of widgets, is meant to
     simple UI.
-    Args:
-        filename (str): path of the *.tk file.
+    Params:
+        filename: path of the *.tk file.
 
     Returns:
         tk.Widget: the builded widget from the given file.
     """
     with open(filename, 'r') as f:
         lines = f.read().split('\n')
+        widget_names = [line for line in lines if not ':' in line]
 
-    widget_names = [line for line in lines if not ':' in line]
-    for a, b in pylejandria.tools.pair(widget_names):
+    widgets = []
+    chunks = []
+
+    for name in widget_names:
+        try:
+            widget = getattr(tk, name.strip())
+        except AttributeError:
+            widget = eval(name.strip())
+        if name.count(tab) == 0:
+            widget()
+        widgets.append(widget)
+
+    for a, b in pair(widget_names + [None], 2):
         lines, chunk = get_chunk(a, b, lines)
         widget = {'widget': chunk.pop(0)}
 
         for item in chunk:
             key, value = item.split(': ', maxsplit=1)
             widget[key] = value
+        chunks.append(widget)
+    
+    pretty_list(chunks)
 
-        pylejandria.tools.pretty_dict(widget) 
+    # for i in range(len(widgets)-1):
+    #     widget1, info1 = widgets[i],

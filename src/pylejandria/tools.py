@@ -332,7 +332,20 @@ def dict_zip(*dicts, strict: bool | None=False) -> None:
         yield [[element for element in item] for item in items]
 
 def pair(items: list[Any], length: int) -> Generator:
-    for i in range(len(items)-length):
+    """
+    Pairs n-elements from the list and yields it.
+    Example:
+        a = [1, 2, 3, 4, 5, 6]
+        for a, b, c, c in pair(a, 4):
+            print(a, b, c, d)
+        >>> (1, 2, 3, 4)
+        >>> (2, 3, 4, 5)
+        >>> (3, 4, 5, 6)
+    Params:
+        items: list to be paired.
+        length: length of the pairs.
+    """
+    for i in range(len(items)-length-1):
         yield items[i:i+length]
 
 

@@ -442,3 +442,17 @@
         items proximos y hacer un "for i in range(len(list)-length)" es muy
         molesto, asi que ya lo arregle, pero tengo que subirlo para seguir
         trabajando. (4:22pm)
+    *   Spy x Family esta muy bien. (4:47pm)
+    *   - Armando: Okey Armando, tenemos un problema
+        - Angel: Claro, dime
+        - Armando: Basicamente tenemos que crear los widgets previos para poder
+        ir creando los posteriores, supongo que obviamente el primero es el que
+        no tiene padre y puede ser creado sin problemas.
+        - Angel: Despues ya con la lista de widgets podemos usar la direccion,
+        ya que al ser objetos tienen direcciones diferentes y nos evitamos
+        problemas
+        - Armando: O tambien podemos usar un indice para que al cambio de tabs
+        basados en la lista de widget_names
+
+        Asi es mas o menos como se ve cuando resuelvo un problema. (4:54pm)
+    *   Hay que actualizar la funcion pair. (5:17pm)
