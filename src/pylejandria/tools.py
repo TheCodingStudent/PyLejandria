@@ -345,7 +345,7 @@ def pair(items: list[Any], length: int) -> Generator:
         items: list to be paired.
         length: length of the pairs.
     """
-    for i in range(len(items)-length-1):
+    for i in range(len(items)-length+1):
         yield items[i:i+length]
 
 
