@@ -4,6 +4,7 @@ import smtplib
 import imghdr
 from pylejandria.gui import ask
 
+
 def send_email(
     from_: str, password: str, to_: str, subject: str, content: str,
     files: list[str] | None=[]

@@ -8,7 +8,7 @@ import img2pdf
 import math
 import os
 import sys
-from typing import Any, Iterable
+from typing import Any, Iterable, Generator
 from pylejandria.constants import Number
 from pylejandria.gui import ask
 
@@ -330,6 +330,10 @@ def dict_zip(*dicts, strict: bool | None=False) -> None:
     """
     for items in zip(*[dict_.items() for dict_ in dicts], strict=strict):
         yield [[element for element in item] for item in items]
+
+def pair(items: list[Any], length: int) -> Generator:
+    for i in range(len(items)-length):
+        yield items[i:i+length]
 
 
 if __name__ == '__main__':

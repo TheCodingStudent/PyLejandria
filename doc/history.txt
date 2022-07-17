@@ -408,3 +408,37 @@
         el estilo y el esqueleto en un mismo archivo (como si fuera CSS y HTML)
         o tener 2 extensiones ¿yo que se? anda a ver Moon Knight, estas muy
         cansado. (6:58pm)
+    *   Estoy subiendo los capitulos a la USB y mientras subia los archivos, y
+        me di cuenta de que en lugar de usar Combobox podria usar Checkable,
+        literalmente esta diseñado para ser seleccionado 🤦‍♂️. En fin, otro dia
+        sera, tambien me entro la idea de terminar lo de los archivos tkinter
+        para hacer una UI a la nueva funcion de email. Pensare en ello durante
+        la noche. (7:05pm)
+    *   No pude evitarlo y ya esta corregido el modulo auto en base PEP8. Solo
+        tuve 2 errores 🎂. (7:07pm)
+
+-16/07/22:
+    *   (Armando) He perdido todas las ganas para construir, ya no quiero, pero
+        no hay de otra, hoy tengo planeado hacer lo de los archivos tkinter, se
+        me acaba de ocurrir una buena idea. (8:36am)
+    *   Por fin me bañe y cene, estoy exhausto, durante el dia estuve
+        intentando lo del archivo de tkinter pero nada funcionaba, entonces
+        decidi enfocarme en el trabajo y ahorita cenando me llego la idea
+        millonaria, basicamente ubicar los widgets, extraer los argumentos
+        entre widgets y transformar a un diccionario. De ahi en mas no hice
+        nada que no fuera destruir mi cuerpo 😂😂. Moon Knight estuvo
+        increible, estoy considerando en hacerle caso a Miriam con sus
+        recomendaciones. Mañana ire a comer a Fifties, asi que no espero tener
+        algo nuevo para programar, pero en dado caso seguire con lo de tkinter.
+            - Pendiente: crear la jerarquia de los widgets
+        Supongo que no puedo seguir posponiendo este cansancio. (9:45pm)
+
+-17/07/22:
+    *   (Armando) Hoy desperte a las 12pm, hacia meses que no me pasaba eso, en
+        fin, Fifties estuvo delicioso, hoy tengo ganas de programar mientras
+        veo Spy x Family. Seguire con lo de los archivos tkinter. (3:39pm)
+    *   Bueno, resulta que se me ocurrio una funcion para crear tuplas de items
+        segun una lista, esto sera util para casos donde necesitas acceder a
+        items proximos y hacer un "for i in range(len(list)-length)" es muy
+        molesto, asi que ya lo arregle, pero tengo que subirlo para seguir
+        trabajando. (4:22pm)

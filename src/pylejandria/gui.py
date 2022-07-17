@@ -5,6 +5,7 @@ flexibility or having new widgets.
 """
 
 import io
+import pylejandria
 from pylejandria.constants import FILETYPES, PHONE_EXTENSIONS
 import re
 import tkinter as tk
@@ -322,3 +323,33 @@ def style(
     for key, value in all_config.items():
         widget[key] = value
     return widget
+
+def get_chunk(a: str, b: str, lines: list[str]) -> tuple[list[str], list[str]]:
+    start = lines.index(a)
+    end = lines.index(b, start+1)
+    return lines[end:], [line.strip() for line in lines[start:end]]
+
+def load(filename: str) -> tk.Widget:
+    """
+    Loads a file with extension *.tk and builds all the widgets, the idea is
+    to have a setup more or less like QML, a cascade of widgets, is meant to
+    simple UI.
+    Args:
+        filename (str): path of the *.tk file.
+
+    Returns:
+        tk.Widget: the builded widget from the given file.
+    """
+    with open(filename, 'r') as f:
+        lines = f.read().split('\n')
+
+    widget_names = [line for line in lines if not ':' in line]
+    for a, b in pylejandria.tools.pair(widget_names):
+        lines, chunk = get_chunk(a, b, lines)
+        widget = {'widget': chunk.pop(0)}
+
+        for item in chunk:
+            key, value = item.split(': ', maxsplit=1)
+            widget[key] = value
+
+        pylejandria.tools.pretty_dict(widget) 

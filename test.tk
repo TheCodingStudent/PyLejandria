@@ -1,0 +1,26 @@
+Window
+    .title: 'Simple UI'
+    .geometry: '500x500'
+    bg: '#181818'
+    Frame
+        bg: '#0000ff'
+        width: 400
+        height: 400
+        Button
+            text: 'On'
+            bg: '#323232'
+            fg: '#00ff00'
+            command: lambda: print('hola')
+        Button
+            text: 'Off'
+            bg: '#323232'
+            fg: '#ff0000'
+            command: lambda: print('hola')
+    Frame
+        bg: '#00ff00'
+        width: 300
+        height: 300
+    Frame
+        bg: '#00ff00'
+        width: 300
+        height: 300
