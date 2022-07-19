@@ -460,3 +460,27 @@
         entonces. (5:24pm)
     *   Ahora el uploader no depende de pylejandria, para situaciones como esta
         ya que no me permite usarlo :(. (5:27pm)
+    *   Por fin funciona!!! Despues de 10 episodios de Spy x Family ya el lado
+        de diseño ya esta, ya puedo descansar, basicamente ya estan los metodos
+        de acomodo de objetos y propiedades. (9:51pm)
+            - Pendiente: hacer el lado funcional.
+        Ahorita en llamada con Javier se me ocurrio pasar las funciones en un
+        diccionario, de esa manera tengo el nombre para referirme en el archivo
+        tk y tambien puedo acceder a ella de manera sencilla, y no de la manera
+        pendeja de Javier (jaja saludos). (9:56pm)
+    *   El lado funcional resulto todo un exito, la idea del diccionario y la
+        referencia fue una gran idea. (10:07pm)
+
+-18/07/22:
+    *   (Armando) Hoy no documente nada en la mañana, no tuve tiempo literal,
+        ahorita me puse con lo del archivo tk, reestructure toda la funcion
+        load para que fuera mas entendible, incluso añadi comentarios (que
+        despues quitare). Tambien añadi un poco mas de reglas de sintaxis para
+        el lado funcional, pasar argumentos ya funciona de maravilla. Queda
+        pendiente el sistema de identificacion para hacer referencia dentro del
+        archivo. (9:32pm)
+    *   El sistema de ids ya funciona a la perfeccion, tuve que actualizar el
+        parser y agregar una funcion para buscar widgets y levantar un error si
+        es necesario. Basicamente se accede con # para referenciar el id.
+        Ahora falta crear interfaces para ver que hay que mejorar. (10:12pm)
+    *   Ya gui fue corregido con PEP8, procedo a subirlo y a dormir. (10:20pm)

@@ -17,7 +17,7 @@ from typing import Any, Callable
 class Window(tk.Tk):
     def __init__(
         self, name: str | None=None, size: str | None=None,
-        resizable: tuple[bool, bool] | None=None
+        resizable: tuple[bool, bool] | None=None, **kwargs
     ):
         """
         Tkinter Tk wrapper, simplifies give name and size to the window, also
@@ -27,7 +27,7 @@ class Window(tk.Tk):
             size: size of the window in format "width"x"height".
             resizable: enable resize width and/or height of the window.
         """
-        super().__init__()
+        super().__init__(**kwargs)
         if name is not None:
             self.title(name)
         if size is not None:
@@ -324,14 +324,185 @@ def style(
         widget[key] = value
     return widget
 
+
 def get_chunk(a: str, b: str, lines: list[str]) -> tuple[list[str], list[str]]:
+    """
+    Extract the lines between widgets based on the name.
+    Params:
+        a: first widget.
+        b: second widget.
+        lines: lines of the source file.
+    Returns:
+        the remaining lines to not repeat and the stripped lines between
+        widgets, also the indent level.
+    """
     if b is None:
-        return [], lines
+        return [], [line.strip() for line in lines], a.count('    ')
     start = lines.index(a)
     end = lines.index(b, start+1)
-    return lines[end:], [line.strip() for line in lines[start:end]]
+    return (
+        lines[end:], [line.strip() for line in lines[start:end]],
+        a.count('    ')
+    )
 
-def load(filename: str, tab: str | None='    ') -> tk.Widget:
+
+def find_attribute(name: str, sources: list[Any]) -> Any:
+    """
+    Returns the attribute from the given sources.
+    Params:
+        name: name of the attribute to return.
+        sources: list of sources to search from.
+    """
+    for source in sources:
+        try:
+            return getattr(source, name)
+        except AttributeError:
+            continue
+    raise AttributeError('Attribute not found')
+
+
+def widget_info(chunk: list[str], indent: int) -> dict:
+    """
+    Gets a list of lines of a widget and returns a dictionary with its
+    properties.
+    Params:
+        chunk: list of strings of a widget.
+    """
+    widget = {}
+    widget['widget'] = chunk.pop(0)
+    widget['indent'] = indent
+
+    for item in chunk:
+        key, value = item.split(': ', maxsplit=1)
+        try:
+            widget[key] = eval(value)
+        except SyntaxError:
+            widget[key] = value
+    return widget
+
+
+def get_widgets(lines: list[str], names: list[str]) -> list[dict]:
+    """
+    Evaluate the lines from the source file, checks between each of them, gets
+    a chunk and then its info.
+    Params:
+        lines: lines from the source file.
+        names: names of the widgets.
+    """
+    widgets = []
+    for a, b in pylejandria.tools.pair(names + [None], 2):
+        lines, chunk, indent = get_chunk(a, b, lines)
+        widget = widget_info(chunk, indent)
+        widgets.append((widget, widget['id']))
+    widgets.append((None, None))
+    return widgets
+
+
+def place_widget(widget: Any, info: dict) -> None:
+    """
+    Manages the place method of the widget based on its info.
+    Params:
+        widget: widget to place.
+        info: info of the widget.
+    """
+    if info.get('.pack'):
+        widget.pack(**info.pop('.pack'))
+    elif info.get('.place'):
+        widget.place(**info.pop('.place'))
+    elif info.get('.grid'):
+        widget.grid(**info.pop('.grid'))
+
+
+def widget_args(info: dict):
+    """
+    Extracts main arguments from the info of widget.
+    Params:
+        info: dictionary of properties of a widget.
+    """
+    args = []
+    if info.get('parent'):
+        args.append(info.pop('parent'))
+    if info.get('init'):
+        args.append(info.pop('init'))
+    return args
+
+
+def get_widget(widgets: dict, widget_id: str) -> Any:
+    """
+    Returns a widget based on its id, if it doesnt exists then raises an error.
+    Params:
+        widgets: dictionary of widgets with id as key.
+        widget_id: id of the widget to return.
+    """
+    if widget := widgets.get(widget_id):
+        return widget
+    raise AttributeError('widget not found')
+
+
+def parse_value(
+    widget: Any, key: str, value: str, functions: dict, widgets: dict
+) -> None:
+    """
+    Applies rules to the given value to style a widget.
+    Params:
+        widget: widget to apply properties.
+        key: name of the property to apply.
+        value: value of the property to edit.
+        functions: dictionary of functions in case they are needed.
+    """
+    if key in ('indent', 'id'):
+        return
+    if key.startswith('.'):
+        func = getattr(widget, key[1:])
+        func(value)
+        return
+    if re.match('\$.+', str(value)):
+        value = value.replace('$', '')
+        if args := re.search('\(.*\)', value):
+            args = args.group()
+            value = value.replace(args, '')
+        str_args = [] if args is None else args[1:-1].split(' | ')
+        args = []
+        for str_arg in str_args:
+            if str_arg == 'self':
+                args.append(widget)
+            elif str_arg == 'self.master':
+                args.append(widget.master)
+            elif str_arg.startswith('#'):
+                args.append(get_widget(widgets, str_arg[1:]))
+            elif re.match('self\[.+\]', str_arg):
+                args.append(re.search('\[.+\]', str_arg).group()[1:-1])
+            else:
+                args.append(eval(str_arg))
+                
+        func = functions.get(value)
+        widget[key] = lambda: func(*args)
+    else:
+        widget[key] = value
+
+
+def assign_parent(widget: Any, info1: dict, info2: dict) -> None:
+    """
+    Assigns parent to the widget based on the indentation.
+    Params:
+        widget: current widget, is used to get the parent or be the parent.
+        info1: dictionary of the current widget.
+        info2: dictionary of the next widget.
+    """
+    parent = widget
+    indent1 = info1.get('indent')
+    indent2 = info2.get('indent') if info2 else None
+    if indent2 is None:
+        return None
+    if indent1 == indent2:
+        parent = parent.master
+    elif indent1 > indent2:
+        for _ in range(indent1 - indent2 + 1):
+            parent = parent.master
+    return parent
+
+
+def load(filename: str, functions: dict, tab: str | None='    ') -> tk.Widget:
     """
     Loads a file with extension *.tk and builds all the widgets, the idea is
     to have a setup more or less like QML, a cascade of widgets, is meant to
@@ -344,30 +515,27 @@ def load(filename: str, tab: str | None='    ') -> tk.Widget:
     """
     with open(filename, 'r') as f:
         lines = f.read().split('\n')
-        widget_names = [line for line in lines if not ':' in line]
+        widget_names = [line for line in lines if ':' not in line]
 
-    widgets = []
-    chunks = []
+    widgets = get_widgets(lines, widget_names)
+    window = None
+    built = {}
 
-    for name in widget_names:
-        try:
-            widget = getattr(tk, name.strip())
-        except AttributeError:
-            widget = eval(name.strip())
-        if name.count(tab) == 0:
-            widget()
-        widgets.append(widget)
+    for i in range(len(widgets)-1):
+        info1, info2 = widgets[i][0], widgets[i + 1][0]
+        widget = find_attribute(info1.pop('widget'), (tk, pylejandria.gui))
+        widget_arguments = widget_args(info1)
+        widget = widget(*widget_arguments)
+        if id_ := info1.get('id'):
+            built[id_] = widget
+        if window is None:
+            window = widget
+        place_widget(widget, info1)
 
-    for a, b in pylejandria.tools.pair(widget_names + [None], 2):
-        lines, chunk = get_chunk(a, b, lines)
-        widget = {'widget': chunk.pop(0)}
+        for key, value in info1.items():
+            parse_value(widget, key, value, functions, built)
 
-        for item in chunk:
-            key, value = item.split(': ', maxsplit=1)
-            widget[key] = value
-        chunks.append(widget)
-    
-    pylejandria.tools.pretty_list(chunks)
+        if parent := assign_parent(widget, info1, info2):
+            info2['parent'] = parent
 
-    # for i in range(len(widgets)-1):
-    #     widget1, info1 = widgets[i],
+    return window

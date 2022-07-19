@@ -1,4 +1,12 @@
 from src.pylejandria.gui import load
+from random import choice
 
-window = load('test.tk')
-# window.mainloop()
+def change(widget, property, values):
+    widget[property] = choice(values)
+
+functions = {
+    'change': change
+}
+
+window = load('test.tk', functions)
+window.mainloop()
