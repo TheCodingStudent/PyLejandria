@@ -499,3 +499,6 @@
     *   Pues ya esta listo el manual de los archivos tk, tambien le di una
         customizacion al README, y corregi alguna cosas de la funcion load que
         estaban por ahi. (3:52pm)
+    *   Me emocione y quise poner color al README y resulta que GitHub no
+        acepta colores, asi que los quite y corregi unas cosas del codigo de
+        python. (4:03pm)

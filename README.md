@@ -1,4 +1,4 @@
-# <span style="color:#0080ff">**PYLEJANDRIA**</span>
+# **PYLEJANDRIA**
 <img src="https://www.traveldepartment.com/media/23634/career-icons-training-and-development.png"
      alt="HTML image alt text"
      title="Optional image title"
@@ -8,7 +8,7 @@
 
 Javier and I were bored of sending us scripts and functions by whatsapp, so we decided to make a compilation of the *most useful functions*, even create some together. The project is called **PyLejandria** thanks to the library of Alexandria, where it is said that a colossal amount of knowledge resided. The project is not at all serious, but we will try to do the best we can with our current level of programming.
 
-# <span style="color:#0080ff">**MODULES**</span>
+# **MODULES**
 * **GUI**
     * Compilation of widgets that take as a basis the widgets of tkinter, can add functions to make simple interfaces in a very simple way without losing flexibility or having new widgets.
 
@@ -24,10 +24,10 @@ Javier and I were bored of sending us scripts and functions by whatsapp, so we d
 * **UPLOAD**
     * Module with graphical interface for the management of python packages, has tools for easierly upload the package to GitHub and PyPi, allows you to decide whether to upload to a GitHub repository automatically detecting if the package has one, in addition to not uploading to PyPi in case we only want to update the repository.
 
-# <span style="color:#0080ff">**DOWNLOAD**</span>
+# **DOWNLOAD**
 `pip install pylejandria` or copy from [PyPi](https://pypi.org/project/pylejandria/).
 
-# <span style="color:#0080ff">**HELP**</span>
+# **HELP**
 
 * ## **Script**
     If you need help you can import the package and use the example function, it will open an interface that will show you all the attributes of the module and its description. This are the following examples, in this case we will see the help of the "gui" module
@@ -51,7 +51,7 @@ Javier and I were bored of sending us scripts and functions by whatsapp, so we d
     gui.example()
     ```
 
-# <span style="color:#0080ff">**TK FILES**</span>
+# **TK FILES**
 ***Tk files*** are cascade files that wrap around the interface system of the [**tkinter**](https://docs.python.org/es/3/library/tkinter.html) module. The idea is to have a structure similar to [**kivy**](https://www.geeksforgeeks.org/python-kivy-kv-file/) or [**QML**](https://es.wikipedia.org/wiki/QML) files, it also has a system of styles with a format similar to [**CSS**](https://www.w3schools.com/Css/). The main idea of this format is to create separate interfaces from the functional file, for a better organization and have the possibility of editing the interface from the code since it is a text file. It should be noted that you should know about the tkinter module.
 
 This is the **minimal configuration** for a simple window.
@@ -59,9 +59,9 @@ This is the **minimal configuration** for a simple window.
 We start with a "Tk", which is the base widget of tkinter, then with an extra level of indentation we state the properties that we want. Here is the syntax.
 
 It is important to **pay attention to the spaces**, since at the moment the project is in the initial phases and **there are no considerations towards these cases**. This could change in the future.
-* <span style="color:#ff0080">**For simple properties**</span>
+* **For simple properties**
     * property_name: property_value
-* <span style="color:#ff0080">**To call functions of the widget we start the name with a "."**</span>
+* **To call functions of the widget we start the name with a "."**
     * .function_name: function_value
 ```
 Tk
@@ -84,13 +84,13 @@ if __name__ == '__main__':
 
 Now let's see a more complex example to implement functions and the id system. Here is the new syntax.
 
-* <span style="color:#ff0080">**To call a function start the function's name with a "$" then the name**</span>
+* **To call a function start the function's name with a "$" then the name**
     * For example: $change
-* <span style="color:#ff0080">**To reference an id start the id with a "#" then the id**</span>
+* **To reference an id start the id with a "#" then the id**
     * For example: #topleft_frame
-* <span style="color:#ff0080">**If the function needs arguments then we pass them using "()" around the elements and each value with a " | ".**</span>. *(Notice the spacing)*
+* **If the function needs arguments then we pass them using "()" around the elements and each value with a " | "**. *(Notice the spacing)*
     * For example: $change **(#topleft_frame | "#ff0000" | "#800000")**
-* <span style="color:#ff0080">**References**</span>.
+* **References**.
     * **self**: refers to the widget itself.
     * **self.master**: refers to the parent of the widget.
     * **self[property]**: refers to the given property of the widget itself.
@@ -152,7 +152,7 @@ Tk
 **.py file**
 ```python
 # Import load from pylejandria.gui module
-from src.pylejandria.gui import load
+from pylejandria.gui import load
 
 # Define the change function, this will be called by the buttons
 def change(widget: tk.Widget, color1: str, color2: str) -> None:
@@ -169,12 +169,12 @@ if __name__ == '__main__':
     window.mainloop()
 ```
 
-# <span style="color:#0080ff">**CREDITS**</span>
+# **CREDITS**
 | **Name**         | **User**         |
 | ---------------- | ---------------- |
 | Armando Chaparro | TheCodingStudent |
 
-# <span style="color:#0080ff">**LICENSE**</span>
+# **LICENSE**
 [PyLejandria](https://github.com/TheCodingStudent/pylejandria) by Armando Chaparro is licensed under a [MIT License](https://mit-license.org/). See LICENSE.md.
 
 Copyright © 2022 [Armando Chaparro](https://github.com/TheCodingStudent)
