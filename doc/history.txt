@@ -484,3 +484,11 @@
         es necesario. Basicamente se accede con # para referenciar el id.
         Ahora falta crear interfaces para ver que hay que mejorar. (10:12pm)
     *   Ya gui fue corregido con PEP8, procedo a subirlo y a dormir. (10:20pm)
+
+-19/07/22:
+    *   (Armando) Hoy no tenia planeado programar por que estoy muriendo, pero
+        durante la noche no me sacaba de la cabeza la idea de que podia ser mas
+        util pasar __file__ que un diccionario y facilitaria algunas cosas, asi
+        que ya esta. Tuve que agregar una funcion para cargar modulos a tools
+        y obviamente edite gui, voy a subir el proyecto para probar que todo
+        funcione bien. (1:37pm)

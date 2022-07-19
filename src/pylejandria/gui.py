@@ -440,7 +440,7 @@ def get_widget(widgets: dict, widget_id: str) -> Any:
 
 
 def parse_value(
-    widget: Any, key: str, value: str, functions: dict, widgets: dict
+    widget: Any, key: str, value: str, module: Any, widgets: dict
 ) -> None:
     """
     Applies rules to the given value to style a widget.
@@ -474,8 +474,8 @@ def parse_value(
                 args.append(re.search('\[.+\]', str_arg).group()[1:-1])
             else:
                 args.append(eval(str_arg))
-                
-        func = functions.get(value)
+
+        func = getattr(module, value)
         widget[key] = lambda: func(*args)
     else:
         widget[key] = value
@@ -502,7 +502,7 @@ def assign_parent(widget: Any, info1: dict, info2: dict) -> None:
     return parent
 
 
-def load(filename: str, functions: dict, tab: str | None='    ') -> tk.Widget:
+def load(filename: str, file: str) -> tk.Widget:
     """
     Loads a file with extension *.tk and builds all the widgets, the idea is
     to have a setup more or less like QML, a cascade of widgets, is meant to
@@ -517,6 +517,7 @@ def load(filename: str, functions: dict, tab: str | None='    ') -> tk.Widget:
         lines = f.read().split('\n')
         widget_names = [line for line in lines if ':' not in line]
 
+    module = pylejandria.tools.get_module(file)
     widgets = get_widgets(lines, widget_names)
     window = None
     built = {}
@@ -533,7 +534,7 @@ def load(filename: str, functions: dict, tab: str | None='    ') -> tk.Widget:
         place_widget(widget, info1)
 
         for key, value in info1.items():
-            parse_value(widget, key, value, functions, built)
+            parse_value(widget, key, value, module, built)
 
         if parent := assign_parent(widget, info1, info2):
             info2['parent'] = parent

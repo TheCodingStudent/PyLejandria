@@ -5,6 +5,7 @@ terminal simpler, but without needing a user interface.
 """
 
 import img2pdf
+import importlib
 import math
 import os
 import sys
@@ -182,7 +183,9 @@ def image_to_pdf(
         remove: remove or not the given files.
     """
     if get_path is True:
-        path = pylejandria.gui.ask('saveasfilename', 'PDF', defaultextension='*.pdf')
+        path = pylejandria.gui.ask(
+            'saveasfilename', 'PDF', defaultextension='*.pdf'
+        )
     if get_images is True:
         images = pylejandria.gui.ask('openfilenames', 'PNG', 'JPEG')
     if not (path and images):
@@ -326,10 +329,11 @@ def dict_zip(*dicts, strict: bool | None=False) -> None:
     regular zip to lists.
     Params:
         dicts:  all the dictionaries to zip.
-        strict: raise an error if any dictionary is exhausted. 
+        strict: raise an error if any dictionary is exhausted.
     """
     for items in zip(*[dict_.items() for dict_ in dicts], strict=strict):
         yield [[element for element in item] for item in items]
+
 
 def pair(items: list[Any], length: int) -> Generator:
     """
@@ -347,6 +351,19 @@ def pair(items: list[Any], length: int) -> Generator:
     """
     for i in range(len(items)-length+1):
         yield items[i:i+length]
+
+
+def get_module(file: str) -> Any:
+    """
+    Loads and returns the given module.
+    Params:
+        file: absolute path of the file to be imported.
+    """
+    loader = importlib.machinery.SourceFileLoader('loaded_module', file)
+    spec = importlib.util.spec_from_loader('loaded_module', loader)
+    loaded_module = importlib.util.module_from_spec(spec)
+    loader.exec_module(loaded_module)
+    return loaded_module
 
 
 if __name__ == '__main__':
