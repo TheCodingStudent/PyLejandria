@@ -358,7 +358,7 @@ def find_attribute(name: str, sources: list[Any]) -> Any:
             return getattr(source, name)
         except AttributeError:
             continue
-    raise AttributeError('Attribute not found')
+    raise AttributeError(f'Attribute {name!s} not found')
 
 
 def widget_info(chunk: list[str], indent: int) -> dict:
@@ -393,7 +393,7 @@ def get_widgets(lines: list[str], names: list[str]) -> list[dict]:
     for a, b in pylejandria.tools.pair(names + [None], 2):
         lines, chunk, indent = get_chunk(a, b, lines)
         widget = widget_info(chunk, indent)
-        widgets.append((widget, widget['id']))
+        widgets.append((widget, widget.get('id')))
     widgets.append((None, None))
     return widgets
 
@@ -436,7 +436,7 @@ def get_widget(widgets: dict, widget_id: str) -> Any:
     """
     if widget := widgets.get(widget_id):
         return widget
-    raise AttributeError('widget not found')
+    raise AttributeError(f'widget {widget_id!s} not found')
 
 
 def parse_value(
@@ -457,6 +457,8 @@ def parse_value(
         func(value)
         return
     if re.match('\$.+', str(value)):
+        if module is None:
+            return
         value = value.replace('$', '')
         if args := re.search('\(.*\)', value):
             args = args.group()
@@ -502,7 +504,7 @@ def assign_parent(widget: Any, info1: dict, info2: dict) -> None:
     return parent
 
 
-def load(filename: str, file: str) -> tk.Widget:
+def load(filename: str, file: str | None=None) -> tk.Widget:
     """
     Loads a file with extension *.tk and builds all the widgets, the idea is
     to have a setup more or less like QML, a cascade of widgets, is meant to
@@ -517,7 +519,7 @@ def load(filename: str, file: str) -> tk.Widget:
         lines = f.read().split('\n')
         widget_names = [line for line in lines if ':' not in line]
 
-    module = pylejandria.tools.get_module(file)
+    module = pylejandria.tools.get_module(file) if file is not None else None
     widgets = get_widgets(lines, widget_names)
     window = None
     built = {}

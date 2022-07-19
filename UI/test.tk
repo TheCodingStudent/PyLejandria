@@ -1,0 +1,48 @@
+Tk
+    .title: 'Simple UI'
+    bg: '#181818'
+    Frame
+        bg: '#323232'
+        .pack: {'padx': 50, 'pady': 50}
+        Frame
+            id: 'topleft_frame'
+            bg: '#ff0000'
+            width: 200
+            height: 200
+            .grid: {'row': 0, 'column': 0, 'padx': (50, 0), 'pady': (50, 0)}
+        Frame
+            id: 'topright_frame'
+            bg: '#ffff00'
+            width: 200
+            height: 200
+            .grid: {'row': 0, 'column': 1, 'padx': 50, 'pady': (50, 0)}
+        Frame
+            id: 'bottomleft_frame'
+            bg: '#00ffff'
+            width: 200
+            height: 200
+            .grid: {'row': 1, 'column': 0, 'padx': (50, 0), 'pady': 50}
+        Frame
+            id: 'bottomright_frame'
+            bg: '#00ff00'
+            width: 200
+            height: 200
+            .grid: {'row': 1, 'column': 1, 'padx': 50, 'pady': 50}
+    Frame
+        .pack: {}
+        Button
+            text: 'change top left'
+            command: $change(#topleft_frame | '#ff0000' | '#800000')
+            .grid: {'row': 0, 'column': 0}
+        Button
+            text: 'change top right'
+            command: $change(#topright_frame | '#ffff00' | '#808000')
+            .grid: {'row': 0, 'column': 1}
+        Button
+            text: 'change bottom left'
+            command: $change(#bottomleft_frame | '#00ffff' | '#008080')
+            .grid: {'row': 0, 'column': 2}
+        Button
+            text: 'change bottom right'
+            command: $change(#bottomright_frame | '#00ff00' | '#008000')
+            .grid: {'row': 0, 'column': 3}
