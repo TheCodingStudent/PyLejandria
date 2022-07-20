@@ -502,3 +502,14 @@
     *   Me emocione y quise poner color al README y resulta que GitHub no
         acepta colores, asi que los quite y corregi unas cosas del codigo de
         python. (4:03pm)
+    *   Me ire a acostar, pero antes de eso añadi ahora la posibilidad de que
+        la funcion load acepte un parametro parent, esto para que ahora tambien
+        puedan usarse cualquier widget, no se, como crear un boton custom. Se
+        me acaba de ocurrir en que puedas tambien acceder a widgets que hayas
+        creado en el archivo python. (4:44pm)
+    *   Pues gracias al nuevo sistema de importacion fue muy sencillo acceder
+        a los nuevos widgets. (4:50pm)
+    *   Hay una nueva funcion para obtener slices de una lista, eso junto con
+        la funcion pair funciona muy para casos donde hay listas de listas,
+        tambien hice unos cambios al parser de la funcion load y ahora acepta
+        muchos mas parametros gracias a regex. (6:28pm)

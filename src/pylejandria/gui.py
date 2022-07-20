@@ -439,7 +439,32 @@ def get_widget(widgets: dict, widget_id: str) -> Any:
     raise AttributeError(f'widget {widget_id!s} not found')
 
 
-def parse_value(
+def parse_value(value: str, widget: tk.Widget, widgets: dict) -> Any:
+    """
+    Takes a value and parses it based on some grammar rules.
+    Params:
+        value: value to parse.
+        widget: current widget for in case its referenced.
+        widgets: dict of widgets to get from if referenced.
+    """
+    if re.match('(self|#.+)(\..+)*', value):
+        result = None
+        for method in value.split('.'):
+            if method == 'self':
+                result = widget
+            elif method.startswith('#'):
+                result = get_widget(widgets, method.replace('#', ''))
+            elif property_ := re.search('\[.+\]', method):
+                property_ = property_.group()
+                result = getattr(result, method.replace(property_, ''))
+                result = result[eval(property_)]
+            else:
+                result = getattr(result, method)
+        return result
+    return eval(value)
+
+
+def parse_values(
     widget: Any, key: str, value: str, module: Any, widgets: dict
 ) -> None:
     """
@@ -464,19 +489,7 @@ def parse_value(
             args = args.group()
             value = value.replace(args, '')
         str_args = [] if args is None else args[1:-1].split(' | ')
-        args = []
-        for str_arg in str_args:
-            if str_arg == 'self':
-                args.append(widget)
-            elif str_arg == 'self.master':
-                args.append(widget.master)
-            elif str_arg.startswith('#'):
-                args.append(get_widget(widgets, str_arg[1:]))
-            elif re.match('self\[.+\]', str_arg):
-                args.append(re.search('\[.+\]', str_arg).group()[1:-1])
-            else:
-                args.append(eval(str_arg))
-
+        args = [parse_value(str_arg, widget, widgets) for str_arg in str_args]
         func = getattr(module, value)
         widget[key] = lambda: func(*args)
     else:
@@ -504,7 +517,9 @@ def assign_parent(widget: Any, info1: dict, info2: dict) -> None:
     return parent
 
 
-def load(filename: str, file: str | None=None) -> tk.Widget:
+def load(
+    filename: str, file: str | None=None, parent: tk.Widget | None=None
+) -> tk.Widget:
     """
     Loads a file with extension *.tk and builds all the widgets, the idea is
     to have a setup more or less like QML, a cascade of widgets, is meant to
@@ -524,9 +539,13 @@ def load(filename: str, file: str | None=None) -> tk.Widget:
     window = None
     built = {}
 
-    for i in range(len(widgets)-1):
-        info1, info2 = widgets[i][0], widgets[i + 1][0]
-        widget = find_attribute(info1.pop('widget'), (tk, pylejandria.gui))
+    for info1, info2 in pylejandria.tools.pair(widgets, 2, index=0):
+        if parent is not None:
+            info1['parent'] = parent
+            parent = None
+        widget = find_attribute(
+            info1.pop('widget'), (tk, pylejandria.gui, module)
+        )
         widget_arguments = widget_args(info1)
         widget = widget(*widget_arguments)
         if id_ := info1.get('id'):
@@ -536,7 +555,7 @@ def load(filename: str, file: str | None=None) -> tk.Widget:
         place_widget(widget, info1)
 
         for key, value in info1.items():
-            parse_value(widget, key, value, module, built)
+            parse_values(widget, key, value, module, built)
 
         if parent := assign_parent(widget, info1, info2):
             info2['parent'] = parent

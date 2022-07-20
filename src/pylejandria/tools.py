@@ -335,20 +335,24 @@ def dict_zip(*dicts, strict: bool | None=False) -> None:
         yield [[element for element in item] for item in items]
 
 
-def pair(items: list[Any], length: int) -> Generator:
+def pair(items: list[Any], length: int, index: int | None=None) -> Generator:
     """
     Pairs n-elements from the list and yields it.
     Example:
         a = [1, 2, 3, 4, 5, 6]
+
         for a, b, c, c in pair(a, 4):
             print(a, b, c, d)
         >>> (1, 2, 3, 4)
         >>> (2, 3, 4, 5)
         >>> (3, 4, 5, 6)
     Params:
-        items: list to be paired.
+        items:  list to be paired.
         length: length of the pairs.
+        index:  optional index to get an slice, useful for cases where items is
+                a list of lists.
     """
+    items = items if index is None else get_slice(items, index)
     for i in range(len(items)-length+1):
         yield items[i:i+length]
 
@@ -366,23 +370,30 @@ def get_module(file: str) -> Any:
     return loaded_module
 
 
-if __name__ == '__main__':
-    d1 = {
-        'a1': 1,
-        'a2': 2,
-        'a3': 3
-    }
-    d2 = {
-        'b4': 4,
-        'b5': 5,
-        'b6': 6,
-        'b7': 7
-    }
-    d3 = {
-        'c8': 8,
-        'c9': 9,
-        'c10': 10
-    }
+def get_slice(values: list[list], index: int) -> list:
+    """
+    Returns an slice of the values.
+    Example:
+        a = [
+            [1, 2, 3, 4],
+            [5, 6, 7, 8],
+            [9, 10, 11, 12]
+        ]
+        print(get_row(a, 0))
+        >>> [1, 5, 9]
+    Params:
+        values: list of list to get the slice from.
+        index:  index of the slice.
+    """
+    return [value[index] for value in values]
 
-    for args in dict_zip(d1, d2, d3):
-        print(args)
+
+if __name__ == '__main__':
+    a = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [10, 11, 12]
+    ]
+    for a, b in pair(a, 2, index=0):
+        print(a, b)

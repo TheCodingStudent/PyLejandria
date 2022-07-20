@@ -29,20 +29,21 @@ Tk
             height: 200
             .grid: {'row': 1, 'column': 1, 'padx': 50, 'pady': 50}
     Frame
+        bg: 'gray'
         .pack: {}
         Button
-            text: 'change top left'
-            command: $change(#topleft_frame | '#ff0000' | '#800000')
-            .grid: {'row': 0, 'column': 0}
+            text: 'change self'
+            command: $change(self | '#ff0000' | '#800000')
+            .pack: {'side': 'left', 'pady': 10}
         Button
-            text: 'change top right'
-            command: $change(#topright_frame | '#ffff00' | '#808000')
-            .grid: {'row': 0, 'column': 1}
+            text: 'change self.master'
+            command: $change(self.master | '#ffff00' | '#808000')
+            .pack: {'side': 'left'}
         Button
-            text: 'change bottom left'
-            command: $change(#bottomleft_frame | '#00ffff' | '#008080')
-            .grid: {'row': 0, 'column': 2}
+            text: 'change self.master.master'
+            command: $change(self.master.master | '#00ffff' | '#008080')
+            .pack: {'side': 'left'}
         Button
-            text: 'change bottom right'
-            command: $change(#bottomright_frame | '#00ff00' | '#008000')
-            .grid: {'row': 0, 'column': 3}
+            text: 'print window color'
+            command: $print_property(self.master.master | 'bg')
+            .pack: {'side': 'left'}
