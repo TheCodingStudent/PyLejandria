@@ -2,6 +2,10 @@
 #   MADE BY: ARMANDO CHAPARRO   #
 #################################
 
+import sys
+
+sys.dont_write_bytecode = True
+
 from pylejandria import gui
 from pylejandria import math
 from pylejandria import module

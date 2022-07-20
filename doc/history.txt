@@ -513,3 +513,12 @@
         la funcion pair funciona muy para casos donde hay listas de listas,
         tambien hice unos cambios al parser de la funcion load y ahora acepta
         muchos mas parametros gracias a regex. (6:28pm)
+    *   El __init__ fue editado para no crear archivos .pyc, pero parece que
+        hace el de el de igual manera. (6:36pm)
+    *   Hice unas pequeñas reducciones de codigo a gui, ahora queda pensar en
+        como añadir un archivo de estilo. (6:48pm)
+    *   En teoria me iba a dormir pero se me ocurrio el escenario donde tuviera
+        que pasar parametros asi nomas sin llamar una funcion, como en el caso
+        de bind, asi que tuve que hacer unas mejoras al sistema de parser,
+        ahora hay una funcion dedicada a extraer los parametros dentro de
+        parentesis, esto permite reutilizarce de manera sencilla. (10:08pm)

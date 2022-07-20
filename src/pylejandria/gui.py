@@ -16,20 +16,20 @@ from typing import Any, Callable
 
 class Window(tk.Tk):
     def __init__(
-        self, name: str | None=None, size: str | None=None,
+        self, title: str | None=None, size: str | None=None,
         resizable: tuple[bool, bool] | None=None, **kwargs
     ):
         """
         Tkinter Tk wrapper, simplifies give name and size to the window, also
         manages the delete window protocol.
         Params:
-            name: name of the window.
+            title: title of the window.
             size: size of the window in format "width"x"height".
             resizable: enable resize width and/or height of the window.
         """
         super().__init__(**kwargs)
-        if name is not None:
-            self.title(name)
+        if title is not None:
+            self.title(title)
         if size is not None:
             self.geometry(size)
         if resizable is not None:
@@ -40,6 +40,16 @@ class Window(tk.Tk):
         """Destroys the window and quits python."""
         self.destroy()
         exit()
+    
+    def __setitem__(self, key: str, value: Any) -> None:
+        if key == 'title':
+            self.title(value)
+        elif key == 'size':
+            self.geometry(value)
+        elif key == 'resizable':
+            self.resizable(value)
+        else:
+            super().__setitem__(key, value)
 
 
 class CustomText(tk.Text):
@@ -206,6 +216,8 @@ class PhoneEntry(tk.Frame):
         self, master: tk.Widget,
         text: str | None=None, extensions: bool=True,
         button: str | None=None, command: Callable=lambda: None,
+        regex: str | None='\+[0-9]{1,3}[0-9]{10}',
+        valid_fg: str | None='green', invalid_fg: str | None='red',
         **kwargs
     ):
         """
@@ -217,16 +229,17 @@ class PhoneEntry(tk.Frame):
             button: optional button name.
             command: optional command for button.
         """
-        super().__init__(master)
+        super().__init__(master, **kwargs)
 
         self.extension = extensions
-        self.pattern = kwargs.get('regex', '.*')
+        self.pattern = kwargs.get('regex', regex)
         self.is_valid = False
+        self.valid_fg = valid_fg
+        self.invalid_fg = invalid_fg
 
         if text is not None:
-            tk.Label(
-                self, text=text
-            ).grid(row=0, column=0)
+            self.label = tk.Label(self, text=text)
+            self.label.grid(row=0, column=0)
         if extensions is True:
             self.extension_combobox = ttk.Combobox(
                 self, values=PHONE_EXTENSIONS, width=5, state='readonly'
@@ -237,8 +250,9 @@ class PhoneEntry(tk.Frame):
         self.number_entry.grid(row=0, column=2)
         self.number_entry.bind('<Key>', self.update_config)
         if button is not None:
-            tk.Button(self, text=button, command=command).grid(row=0, column=3)
-
+            self.button = tk.Button(self, text=button, command=command)
+            self.button.grid(row=0, column=3)
+    
     def get(self) -> None:
         if not self.extension:
             return self.number_entry.get()
@@ -251,9 +265,60 @@ class PhoneEntry(tk.Frame):
 
     def validate(self, *args) -> None:
         if self.is_valid is True:
-            self.number_entry['fg'] = '#00ff00'
+            self.number_entry['fg'] = self.valid_fg
         else:
-            self.number_entry['fg'] = '#ff0000'
+            self.number_entry['fg'] = self.invalid_fg
+    
+    def __setitem__(self, key, value):
+        if key == 'text':
+            if self.__dict__.get('text'):
+                self.label['text'] = value
+            else:
+                self.label = tk.Label(self, text=value)
+                self.label.grid(row=0, column=0)
+        elif key == 'command':
+            if self.__dict__.get('button'):
+                self.button['command'] = value
+        elif key == 'button':
+            if self.__dict__.get('button'):
+                self.button['text'] = value
+            else:
+                self.button = tk.Button(self, text=value)
+                self.button.grid(row=0, column=3)
+        elif key == 'regex':
+            self.pattern = value
+        elif key == 'valid_fg':
+            self.valid_fg = value
+        elif key == 'invalid_fg':
+            self.invalid_fg = value
+        else:
+            super().__setitem__(key, value)
+
+
+class TextSpan(tk.Frame):
+    def __init__(self, master):
+        self.master = master
+        self.counter = 0
+    
+    def load(self):
+        for i, config in enumerate(self.values):
+            if self.mode == 'row':
+                if isinstance(self.type, str):
+                    widget = getattr(tk, self.type)
+                else:
+                    widget = self.type
+                all_config = self.__dict__.get('config', {}) | config
+                widget = widget(self.master, **all_config)
+                setattr(self, f'item{self.counter}', widget)
+                widget.grid(row=i, column=self.column, sticky='nw')
+            elif self.mode == 'column': ...
+            else: ...
+            self.counter += 1
+
+    def __setitem__(self, key, value):
+        setattr(self, key, value)
+        if all([self.__dict__.get(k) for k in ('type', 'mode', 'values')]):
+            self.load()
 
 
 def filetypes(
@@ -321,7 +386,11 @@ def style(
     if widget is None:
         widget = getattr(from_, name)(master, **init_config)
     for key, value in all_config.items():
-        widget[key] = value
+        if key.startswith('.'):
+            func = getattr(widget, key[1:])
+            func(value)
+        else:
+            widget[key] = value
     return widget
 
 
@@ -374,14 +443,22 @@ def widget_info(chunk: list[str], indent: int) -> dict:
 
     for item in chunk:
         key, value = item.split(': ', maxsplit=1)
-        try:
-            widget[key] = eval(value)
-        except SyntaxError:
-            widget[key] = value
+        if key in ('execute', ):
+            if widget.get(key):
+                widget[key].append(value)
+            else:
+                widget[key] = [value]
+        else:
+            try:
+                widget[key] = eval(value)
+            except:
+                widget[key] = value
     return widget
 
 
-def get_widgets(lines: list[str], names: list[str]) -> list[dict]:
+def get_widgets(
+    lines: list[str], names: list[str]
+) -> list[dict | None, str | None]:
     """
     Evaluate the lines from the source file, checks between each of them, gets
     a chunk and then its info.
@@ -411,7 +488,11 @@ def place_widget(widget: Any, info: dict) -> None:
         widget.place(**info.pop('.place'))
     elif info.get('.grid'):
         widget.grid(**info.pop('.grid'))
-
+    else:
+        try:
+            widget.pack()
+        except AttributeError:
+            pass
 
 def widget_args(info: dict):
     """
@@ -422,8 +503,6 @@ def widget_args(info: dict):
     args = []
     if info.get('parent'):
         args.append(info.pop('parent'))
-    if info.get('init'):
-        args.append(info.pop('init'))
     return args
 
 
@@ -439,61 +518,73 @@ def get_widget(widgets: dict, widget_id: str) -> Any:
     raise AttributeError(f'widget {widget_id!s} not found')
 
 
-def parse_value(value: str, widget: tk.Widget, widgets: dict) -> Any:
-    """
-    Takes a value and parses it based on some grammar rules.
-    Params:
-        value: value to parse.
-        widget: current widget for in case its referenced.
-        widgets: dict of widgets to get from if referenced.
-    """
-    if re.match('(self|#.+)(\..+)*', value):
+def get_variables(expression: str) -> list[str, list]:
+    if args := re.search('\(.*\)', expression):
+        args = args.group()
+        expression = expression.replace(args, '')
+    str_args = [] if args is None else args[1:-1].split(' | ')
+    return expression, str_args
+
+
+def get_property(expression: str, widget: tk.Widget, widgets: dict) -> Any:
+    property_ = None
+    if args := re.search("\['.+'\]", expression):
+        args = args.group()
+        expression = expression.replace(args, '')
+        property_ = eval(args[1:-1])
+    if expression.startswith('#'):
+        expression = expression.replace('#', '')
+        widget_property = widgets.get(expression)
+        if property_ is None:
+            return widget_property
+        return widget_property[property_]
+    elif expression.startswith('self'):
+        return widget[property_]
+    else:
+        widget_property = getattr(widget, expression)
+        return widget_property[property_]
+
+
+def parse_property(expression: str, widget, widgets, module):
+    if str(expression).startswith('$'):
+        expression = expression.replace('$', '')
+        args = []
+        if str_args := re.search("\(.*\)", expression):
+            expression, str_args = get_variables(expression)
+            args = [
+                parse_property(arg, widget, widgets, module)
+                for arg in str_args
+            ]
+        func = getattr(module, expression)
+        return lambda *e: func(*args)
+    elif re.match("(self|#.+)(\.[a-z]*)*(\['[a-z]*'\]){0,1}", str(expression)):
         result = None
-        for method in value.split('.'):
+        for method in expression.split('.'):
             if method == 'self':
                 result = widget
-            elif method.startswith('#'):
-                result = get_widget(widgets, method.replace('#', ''))
-            elif property_ := re.search('\[.+\]', method):
-                property_ = property_.group()
-                result = getattr(result, method.replace(property_, ''))
-                result = result[eval(property_)]
+            elif method.startswith('#') or re.search("\['.+'\]", method):
+                result = get_property(method, widget, widgets)
+                return result if result else method
             else:
+                if str_args := re.search("\(.*\)", method):
+                    method, str_args = get_variables(method)
+                    args = [
+                        parse_property(arg, widget, widgets, module)
+                        for arg in str_args
+                    ]
+                    func = getattr(result, method)
+                    return lambda *e: func(*args)
                 result = getattr(result, method)
         return result
-    return eval(value)
-
-
-def parse_values(
-    widget: Any, key: str, value: str, module: Any, widgets: dict
-) -> None:
-    """
-    Applies rules to the given value to style a widget.
-    Params:
-        widget: widget to apply properties.
-        key: name of the property to apply.
-        value: value of the property to edit.
-        functions: dictionary of functions in case they are needed.
-    """
-    if key in ('indent', 'id'):
-        return
-    if key.startswith('.'):
-        func = getattr(widget, key[1:])
-        func(value)
-        return
-    if re.match('\$.+', str(value)):
-        if module is None:
-            return
-        value = value.replace('$', '')
-        if args := re.search('\(.*\)', value):
-            args = args.group()
-            value = value.replace(args, '')
-        str_args = [] if args is None else args[1:-1].split(' | ')
-        args = [parse_value(str_arg, widget, widgets) for str_arg in str_args]
-        func = getattr(module, value)
-        widget[key] = lambda: func(*args)
-    else:
-        widget[key] = value
+    elif str_args := re.match("\(.*\)", str(expression)):
+        expression, str_args = get_variables(expression)
+        return [
+            parse_property(arg, widget, widgets, module) for arg in str_args
+        ]
+    try:
+        return eval(expression)
+    except:
+        return expression
 
 
 def assign_parent(widget: Any, info1: dict, info2: dict) -> None:
@@ -518,7 +609,8 @@ def assign_parent(widget: Any, info1: dict, info2: dict) -> None:
 
 
 def load(
-    filename: str, file: str | None=None, parent: tk.Widget | None=None
+    filename: str, file: str | None=None, parent: tk.Widget | None=None,
+    style_dict: dict | None=None
 ) -> tk.Widget:
     """
     Loads a file with extension *.tk and builds all the widgets, the idea is
@@ -544,10 +636,12 @@ def load(
             info1['parent'] = parent
             parent = None
         widget = find_attribute(
-            info1.pop('widget'), (tk, pylejandria.gui, module)
+            info1.pop('widget'), (module, tk, tk.ttk, pylejandria.gui)
         )
         widget_arguments = widget_args(info1)
         widget = widget(*widget_arguments)
+        if alias := info1.get('alias'):
+            widget = style(None, style_dict, alias=alias, widget=widget)
         if id_ := info1.get('id'):
             built[id_] = widget
         if window is None:
@@ -555,7 +649,25 @@ def load(
         place_widget(widget, info1)
 
         for key, value in info1.items():
-            parse_values(widget, key, value, module, built)
+            if key in ('indent', 'id', 'alias'):
+                continue
+            elif key == 'execute':
+                for func_value in value: 
+                    if func := parse_property(func_value, widget, built, module):
+                        func()
+                continue
+            property_ = parse_property(value, widget, built, module)
+            if key.startswith('.'):
+                func = getattr(widget, key.replace('.', ''))
+                if isinstance(property_, (list, tuple)):
+                    func(*property_)
+                else:
+                    func(property_)
+            else:
+                try:
+                    widget[key] = getattr(module, str(property_))
+                except AttributeError:
+                    widget[key] = property_
 
         if parent := assign_parent(widget, info1, info2):
             info2['parent'] = parent
