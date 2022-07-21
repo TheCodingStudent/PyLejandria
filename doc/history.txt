@@ -522,3 +522,38 @@
         de bind, asi que tuve que hacer unas mejoras al sistema de parser,
         ahora hay una funcion dedicada a extraer los parametros dentro de
         parentesis, esto permite reutilizarce de manera sencilla. (10:08pm)
+
+-20/07/22:
+    *   (Armando) Hoy fue un dia ocupado, logre hacer muchas cosas pero no tuve
+        tiempo para documentar en tiempo real, asi que supongo que listare lo
+        que hice hoy.
+            -   rehice el sistema de parser, ahora son solo 3 funciones, una
+                principal que toma casos complejos y 2 auxiliares que manejan
+                atributos y listas respectivamente.
+            -   añadi el comando execute, sirve para ejecutar algun codigo al
+                finalizar de crear el widget, esto es util para casos donde
+                se tenga que repetir varias cosas, como por ejemplo tener 3
+                binds, ahora solo haces 3 executes en lugar de una sintaxis de
+                listas compleja.
+            -   cree un widget llamado TextSpan, su funcion principal es crear
+                multiples etiquetas en cierto orden, esto surgio gracias a que
+                rehice el uploader utilizando el sistema de archivos tk (ahora
+                que lo pienso necesito un mejor nombre que "archivos tk"), todo
+                salio bastante bien.
+            -   dentro de las cosas que mejore gracias a clonar el uploader
+                esta el añadir varias reglas de sintaxis, tambien que se pueden
+                acceder a funciones, clases y variables sin problemas, tambien
+                estuve pensando en lo repetitivo que es poner grid en cada
+                widget, asi que estaba viendo la posibilidad de una propiedad
+                nueva o en dado caso nuevas clases como Row o Column, el chiste
+                es que el widget automaticamente sepa como se colocan los
+                widgets, y haria vas facil el sistema de posicionamiento, por
+                ejemplo podrias tener un sistema Column y dentro multiples
+                Rows, asi pudiendo hacer un tipo tabla.
+            -   estoy barajando la idea de algun tipo de generador, el problema
+                principal es como acceder desde el archivo tk, el problema es
+                que el archivo es estatico y se necesita una funcion para
+                hacerlo dinamico.
+            -   como acto final subire esto a PyPi y a GitHub con el clon de
+                uploader, no pretendo reemplazar el original, pero fue un buen
+                ejercicio. (8:59pm)

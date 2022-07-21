@@ -376,6 +376,8 @@ def style(
         from_:  module where to import the widget.
         widget: if there is a widget already created it can be also styled, if
                 provided then name, master and from_ are not needed.
+    Returns:
+        widget: the given widget with all aplied properties.
 
     """
     if alias is None:
@@ -421,6 +423,8 @@ def find_attribute(name: str, sources: list[Any]) -> Any:
     Params:
         name: name of the attribute to return.
         sources: list of sources to search from.
+    Returns:
+        Any: the wanted attribute in case it exists. Else raises an error.
     """
     for source in sources:
         try:
@@ -436,6 +440,8 @@ def widget_info(chunk: list[str], indent: int) -> dict:
     properties.
     Params:
         chunk: list of strings of a widget.
+    Returns:
+        widget: dict with all the properties extracted from the chunk.
     """
     widget = {}
     widget['widget'] = chunk.pop(0)
@@ -465,6 +471,9 @@ def get_widgets(
     Params:
         lines: lines from the source file.
         names: names of the widgets.
+    Returns:
+        widgets: a list with tuples containing a dictionary with the widget
+        properties and its id in case it haves.
     """
     widgets = []
     for a, b in pylejandria.tools.pair(names + [None], 2):
@@ -481,6 +490,8 @@ def place_widget(widget: Any, info: dict) -> None:
     Params:
         widget: widget to place.
         info: info of the widget.
+    Returns:
+        None
     """
     if info.get('.pack'):
         widget.pack(**info.pop('.pack'))
@@ -512,6 +523,11 @@ def get_widget(widgets: dict, widget_id: str) -> Any:
     Params:
         widgets: dictionary of widgets with id as key.
         widget_id: id of the widget to return.
+    Returns:
+        widget: widget from the widgets dictionary.
+    Raises:
+        An AttributeError with a message to easily find which widget was not
+        founded.
     """
     if widget := widgets.get(widget_id):
         return widget
@@ -519,6 +535,17 @@ def get_widget(widgets: dict, widget_id: str) -> Any:
 
 
 def get_variables(expression: str) -> list[str, list]:
+    """
+    Checks if the expression follows the following format, if so then returns
+    the parsed expression and the arguments. The arguments are not evaluated.
+    Format:
+        - (arg1 | arg2 | ...)
+    Params:
+        expression: string expression to parse.
+    Returns:
+        expression: parsed expression.
+        str_args: arguments from the expression.
+    """
     if args := re.search('\(.*\)', expression):
         args = args.group()
         expression = expression.replace(args, '')
@@ -527,6 +554,23 @@ def get_variables(expression: str) -> list[str, list]:
 
 
 def get_property(expression: str, widget: tk.Widget, widgets: dict) -> Any:
+    """
+    checks if the expression follows the following format, if so then returns
+    the parsed expression and the proper value.
+    Format:
+        - self: refers to the widget itself.
+        - #name: refers to a widget with id name.
+        - [property]: returns the given property of the widget.
+    Examples:
+        - self.master
+        - #topleft_frame.label['text']
+    Params:
+        expression: string expression to parse.
+        widget: current widget, in case its referenced.
+        widgets: dict of widgets, in case any is referenced.
+    Returns:
+        any: the corresponding value based on the expression.
+    """
     property_ = None
     if args := re.search("\['.+'\]", expression):
         args = args.group()
@@ -545,7 +589,25 @@ def get_property(expression: str, widget: tk.Widget, widgets: dict) -> Any:
         return widget_property[property_]
 
 
-def parse_property(expression: str, widget, widgets, module):
+def parse_property(
+    expression: str, widget: tk.Widget, widgets: dict, module: Any
+) -> Any:
+    """
+    Checks if the expression follows the following format, if so then returns
+    the corresponding property.
+    Format:
+        - $function_name: single function.
+        - $function_name(arg1 | arg2 | ...): function with parameters.
+        - self | #id: reference to itself or a widget with id.
+        - (self | #id).property: refers to a property of the first item.
+    Params:
+        expression: string expression to parse.
+        widget: current widget, in case its referenced.
+        widgets: dict of widgets, in case any is referenced.
+        module: loaded source file to be referenced.
+    Returns:
+        Any: the corresponding value.
+    """
     if str(expression).startswith('$'):
         expression = expression.replace('$', '')
         args = []
@@ -587,13 +649,16 @@ def parse_property(expression: str, widget, widgets, module):
         return expression
 
 
-def assign_parent(widget: Any, info1: dict, info2: dict) -> None:
+def assign_parent(widget: Any, info1: dict, info2: dict) -> tk.Widget | None:
     """
     Assigns parent to the widget based on the indentation.
     Params:
         widget: current widget, is used to get the parent or be the parent.
         info1: dictionary of the current widget.
         info2: dictionary of the next widget.
+    Returns:
+        parent: parent widget of the current widget.
+        Or None.
     """
     parent = widget
     indent1 = info1.get('indent')
@@ -609,7 +674,7 @@ def assign_parent(widget: Any, info1: dict, info2: dict) -> None:
 
 
 def load(
-    filename: str, file: str | None=None, parent: tk.Widget | None=None,
+    filename: str, file: str, parent: tk.Widget | None=None,
     style_dict: dict | None=None
 ) -> tk.Widget:
     """
@@ -618,7 +683,9 @@ def load(
     simple UI.
     Params:
         filename: path of the *.tk file.
-
+        file: path of the source, to load functions and classes.
+        parent: optional parent, in case the loaded widget is not a window.
+        style_dict: optional dictionary with style based on alias.
     Returns:
         tk.Widget: the builded widget from the given file.
     """
@@ -667,7 +734,10 @@ def load(
                 try:
                     widget[key] = getattr(module, str(property_))
                 except AttributeError:
-                    widget[key] = property_
+                    try:
+                        widget[key] = property_
+                    except tk.TclError:
+                        print(f'invalid {key!a} property')
 
         if parent := assign_parent(widget, info1, info2):
             info2['parent'] = parent

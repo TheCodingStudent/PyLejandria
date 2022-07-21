@@ -47,6 +47,6 @@ Window
             .grid: {'row': 1, 'column': 0, 'sticky': 'ne', 'padx': (10, 0)}
     Button
         text: 'Upload'
-        command: $upload(#path_entry | #version_entry | #commit_entry | #pypi_combobox | #github_combobox | #delete_combobox)
+        command: $get_values(#path_entry | #version_entry | #commit_entry | #pypi_combobox | #github_combobox | #delete_combobox)
         .grid: {'row': 1, 'column': 0, 'columnspan': 3, 'sticky': 'ew', 'padx': 50, 'pady': 10}
         execute: $update_path(#path_entry | #version_entry | #commit_entry)

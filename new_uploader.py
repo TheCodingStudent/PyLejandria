@@ -2,6 +2,7 @@ from src.pylejandria.gui import load, TextSpan, ask
 import sys
 import re
 import os
+from threading import Thread
 
 sys.dont_write_bytecode = True
 
@@ -12,7 +13,7 @@ def update_path(path_entry, version_entry=None, commit_entry=None):
     path = ask('directory')
     if not path:
         return
-    with open(os.path.join(path, 'setup.cfg'), 'r') as f:
+    with open(f'{path}/setup.cfg', 'r') as f:
         TEXT = f.read()
         if match := re.search(VALID_REGEX, TEXT):
             OLD_VERSION = match.group()
@@ -39,6 +40,10 @@ def validate_version(entry):
 def reset_entry(entry):
     entry['fg'] = 'black'
 
+def get_values(*args):
+    thread = Thread(target=upload, args=args)
+    thread.start()
+
 def upload(path_entry, version_entry, commit_entry, pypi_combobox, github_combobox, delete_combobox):
     path = path_entry.get()
     delete = delete_combobox.current() == 0
@@ -46,22 +51,18 @@ def upload(path_entry, version_entry, commit_entry, pypi_combobox, github_combob
     pypi = pypi_combobox.current() == 0
     version = version_entry.get()
     commit = commit_entry.get()
+
     if pypi is True:
         if delete is True:
-            path = os.path.join(path, 'dist')
-            for file in os.listdir(path):
+            for file in os.listdir(f'{path}/dist'):
                 os.remove(os.path.join(path, file))
 
-        with open(os.path.join(path, 'setup.cfg'), 'w') as f:
+        with open(f'{path}/setup.cfg', 'w') as f:
             f.write(TEXT.replace(OLD_VERSION, version))
 
         os.system('python -m build')
-        file1 = os.path.join(
-            path, f'dist/pylejandria-{version}-py3-none-any.whl'
-        )
-        file2 = os.path.join(
-            path, f'dist/pylejandria-{version}.tar.gz'
-        )
+        file1 = f'{path}/dist/pylejandria-{version}-py3-none-any.whl'
+        file2 = f'{path}/dist/pylejandria-{version}.tar.gz'
         os.system(f'twine upload {file1} {file2}')
         print(f'{10*"-"}uploaded to Pypi{10*"-"}')
 
