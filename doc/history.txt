@@ -567,4 +567,8 @@
         en base PEP8 y los corregi. (3:09pm)
     *   Okey, empiezo esta nueva rama "Parser" y yo creo el nombre queda muy
         claro, probare un nuevo sistema para parsear los atributos del archivo
-        tk, usare todo lo que aprendi haciendo CHP
+        tk, usare todo lo que aprendi haciendo CHP.
+    *   La rama Parser fue eliminada por que decidi que el proyecto de TkSystem
+        debia ser su propio proyecto, de esa manera tengo todo mas ordenado y
+        PyLejandria no se satura, acabo de actualizar el widget TextArea para
+        que se pueda hacer redo y undo. (4:01pm)

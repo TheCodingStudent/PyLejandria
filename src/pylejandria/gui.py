@@ -129,13 +129,21 @@ class TextLineNumbers(tk.Canvas):
 
 
 class TextArea(tk.Frame):
-    def __init__(self, *args, linecounter=True, scrollbar=True, width=80, height=40, **kwargs):
+    def __init__(
+        self, *args, linecounter: bool | None=True,
+        scrollbar: bool | None=True, width: int | None=80,
+        height: int | None=40, **kwargs
+    ):
         """
         Advanced TextArea inspired from tkinter, it allows to display a line
         counter.
         """
         tk.Frame.__init__(self, *args, **kwargs)
-        self.text = CustomText(self, width=width, height=height, wrap=tk.NONE)
+        self.text = CustomText(
+            self, width=width, height=height, wrap=tk.NONE, undo=True
+        )
+        self.text.bind('<Control-z>', lambda e: self.text.edit_undo())
+        self.text.bind('<Control-y>', lambda e: self.text.edit_redo())
         if scrollbar is True:
             self.vsb = tk.Scrollbar(
                 self, orient="vertical", command=self.text.yview
