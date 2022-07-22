@@ -5,10 +5,10 @@ flexibility or having new widgets.
 """
 
 import io
-import pylejandria
 from pylejandria.constants import FILETYPES, PHONE_EXTENSIONS
 import re
 import tkinter as tk
+import tkinter.font as tkfont
 from tkinter import ttk
 from tkinter import filedialog
 from typing import Any, Callable
@@ -143,7 +143,7 @@ class TextArea(tk.Frame):
             self, width=width, height=height, wrap=tk.NONE, undo=True
         )
         self.tab = tab
-        font = tk.font.Font(font=self.text['font'])
+        font = tkfont.Font(font=self.text['font'])
         tab_size = font.measure(tab)
         self.text.config(tabs=tab_size)
         if scrollbar is True:
@@ -167,12 +167,12 @@ class TextArea(tk.Frame):
             if self.__dict__.get('linenumbers'):
                 self.linenumbers[key] = value
             if key == 'font':
-                font = tk.font.Font(font=self.text['font'])
+                font = tkfont.Font(font=self.text['font'])
                 tab_size = font.measure(self.tab)
                 self.text.config(tabs=tab_size)
         elif key == 'tab':
             self.tab = value
-            font = tk.font.Font(font=self.text['font'])
+            font = tkfont.Font(font=self.text['font'])
             tab_size = font.measure(self.tab)
             self.text.config(tabs=tab_size)
         elif key.startswith('line') and self.__dict__.get('linenumbers'):
