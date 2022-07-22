@@ -132,7 +132,7 @@ class TextArea(tk.Frame):
     def __init__(
         self, *args, linecounter: bool | None=True,
         scrollbar: bool | None=True, width: int | None=80,
-        height: int | None=40, **kwargs
+        height: int | None=40, tab: str | None='    ', **kwargs
     ):
         """
         Advanced TextArea inspired from tkinter, it allows to display a line
@@ -142,6 +142,10 @@ class TextArea(tk.Frame):
         self.text = CustomText(
             self, width=width, height=height, wrap=tk.NONE, undo=True
         )
+        self.tab = tab
+        font = tk.font.Font(font=self.text['font'])
+        tab_size = font.measure(tab)
+        self.text.config(tabs=tab_size)
         if scrollbar is True:
             self.vsb = tk.Scrollbar(
                 self, orient="vertical", command=self.text.yview
@@ -162,11 +166,17 @@ class TextArea(tk.Frame):
             self.text[key] = value
             if self.__dict__.get('linenumbers'):
                 self.linenumbers[key] = value
+            if key == 'font':
+                font = tk.font.Font(font=self.text['font'])
+                tab_size = font.measure(self.tab)
+                self.text.config(tabs=tab_size)
+        elif key == 'tab':
+            self.tab = value
+            font = tk.font.Font(font=self.text['font'])
+            tab_size = font.measure(self.tab)
+            self.text.config(tabs=tab_size)
         elif key.startswith('line') and self.__dict__.get('linenumbers'):
             self.linenumbers[key.replace('line', '')] = value
-        elif key.startswith('scroll'):
-            print(key, value)
-            self.vsb[key.replace('scroll', '')] = value
         elif key in ('prefix', ):
             self.linenumbers[key] = value
         else:
