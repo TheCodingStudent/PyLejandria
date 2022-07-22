@@ -156,9 +156,6 @@ class TextArea(tk.Frame):
             self.linenumbers.pack(side="left", fill="y")
             self.text.bind("<<Change>>", self._on_change)
             self.text.bind("<Configure>", self._on_change)
-        
-        self.bind('<Control-z>', lambda e: self.text.edit_undo())
-        self.bind('<Control-y>', lambda e: self.text.edit_redo())
     
     def __setitem__(self, key, value):
         if key in ('bg', 'font'):
