@@ -557,3 +557,14 @@
             -   como acto final subire esto a PyPi y a GitHub con el clon de
                 uploader, no pretendo reemplazar el original, pero fue un buen
                 ejercicio. (8:59pm)
+
+-21/07/22:
+    *   (Armando) Hoy no se me ocurre algo interesante para programar, asi que
+        me puse a ver lo de los snippets, y aunque hice uno para facilitarme la
+        plantilla de pygame, no pude hacer algo interesante para los archivos
+        tk, mi idea sigue siendo tener un sistema estilo emmet. Si se me ocurre
+        algo interesante ahorita lo documento, lo que si cheque varios archivos
+        en base PEP8 y los corregi. (3:09pm)
+    *   Okey, empiezo esta nueva rama "Parser" y yo creo el nombre queda muy
+        claro, probare un nuevo sistema para parsear los atributos del archivo
+        tk, usare todo lo que aprendi haciendo CHP

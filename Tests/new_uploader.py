@@ -1,18 +1,24 @@
-from src.pylejandria.gui import load, TextSpan, ask
+from pylejandria.gui import load, ask
 import sys
 import re
 import os
 from threading import Thread
+import tkinter as tk
 
 sys.dont_write_bytecode = True
 
 VALID_REGEX = '[0-9]+\.[0-9]+\.[0-9]+'
 
-def update_path(path_entry, version_entry=None, commit_entry=None):
+
+def update_path(
+    path_entry: tk.Widget, version_entry: tk.Widget | None=None,
+    commit_entry: tk.Widget | None=None
+) -> None:
     global TEXT, OLD_VERSION
     path = ask('directory')
     if not path:
         return
+
     with open(f'{path}/setup.cfg', 'r') as f:
         TEXT = f.read()
         if match := re.search(VALID_REGEX, TEXT):
@@ -26,25 +32,32 @@ def update_path(path_entry, version_entry=None, commit_entry=None):
     if commit_entry:
         commit_entry.delete(0, 'end')
         commit_entry.insert(0, f'Version {version}')
-
     path_entry.delete(0, 'end')
     path_entry.insert(0, path)
 
-def validate_version(entry):
+
+def validate_version(entry: tk.Widget) -> None:
     version = entry.get()
     if re.match(f'^{VALID_REGEX}$', version):
         entry['fg'] = '#00ff00'
     else:
         entry['fg'] = '#ff0000'
 
-def reset_entry(entry):
+
+def reset_entry(entry: tk.Widget) -> None:
     entry['fg'] = 'black'
 
-def get_values(*args):
+
+def get_values(*args) -> None:
     thread = Thread(target=upload, args=args)
     thread.start()
 
-def upload(path_entry, version_entry, commit_entry, pypi_combobox, github_combobox, delete_combobox):
+
+def upload(
+    path_entry: tk.Widget, version_entry: tk.Widget, commit_entry: tk.Widget,
+    pypi_combobox: tk.Widget, github_combobox: tk.Widget,
+    delete_combobox: tk.Widget
+) -> None:
     path = path_entry.get()
     delete = delete_combobox.current() == 0
     github = github_combobox.current() == 0
@@ -91,6 +104,6 @@ TEXT_VALUES = [
     {'text': 'Delete Previews Dist'}
 ]
 
-if __name__ == '__main__':    
+if __name__ == '__main__':
     window = load('new_uploader.tk', __file__, style_dict=style)
     window.mainloop()
