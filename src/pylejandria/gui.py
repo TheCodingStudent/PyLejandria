@@ -399,6 +399,38 @@ class WindowMenu(tk.Menu):
             self.add_cascade(label=menu, menu=new_menu)
 
 
+class Container(tk.Frame):
+    """
+    Container es un marco especial que ofrece capacidades
+    para mostrar multiples marcos y almacenarlos, esto es
+    utilizado para alamcenar las diferentes herramientas
+    del programa, en Window se crea un Container y ahi se
+    ponen los marcos de herramientas.
+    """
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+
+        ##### PROPIEDADES #####
+        self.master = master                        # guardamos al widget padre
+        self.frames = []                            # aqui estaran los marcos de la aplicacion
+        self.current = None                         # este sera el numero de la pagina actual 
+        self.grid_rowconfigure(0, weight = 1)       # creamos una cuadricula con una sola fila
+        self.grid_columnconfigure(0, weight = 1)    # y una sola columna
+    
+    ##### FUNCIONES #####
+    def show_frame(self, cont):                     # esta funcion mostrara el marco que se le indique
+        self.hide_current()                         # ocultar el marco anterior
+        self.current = cont                         # actualizamos el numero del marco actual
+        frame = self.frames[cont]                   # obtenemos el marco que queremos
+        frame.grid(row=0, column=0, sticky='nsew')  # colocamos el marco en el contenedor
+        frame.tkraise()                             # mostramos el marco
+    
+    def hide_current(self):                         # con esta funcion ocultamos el marco que este mostrandose
+        if self.current == None: return             # si no hay marco entonces salimos de la funcion
+        self.frames[self.current].grid_forget()     # si hay entonces lo quitamos de la pantalla
+        self.current = None                         # y guardamos que ya no hay marco mostrandose
+
+
 def filetypes(
     *types: list[str],
     all_files: bool | None=True
