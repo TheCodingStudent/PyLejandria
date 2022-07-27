@@ -572,3 +572,9 @@
         debia ser su propio proyecto, de esa manera tengo todo mas ordenado y
         PyLejandria no se satura, acabo de actualizar el widget TextArea para
         que se pueda hacer redo y undo. (4:01pm)
+
+-27/07/22:
+    *   (Armando) He estado trabajando en TkSystem y ha llevado bastante tiempo
+        entre el interprete (que quedo hermoso) y la interfaz, habian muchas
+        cosas de ergonomia que corregir. Hoy voy a actualizar gui con la clase
+        Container, la cree cuando desarrollaba a MaferUach. (12:00pm)
