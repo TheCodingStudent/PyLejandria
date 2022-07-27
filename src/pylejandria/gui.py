@@ -412,16 +412,18 @@ class Container(tk.Frame):
 
         ##### PROPIEDADES #####
         self.master = master                        # guardamos al widget padre
-        self.frames = []                            # aqui estaran los marcos de la aplicacion
+        self.frames = {}                            # aqui estaran los marcos de la aplicacion
         self.current = None                         # este sera el numero de la pagina actual 
+        self.current_frame = None
         self.grid_rowconfigure(0, weight = 1)       # creamos una cuadricula con una sola fila
         self.grid_columnconfigure(0, weight = 1)    # y una sola columna
     
     ##### FUNCIONES #####
-    def show_frame(self, cont):                     # esta funcion mostrara el marco que se le indique
+    def show_frame(self, name):                     # esta funcion mostrara el marco que se le indique
         self.hide_current()                         # ocultar el marco anterior
-        self.current = cont                         # actualizamos el numero del marco actual
-        frame = self.frames[cont]                   # obtenemos el marco que queremos
+        self.current = name                         # actualizamos el numero del marco actual
+        self.current_frame = self.frames[name]
+        frame = self.frames[name]                   # obtenemos el marco que queremos
         frame.grid(row=0, column=0, sticky='nsew')  # colocamos el marco en el contenedor
         frame.tkraise()                             # mostramos el marco
     
@@ -429,6 +431,9 @@ class Container(tk.Frame):
         if self.current == None: return             # si no hay marco entonces salimos de la funcion
         self.frames[self.current].grid_forget()     # si hay entonces lo quitamos de la pantalla
         self.current = None                         # y guardamos que ya no hay marco mostrandose
+    
+    def add_frame(self, frame, name):
+        self.frames[name] = frame
 
 
 def filetypes(

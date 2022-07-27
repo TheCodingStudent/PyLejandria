@@ -579,3 +579,4 @@
         cosas de ergonomia que corregir. Hoy voy a actualizar gui con la clase
         Container, la cree cuando desarrollaba a MaferUach. (12:00pm)
     *   Al parecer soy idiota y no subi el Container >:(. (12:26pm)
+    *   Sigo siendo un idiota y no lo actualice >:v. (12:32pm)
