@@ -5,6 +5,7 @@ flexibility or having new widgets.
 """
 
 import io
+import os
 from pylejandria.constants import FILETYPES, PHONE_EXTENSIONS
 import re
 import tkinter as tk
@@ -12,6 +13,8 @@ import tkinter.font as tkfont
 from tkinter import ttk
 from tkinter import filedialog
 from typing import Any, Callable
+
+PATH = os.path.dirname(__file__)
 
 
 class Window(tk.Tk):
@@ -590,6 +593,11 @@ class ImageButton(tk.Frame):
 class FramelessWindow(tk.Tk):
     def __init__(self, **kwargs):
         super().__init__()
+        if not kwargs.get('titleheight'):
+            kwargs['titleheight'] = 30
+        
+        self.geometry(f'400x{kwargs["titleheight"]+16}')
+
         self.overrideredirect(True)
         self.style = ttk.Style(self)
 
@@ -601,20 +609,18 @@ class FramelessWindow(tk.Tk):
 
         self.title_label = tk.Label(self.top_frame)
         self.title_label.place(relx=0.5, rely=0.5, anchor='center')
-        self.button_frame = tk.Frame(self.top_frame, bg='cyan')
+        self.button_frame = tk.Frame(self.top_frame)
 
         self.minimize_button = ImageButton(
-            self.button_frame, image='images/minimize.png', width=50,
-            hoverbackground='#323232'
+            self.button_frame, image=f'{PATH}/images/minimize.png', width=50
         )
         self.minimize_button.grid(row=0, column=0, sticky='nsew')
         self.maximize_button = ImageButton(
-            self.button_frame, image='images/maximize.png', width=50,
-            hoverbackground='#323232'
+            self.button_frame, image=f'{PATH}/images/maximize.png', width=50,
         )
         self.maximize_button.grid(row=0, column=1, sticky='nsew')
         self.close_button = ImageButton(
-            self.button_frame, image='images/close.png', width=50,
+            self.button_frame, image=f'{PATH}/images/close.png', width=50,
             command=self.destroy, hoverbackground='red'
         )
         self.close_button.grid(row=0, column=2, sticky='nsew')

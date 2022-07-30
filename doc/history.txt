@@ -588,3 +588,5 @@
         tambien estaria bien una barra de scroll, ademas de un burger menu, la
         principal fuente de inspiracion actual es VSCODE, de ahi puedo basar
         el TkSystem Editor. (6:31pm)
+    *   Ahora ya todo esta listo para subirse, faltaba añadir la carpeta de 
+        imagenes para el FramelessWindow y varios detallitos. (6:56pm)
