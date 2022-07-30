@@ -436,6 +436,236 @@ class Container(tk.Frame):
         self.frames[name] = frame
 
 
+class Grip:
+    def __init__ (self, parent, disable=None, releasecmd=None) :
+        self.parent = parent
+        self.root = parent.winfo_toplevel()
+
+        self.disable = disable
+        if type(disable) == 'str':
+            self.disable = disable.lower()
+
+        self.releaseCMD = releasecmd
+
+        self.parent.bind('<Button-1>', self.relative_position)
+        self.parent.bind('<ButtonRelease-1>', self.drag_unbind)
+
+    def relative_position (self, event) :
+        cx, cy = self.parent.winfo_pointerxy()
+        geo = self.root.geometry().split("+")
+        self.oriX, self.oriY = int(geo[1]), int(geo[2])
+        self.relX = cx - self.oriX
+        self.relY = cy - self.oriY
+
+        self.parent.bind('<Motion>', self.drag_wid)
+
+    def drag_wid (self, event) :
+        cx, cy = self.parent.winfo_pointerxy()
+        d = self.disable
+        x = cx - self.relX
+        y = cy - self.relY
+        if d == 'x' :
+            x = self.oriX
+        elif d == 'y' :
+            y = self.oriY
+        self.root.geometry('+%i+%i' % (x, y))
+
+    def drag_unbind (self, event) :
+        self.parent.unbind('<Motion>')
+        if self.releaseCMD != None :
+            self.releaseCMD()
+
+
+class Image(tk.Label):
+    def __init__(self, master):
+        super().__init__(master)
+    
+    def __setitem__(self, key, value):
+        if key == 'image':
+            image = tk.PhotoImage(file=value)
+            self.image = image
+            self.configure(image=image)
+        else:
+            super().__setitem__(key, value)
+
+
+class ImageButton(tk.Frame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master)
+
+        self.image = Image(self)
+        self.image.place(relx=0.5, rely=0.5, anchor='center')
+        self.command = None
+        self.on_hover = False
+        self.text_mode = False
+
+        for key, value in kwargs.items():
+            self[key] = value
+        
+        self.bind('<Enter>', self.hover)
+        self.bind('<Leave>', self.unhover)
+        self.image.bind('<ButtonPress-1>', self.press)
+        self.bind('<ButtonPress-1>', self.press)
+        self.image.bind('<ButtonRelease-1>', self.release)
+        self.bind('<ButtonRelease-1>', self.release)
+    
+    def press(self, *e):
+        if self.__dict__.get('bg_active'):
+            super().__setitem__('bg', self.bg_active)
+            self.image['bg'] = self.bg_active
+            if self.text_mode: self.text['bg'] = self.bg_active
+        if self.__dict__.get('fg_active') and self.text_mode:
+            self.text['fg'] = self.fg_active
+
+    def release(self, *e):
+        if self.on_hover: self.hover()
+        else: self.unhover()
+        if self.command: self.command()
+
+    def hover(self, *e):
+        self.on_hover = True
+        if self.__dict__.get('bg_hover'):
+            super().__setitem__('bg', self.bg_hover)
+            self.image['bg'] = self.bg_hover
+            if self.text_mode: self.text['bg'] = self.bg_hover
+        if self.__dict__.get('fg_hover') and self.text_mode:
+            self.text['fg'] = self.fg_hover
+    
+    def unhover(self, *e):
+        self.on_hover = False
+        if self.__dict__.get('bg_color'):
+            super().__setitem__('bg', self.bg_color)
+            self.image['bg'] = self.bg_color
+            if self.text_mode: self.text['bg'] = self.bg_color
+        if self.__dict__.get('fg_color') and self.text_mode:
+            self.text['fg'] = self.fg_color
+    
+    def __setitem__(self, key, value):
+        if key == 'image':
+            self.image[key] = value
+        elif key == 'bg':
+            self.bg_color = value
+            self.image[key] = value
+            if self.text_mode: self.text[key] = value
+            super().__setitem__(key, value)
+        elif key == 'hoverbackground':
+            self.bg_hover = value
+        elif key == 'activebackground':
+            self.bg_active = value
+        elif key == 'command':
+            self.command = value
+        elif key == 'hoverforeground':
+            self.fg_hover = value
+        elif key == 'activeforeground':
+            self.fg_active = value
+        elif key == 'anchor':
+            if self.text_mode: return
+            match value.lower():
+                case 'nw': self.image.place_configure(relx=0, rely=0, anchor='nw')
+                case 'n': self.image.place_configure(relx=0.5, rely=0, anchor='n')
+                case 'ne': self.image.place_configure(relx=1, rely=0, anchor='ne')
+                case 'e': self.image.place_configure(relx=1, rely=0.5, anchor='e')
+                case 'se': self.image.place_configure(relx=1, rely=1, anchor='se')
+                case 's': self.image.place_configure(relx=0.5, rely=1, anchor='s')
+                case 'sw': self.image.place_configure(relx=0, rely=1, anchor='sw')
+                case 'w': self.image.place_configure(relx=0, rely=0.5, anchor='w')
+                case 'center': self.image.place_configure(relx=0.5, rely=0.5, anchor='center')
+        elif key == 'text':
+            if self.text_mode is False:
+                self.image.place_configure(relx=0, rely=0.5, anchor='w')
+                self.text = tk.Label(self, bg=self['bg'])
+                self.text.place(x=self.image.image.width(), rely=0.5, anchor='w')
+                self.text_mode = True
+                self.text.bind('<ButtonPress-1>', self.press)
+                self.text.bind('<ButtonRelease-1>', self.release)
+            self.text[key] = value
+        elif key in ('fg', 'font'):
+            if self.text_mode is False: return
+            if key == 'fg': self.fg_color = value
+            self.text[key] = value
+        else:
+            super().__setitem__(key, value)
+
+
+class FramelessWindow(tk.Tk):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.overrideredirect(True)
+        self.style = ttk.Style(self)
+
+        self.top_frame = tk.Frame(self)
+        self.top_frame.pack(side='top', fill='x')
+
+        self.icon = Image(self.top_frame)
+        self.icon.place(relx=0, rely=0, anchor='nw')
+
+        self.title_label = tk.Label(self.top_frame)
+        self.title_label.place(relx=0.5, rely=0.5, anchor='center')
+        self.button_frame = tk.Frame(self.top_frame, bg='cyan')
+
+        self.minimize_button = ImageButton(
+            self.button_frame, image='images/minimize.png', width=50,
+            hoverbackground='#323232'
+        )
+        self.minimize_button.grid(row=0, column=0, sticky='nsew')
+        self.maximize_button = ImageButton(
+            self.button_frame, image='images/maximize.png', width=50,
+            hoverbackground='#323232'
+        )
+        self.maximize_button.grid(row=0, column=1, sticky='nsew')
+        self.close_button = ImageButton(
+            self.button_frame, image='images/close.png', width=50,
+            command=self.destroy, hoverbackground='red'
+        )
+        self.close_button.grid(row=0, column=2, sticky='nsew')
+
+        self.button_frame.place(relx=1, rely=0, anchor='ne')
+
+        Grip(self.top_frame)
+        Grip(self.title_label)
+
+        self.sizegrip = ttk.Sizegrip(self)
+        self.sizegrip.place(relx=1, rely=1, anchor='se')
+
+        for key, value in kwargs.items():
+            self[key] = value
+    
+        
+    def __setitem__(self, key, value):
+        if key == 'titleheight':
+            self.top_frame['height'] = value
+            self.button_frame['height'] = value
+            self.minimize_button['height'] = value
+        elif key == 'titlebg':
+            self.top_frame['bg'] = value
+            self.title_label['bg'] = value
+            self.minimize_button['bg'] = value
+            self.maximize_button['bg'] = value
+            self.close_button['bg'] = value
+            self.icon['bg'] = value
+        elif key in ('text', 'fg', 'font'):
+            self.title_label[key] = value
+        elif key == 'icon':
+            self.icon['image'] = value
+        elif key == 'minimizehoverbackground':
+            self.minimize_button['hoverbackground'] = value
+        elif key == 'maximizehoverbackground':
+            self.maximize_button['hoverbackground'] = value
+        elif key == 'exithoverbackground':
+            self.close_button['hoverbackground'] = value
+        elif key == 'minimizeactivebackground':
+            self.minimize_button['activebackground'] = value
+        elif key == 'maximizeactivebackground':
+            self.maximize_button['activebackground'] = value
+        elif key == 'exitactivebackground':
+            self.close_button['activebackground'] = value
+        elif key == 'bg':
+            super().__setitem__('bg', value)
+            self.style.configure('TSizegrip', background=value)
+        else:
+            super().__setitem__(key, value)
+
+
 def filetypes(
     *types: list[str],
     all_files: bool | None=True

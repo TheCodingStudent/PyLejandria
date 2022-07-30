@@ -580,3 +580,11 @@
         Container, la cree cuando desarrollaba a MaferUach. (12:00pm)
     *   Al parecer soy idiota y no subi el Container >:(. (12:26pm)
     *   Sigo siendo un idiota y no lo actualice >:v. (12:32pm)
+
+-29/07/22:
+    *   (Armando) Hoy realice 4 nuevas clases para gui: Grip, FramelessWindow,
+        Image e ImageButton, la idea es realizar interfaces con estetica
+        moderna, sigue realizar widgets como el menu (voy a llorar con ese),
+        tambien estaria bien una barra de scroll, ademas de un burger menu, la
+        principal fuente de inspiracion actual es VSCODE, de ahi puedo basar
+        el TkSystem Editor. (6:31pm)
