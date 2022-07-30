@@ -480,14 +480,21 @@ class Grip:
 
 
 class Image(tk.Label):
-    def __init__(self, master):
+    def __init__(self, master, **kwargs):
         super().__init__(master)
+        for key, value in kwargs.items():
+            self[key] = value
     
     def __setitem__(self, key, value):
         if key == 'image':
-            image = tk.PhotoImage(file=value)
-            self.image = image
-            self.configure(image=image)
+            if value:
+                image = tk.PhotoImage(file=value)
+                self.image = image
+                self.configure(image=image)
+            else:
+                self['bg'] = self.master['bg']
+                self.image = None
+                self.configure(image=None)
         else:
             super().__setitem__(key, value)
 
@@ -611,17 +618,13 @@ class FramelessWindow(tk.Tk):
         self.title_label.place(relx=0.5, rely=0.5, anchor='center')
         self.button_frame = tk.Frame(self.top_frame)
 
-        self.minimize_button = ImageButton(
-            self.button_frame, image=f'{PATH}/images/minimize.png', width=50
-        )
+        self.minimize_button = ImageButton(self.button_frame, width=50, image='images/minimize.png')
         self.minimize_button.grid(row=0, column=0, sticky='nsew')
-        self.maximize_button = ImageButton(
-            self.button_frame, image=f'{PATH}/images/maximize.png', width=50,
-        )
+        self.maximize_button = ImageButton(self.button_frame, width=50, image='images/maximize.png')
         self.maximize_button.grid(row=0, column=1, sticky='nsew')
         self.close_button = ImageButton(
-            self.button_frame, image=f'{PATH}/images/close.png', width=50,
-            command=self.destroy, hoverbackground='red'
+            self.button_frame, width=50,command=self.destroy,
+            hoverbackground='red', image='images/close.png'
         )
         self.close_button.grid(row=0, column=2, sticky='nsew')
 
@@ -665,6 +668,12 @@ class FramelessWindow(tk.Tk):
             self.maximize_button['activebackground'] = value
         elif key == 'exitactivebackground':
             self.close_button['activebackground'] = value
+        elif key == 'minimizeicon':
+            self.minimize_button['image'] = value
+        elif key == 'maximizeicon':
+            self.maximize_button['image'] = value
+        elif key == 'exiticon':
+            self.close_button['image'] = value
         elif key == 'bg':
             super().__setitem__('bg', value)
             self.style.configure('TSizegrip', background=value)

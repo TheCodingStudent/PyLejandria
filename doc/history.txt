@@ -590,3 +590,5 @@
         el TkSystem Editor. (6:31pm)
     *   Ahora ya todo esta listo para subirse, faltaba añadir la carpeta de 
         imagenes para el FramelessWindow y varios detallitos. (6:56pm)
+    *   Ya se puede eliminar la imagen de la clase Image, esto puede ser
+        necesario para algun caso, ahora si a cenar :) . (7:32pm)
