@@ -618,13 +618,13 @@ class FramelessWindow(tk.Tk):
         self.title_label.place(relx=0.5, rely=0.5, anchor='center')
         self.button_frame = tk.Frame(self.top_frame)
 
-        self.minimize_button = ImageButton(self.button_frame, width=50, image='images/minimize.png')
+        self.minimize_button = ImageButton(self.button_frame, width=50, image=f'{PATH}/images/minimize.png')
         self.minimize_button.grid(row=0, column=0, sticky='nsew')
-        self.maximize_button = ImageButton(self.button_frame, width=50, image='images/maximize.png')
+        self.maximize_button = ImageButton(self.button_frame, width=50, image=f'{PATH}/images/maximize.png')
         self.maximize_button.grid(row=0, column=1, sticky='nsew')
         self.close_button = ImageButton(
             self.button_frame, width=50,command=self.destroy,
-            hoverbackground='red', image='images/close.png'
+            hoverbackground='red', image=f'{PATH}/images/close.png'
         )
         self.close_button.grid(row=0, column=2, sticky='nsew')
 
