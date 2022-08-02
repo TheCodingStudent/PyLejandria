@@ -592,3 +592,8 @@
         imagenes para el FramelessWindow y varios detallitos. (6:56pm)
     *   Ya se puede eliminar la imagen de la clase Image, esto puede ser
         necesario para algun caso, ahora si a cenar :) . (7:32pm)
+
+-02/08/22:
+    *   (Armando) Tras varias pruebas una version primitiva de graficas ya esta
+        en gui, hay algunos detalles que aun no se como resolver, pero ya si
+        lo llego a usar lo resolvere con la marcha. (2:01pm)

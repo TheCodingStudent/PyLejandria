@@ -5,6 +5,8 @@ flexibility or having new widgets.
 """
 
 import io
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
 import os
 from pylejandria.constants import FILETYPES, PHONE_EXTENSIONS
 import re
@@ -482,6 +484,7 @@ class Grip:
 class Image(tk.Label):
     def __init__(self, master, **kwargs):
         super().__init__(master)
+        self['bg'] = master['bg']
         for key, value in kwargs.items():
             self[key] = value
     
@@ -679,6 +682,43 @@ class FramelessWindow(tk.Tk):
             self.style.configure('TSizegrip', background=value)
         else:
             super().__setitem__(key, value)
+
+
+class Plot(tk.Frame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master)
+        self.fig = None
+
+        for key, value in kwargs.items():
+            self[key] = value
+    
+    def figure(self, **kwargs):
+        if kwargs.get('fig'): self.fig = kwargs.pop('fig')
+        else: self.fig = plt.figure(**kwargs)
+        plot = FigureCanvasTkAgg(self.fig, master=self)
+        plot = plot.get_tk_widget()
+        plot.pack(padx=10, pady=10, expand=True, fill='both')
+    
+    def call(self, function_name, *args, **kwargs):
+        function = getattr(plt, function_name)
+        new_args = []
+        for arg in args:
+            if isinstance(arg, dict): kwargs |= arg
+            else: new_args.append(arg)
+        function(*new_args, **kwargs)
+
+    def plot(self, args, kwargs):
+        plt.plot(*args, **kwargs)
+
+    def title(self, text):
+        plt.title(text)
+    
+    def legend(self, loc='best'):
+        plt.legend(loc=loc)
+    
+    def __setitem__(self, key, value):
+        if key == 'fig': self.figure(fig=value)
+        else: super().__init__(key, value)
 
 
 def filetypes(
