@@ -605,14 +605,20 @@ class FramelessWindow(tk.Tk):
         super().__init__()
         if not kwargs.get('titleheight'):
             kwargs['titleheight'] = 30
+        if not kwargs.get('titlebg'):
+            kwargs['titlebg'] = '#323232'
         
         self.geometry(f'400x{kwargs["titleheight"]+16}')
+        self.window_state = 'normal'
 
         self.overrideredirect(True)
         self.style = ttk.Style(self)
 
         self.top_frame = tk.Frame(self)
         self.top_frame.pack(side='top', fill='x')
+
+        self.main_frame = tk.Frame(self)
+        self.main_frame.pack(expand=True, fill='both')
 
         self.icon = Image(self.top_frame)
         self.icon.place(relx=0, rely=0, anchor='nw')
@@ -621,9 +627,9 @@ class FramelessWindow(tk.Tk):
         self.title_label.place(relx=0.5, rely=0.5, anchor='center')
         self.button_frame = tk.Frame(self.top_frame)
 
-        self.minimize_button = ImageButton(self.button_frame, width=50, image=f'{PATH}/images/minimize.png')
+        self.minimize_button = ImageButton(self.button_frame, width=50, image=f'{PATH}/images/minimize.png', hoverbackground='#505050', command=self.minimize_window)
         self.minimize_button.grid(row=0, column=0, sticky='nsew')
-        self.maximize_button = ImageButton(self.button_frame, width=50, image=f'{PATH}/images/maximize.png')
+        self.maximize_button = ImageButton(self.button_frame, width=50, image=f'{PATH}/images/maximize.png', hoverbackground='#505050')
         self.maximize_button.grid(row=0, column=1, sticky='nsew')
         self.close_button = ImageButton(
             self.button_frame, width=50,command=self.destroy,
@@ -641,8 +647,13 @@ class FramelessWindow(tk.Tk):
 
         for key, value in kwargs.items():
             self[key] = value
-    
         
+        self.bind('<Unmap>', self.test)
+    
+    def minimize_window(self):
+        if self.window_state == 'normal':
+            self.overrideredirect(False)     
+
     def __setitem__(self, key, value):
         if key == 'titleheight':
             self.top_frame['height'] = value
@@ -655,8 +666,10 @@ class FramelessWindow(tk.Tk):
             self.maximize_button['bg'] = value
             self.close_button['bg'] = value
             self.icon['bg'] = value
-        elif key in ('text', 'fg', 'font'):
+        elif key in ('fg', 'font'):
             self.title_label[key] = value
+        elif key == 'title':
+            self.title_label['text'] = value
         elif key == 'icon':
             self.icon['image'] = value
         elif key == 'minimizehoverbackground':
@@ -679,6 +692,7 @@ class FramelessWindow(tk.Tk):
             self.close_button['image'] = value
         elif key == 'bg':
             super().__setitem__('bg', value)
+            # self.main_frame['bg'] = value
             self.style.configure('TSizegrip', background=value)
         else:
             super().__setitem__(key, value)
